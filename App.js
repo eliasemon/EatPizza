@@ -4,14 +4,13 @@ import { StyleSheet, Text, View , Image , SvgXml} from 'react-native';
 
 
 
-
 const App = () => {
 
 
 
   return (
-    <View style={styles.container}>
-
+    <View >
+      <Text> Ki obosta Sabar</Text>
     </View>
   );
 }
