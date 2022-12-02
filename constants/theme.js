@@ -1,9 +1,9 @@
 export const COLORS = {
-  primary: "#001F2D",
-  secondary: "#4D626C",
+  primary: "#15BE77",
 
   white: "#FFF",
-  gray: "#74858C",
+  gray: "#252525",
+  black: "#000",
 };
 
 export const SIZES = {
@@ -15,13 +15,19 @@ export const SIZES = {
   extraLarge: 24,
 };
 
-export const FONTS = {
-  bold: "InterBold",
-  semiBold: "InterSemiBold",
-  medium: "InterMedium",
-  regular: "InterRegular",
-  light: "InterLight",
+export const RADIUS = {
+  light: 5,
+  medium: 10,
+  hard: 15,
 };
+
+// export const FONTS = {
+//   bold: "InterBold",
+//   semiBold: "InterSemiBold",
+//   medium: "InterMedium",
+//   regular: "InterRegular",
+//   light: "InterLight",
+// };
 
 export const SHADOWS = {
   light: {

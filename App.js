@@ -1,20 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View , Image , SvgXml} from 'react-native';
-
-
-
+import { View } from "react-native";
+import "react-native-gesture-handler";
+import Background from "./components/Background";
+import Otp from "./screens/Otp";
 
 const App = () => {
-
-
-
   return (
-    <View >
-      <Text> Ki obosta Sabar</Text>
+    <View style={{ height: "100%", width: "100%" }}>
+      <Background />
+      <Otp />
     </View>
   );
-}
+};
 
-
-
-export default App
+export default App;
