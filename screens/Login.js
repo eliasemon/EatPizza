@@ -1,30 +1,61 @@
-import { useState } from "react";
+import { useState ,useRef } from "react";
 import { View, Image, StyleSheet, TextInput } from "react-native";
 import logo from "../assets/images/logo.png";
 import { NextButton } from "./../components/Buttons";
-
-const handlePress = (event) => {
-  console.log("Logged in");
-};
-
-const handleChange = (event) => {
-  console.log("changing");
-};
+import {firebaseConfig} from '../config'
+import firebase from 'firebase/compat/app';
+import {FirebaseRecaptchaVerifierModal} from "../expo-firebase-recaptcha/src/index"
+import Otp from "./Otp";
 
 const Login = () => {
-  const [number, setNumber] = useState(null);
+  const [inputView , setInputView] = useState(true)
+  const [phoneNumber,setPhoneNumber]=useState('')
+  const [code,setCode]=useState('')
+  const [verificationId,setVerificationId]=useState(null)
+  const recaptchaVerification = useRef(null);
+
+  const sendVerfication =()=>{
+    const phoneProvider = new firebase.auth.PhoneAuthProvider()
+        phoneProvider.verifyPhoneNumber(phoneNumber,recaptchaVerification.current)
+        .then(setVerificationId)
+        setPhoneNumber('')
+        setInputView(false)
+  }
+  const confirmCode = ()=>{
+    const credential = firebase.auth.PhoneAuthProvider.credential(verificationId,code)
+
+    firebase.auth().signInWithCredential(credential)
+    .then(()=>{
+        setCode('')
+        console.log('success')
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+  }
+  const otpUI = ( <Otp code={code} setCode={setCode} confirmCode={confirmCode}  />)
+  const numberUi = (<View style={styles.container}>
+    <Image source={logo} style={styles.image} />
+    <TextInput
+      style={styles.input}
+      onChangeText={setPhoneNumber}
+      value={phoneNumber}
+      autoCompleteType='tel'
+      placeholder="Phone Number"
+      keyboardType="numeric"
+      placeholderTextColor="#fff"
+    />
+    <NextButton onPress={sendVerfication} title="Login" />
+  </View>)
+
   return (
     <View style={styles.container}>
-      <Image source={logo} style={styles.image} />
-      <TextInput
-        style={styles.input}
-        onChangeText={handleChange}
-        value={number}
-        placeholder="Phone Number"
-        keyboardType="numeric"
-        placeholderTextColor="#fff"
+      <FirebaseRecaptchaVerifierModal 
+        ref={recaptchaVerification}
+        firebaseConfig={firebaseConfig}
+        appVerificationDisabledForTesting={true}
       />
-      <NextButton onPress={handlePress} title="Login" />
+        {inputView ? numberUi : otpUI}
     </View>
   );
 };

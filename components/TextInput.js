@@ -20,13 +20,12 @@ const InputText = () => {
   );
 };
 
-export const OtpInput = () => {
-  const [number, setNumber] = useState(0);
+export const OtpInput = ({code , setCode}) => {
   return (
     <TextInput
       style={styles.otpinput}
-      onChangeText={handleChange}
-      value={number}
+      onChangeText={setCode}
+      value={code}
       placeholder="______"
       keyboardType="numeric"
       placeholderTextColor="#848484"

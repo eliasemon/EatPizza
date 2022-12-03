@@ -4,11 +4,8 @@ import { IconButton, NextButton } from "./../components/Buttons";
 import { OtpInput } from "../components/TextInput";
 import backButton from "../assets/icons/backOrange.png";
 
-const handlePress = (event) => {
-  console.log("Logged in");
-};
 
-const Otp = () => {
+const Otp = ({code , setCode , confirmCode}) => {
   return (
     <View style={styles.container}>
       <View>
@@ -25,8 +22,11 @@ const Otp = () => {
           Code send to +8801771551*** . This code will expired in 01:30
         </Text>
       </View>
-      <OtpInput />
-      <NextButton onPress={handlePress} title="Continue" />
+      <OtpInput 
+        code={code}
+        setCode={setCode}
+      />
+      <NextButton onPress={confirmCode} title="Continue" />
     </View>
   );
 };

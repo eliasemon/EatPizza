@@ -1,13 +1,13 @@
 import { View } from "react-native";
 import "react-native-gesture-handler";
 import Background from "./components/Background";
-import Otp from "./screens/Otp";
+import Login from "./screens/Login";
 
 const App = () => {
   return (
     <View style={{ height: "100%", width: "100%" }}>
       <Background />
-      <Otp />
+      <Login />
     </View>
   );
 };
