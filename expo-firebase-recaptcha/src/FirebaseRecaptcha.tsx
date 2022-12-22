@@ -39,7 +39,7 @@ function getWebviewSource(
   <style>
     * {
         color : #FFF !important;
-        background-color : rgba(0,0,0,0.1) !important;
+        background-color : #323232 !important;
     }
     html, body {
       

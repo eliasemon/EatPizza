@@ -74,5 +74,5 @@ export default React.forwardRef((props: Omit<Props, 'innerRef'>, ref: any) => (
 
 const styles = {
   // Ensure the reCAPTCHA badge is in front or other elements
-  container: { zIndex: 1000 , backgroundColor: "transparent"},
+  container: { zIndex: 1000 , backgroundColor: "#323232" , color : "#fff"},
 };

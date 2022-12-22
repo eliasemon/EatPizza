@@ -210,18 +210,18 @@ const styles = StyleSheet.create({
   container: {
     width: 0,
     height: 0,
-    backgroundColor: "transparent",
+    backgroundColor: "#323232",
   },
   invisible: {
     width: 300,
     height: 300,
-    backgroundColor: "transparent",
+    backgroundColor: "#323232",
   },
   modalContainer: {
     flex: 1,
   },
   header: {
-    backgroundColor: "transparent",
+    backgroundColor: "#323232",
     height: 44,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    backgroundColor: "transparent",
+    backgroundColor: "#323232",
   },
   loader: {
     ...StyleSheet.absoluteFillObject,

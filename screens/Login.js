@@ -53,7 +53,7 @@ const Login = () => {
       <FirebaseRecaptchaVerifierModal 
         ref={recaptchaVerification}
         firebaseConfig={firebaseConfig}
-        appVerificationDisabledForTesting={true}
+       // appVerificationDisabledForTesting={true}
       />
         {inputView ? numberUi : otpUI}
     </View>
