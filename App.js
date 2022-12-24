@@ -1,15 +1,26 @@
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import "react-native-gesture-handler";
 import Background from "./components/Background";
-import Login from "./screens/Login";
+import Notification from "./screens/Notification";
 
 const App = () => {
   return (
-    <View style={{ height: "100%", width: "100%" }}>
+    <>
       <Background />
-      <Login />
+      <View style={styles.container}>
+        <Notification />
     </View>
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: '100%',
+    paddingHorizontal: 20,
+    paddingVertical: 30
+  }
+})
 
 export default App;
