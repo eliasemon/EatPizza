@@ -1,14 +1,14 @@
 import { View, StyleSheet } from "react-native";
 import "react-native-gesture-handler";
 import Background from "./components/Background";
-import Notification from "./screens/Notification";
+import Home from "./screens/Home";
 
 const App = () => {
   return (
     <>
       <Background />
       <View style={styles.container}>
-        <Notification />
+        <Home />
     </View>
     </>
   );

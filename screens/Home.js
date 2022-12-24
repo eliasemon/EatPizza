@@ -1,118 +1,14 @@
 import { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList } from "react-native";
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Banner from '../assets/images/banner.png'
-import ImagePhoto from '../assets/images/ItemPhoto.png'
+import { itemList, categories as categoriesList } from '../constants/dummy'
+import ProductCard from '../components/ProductCard';
 
-const itemList = [
-    {
-        id: 0,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-    },
-    {
-        id: 1,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-    },
-    {
-        id: 2,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-    },
-    {
-        id: 3,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-    },
-    {
-        id: 4,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-    },
-    {
-        id: 5,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-    },
-    {
-        id: 6,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-    },
-    {
-        id: 7,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-    },
-]
+
 
 const Home = () => {
-    const [categories, setCategories] = useState([
-        {
-            id: 0,
-            title: 'Ice Cream',
-            activeStatus: false,
-        },
-        {
-            id: 1,
-            title: 'Burgers',
-            activeStatus: false,
-        },
-        {
-            id: 2,
-            title: 'Pizza',
-            activeStatus: false,
-        },
-        {
-            id: 3,
-            title: 'Sandwich',
-            activeStatus: false,
-        },
-        {
-            id: 4,
-            title: 'Chips',
-            activeStatus: false,
-        },
-        {
-            id: 5,
-            title: 'Pitas',
-            activeStatus: false,
-        },
-        {
-            id: 6,
-            title: 'Fried Cicken',
-            activeStatus: false,
-        },
-        {
-            id: 7,
-            title: 'Onion Rings',
-            activeStatus: false,
-        },
-        {
-            id: 8,
-            title: 'Hot Dogs',
-            activeStatus: false,
-        },
-        {
-            id: 9,
-            title: 'Tacos',
-            activeStatus: false,
-        },
-        {
-            id: 10,
-            title: 'Nuggets',
-            activeStatus: false,
-        },
-    ])
+    const [categories, setCategories] = useState(categoriesList)
 
     const handleChipPress = (id) => {
         setCategories((prev) => {
@@ -127,7 +23,7 @@ const Home = () => {
             <View style={styles.heading}>
                 <Text style={styles.title}>Find Your Favorite Food</Text>
                 <TouchableOpacity style={styles.notification}>
-                    <FontAwesome5 name="bell" size={32} color="green" />
+                    <FontAwesome name="bell-o" size={32} color="green" />
                 </TouchableOpacity>
             </View>
             <View>
@@ -136,26 +32,21 @@ const Home = () => {
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Categories</Text>
                 <View style={styles.chipContainer}>
-                    {categories.map((item) => <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={item.activeStatus ? styles.activeChip : styles.chip} key={item.id}><Text style={styles.chipText}>{item.title}</Text></TouchableOpacity>)}
+                    {
+                        categories.map((item) => (
+                            <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={item.activeStatus ?
+                                styles.activeChip
+                                : styles.chip} key={item.id}>
+                                <Text style={styles.chipText}>{item.title}</Text>
+                            </TouchableOpacity>
+                        ))}
                 </View>
             </View>
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>All Items</Text>
                 <View style={styles.cardContainer}>
                     {itemList.map((item) => (
-                        <View style={styles.card} key={item.id}>
-                            <View style={styles.cardProduct}>
-                                <Image source={ImagePhoto} style={styles.cardImage} />
-                                <View style={styles.cardTextBox}>
-                                    <Text style={styles.cardTextTitle}>Spacy fresh crab</Text>
-                                    <Text style={styles.cardTextCategory}>Waroenk kita</Text>
-                                    <Text style={styles.cardTextPrice}>$ 35</Text>
-                                </View>
-                            </View>
-                            <TouchableOpacity>
-                                <FontAwesome5 name="cart-plus" size={26} color="#fff" />
-                            </TouchableOpacity>
-                        </View>
+                        <ProductCard title={item.title} category={item.category} price={item.price} key={item.id} />
                     ))}
                 </View>
             </View>
