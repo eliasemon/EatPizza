@@ -11,7 +11,6 @@ const Background = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    zIndex: 1,
     height: "100%",
     justifyContent: "space-evenly",
     alignItems: "center",

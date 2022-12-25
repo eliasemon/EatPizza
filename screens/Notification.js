@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import Heading from '../components/Heading'
+import BackgroundContainer from "../components/BackgroundContainer";
 
 const icons = {
   done: {
@@ -74,26 +75,28 @@ const notifications = [
   },
 ];
 
-const Notification = () => {
+const Notification = ({navigation}) => {
   return (
-    <ScrollView>
-      <Heading title="Notification" />
-      <View>
-        {
-          notifications.map((item) => (
-            <View key={item.id} style={styles.card} >
-              <View style={styles.statusBox}>
-                <FontAwesome name={icons[item.status].keyword} size={45} color={icons[item.status].color} />
+    <BackgroundContainer>
+      <ScrollView>
+        <Heading navigation={navigation} title="Notification" />
+        <View>
+          {
+            notifications.map((item) => (
+              <View key={item.id} style={styles.card} >
+                <View style={styles.statusBox}>
+                  <FontAwesome name={icons[item.status].keyword} size={45} color={icons[item.status].color} />
+                </View>
+                <View style={styles.messageBox}>
+                  <View><Text style={styles.message}>{item.message}</Text></View>
+                  <View><Text style={styles.time}>{item.time}</Text></View>
+                </View>
               </View>
-              <View style={styles.messageBox}>
-                <View><Text style={styles.message}>{item.message}</Text></View>
-                <View><Text style={styles.time}>{item.time}</Text></View>
-              </View>
-            </View>
-          ))
-        }
-      </View>
-    </ScrollView>
+            ))
+          }
+        </View>
+      </ScrollView>
+    </BackgroundContainer>
   );
 };
 

@@ -4,10 +4,11 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Banner from '../assets/images/banner.png'
 import { itemList, categories as categoriesList } from '../constants/dummy'
 import ProductCard from '../components/ProductCard';
+import BackgroundContainer from '../components/BackgroundContainer';
 
 
 
-const Home = () => {
+const Home = ({navigation}) => {
     const [categories, setCategories] = useState(categoriesList)
 
     const handleChipPress = (id) => {
@@ -19,11 +20,11 @@ const Home = () => {
     }
 
     return (
-        <>
+        <BackgroundContainer>
         <ScrollView>
             <View style={styles.heading}>
                 <Text style={styles.title}>Find Your Favorite Food</Text>
-                <TouchableOpacity style={styles.notification}>
+                <TouchableOpacity onPress={() => navigation.navigate('Notification')} style={styles.notification}>
                     <FontAwesome name="bell-o" size={32} color="green" />
                 </TouchableOpacity>
             </View>
@@ -40,7 +41,7 @@ const Home = () => {
                                 : styles.chip} key={item.id}>
                                 <Text style={styles.chipText}>{item.title}</Text>
                             </TouchableOpacity>
-                        ))}
+                    ))}
                 </View>
             </View>
             <View style={styles.section}>
@@ -63,7 +64,7 @@ const Home = () => {
                     <FontAwesome name="shopping-cart" size={36} color="green" />
                 </TouchableOpacity>
             </View>
-        </>
+        </BackgroundContainer>
     );
 };
 

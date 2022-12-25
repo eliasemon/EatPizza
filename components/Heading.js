@@ -1,10 +1,14 @@
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native"
 import { FontAwesome } from "@expo/vector-icons"
 
-const Heading = ({ title }) => {
+const Heading = ({ title, navigation }) => {
+    const handleBackButton = () => {
+        navigation.goBack()
+    }
+
     return (
         <View style={styles.heading}>
-            <TouchableOpacity style={styles.backButton}>
+            <TouchableOpacity onPress={handleBackButton} style={styles.backButton}>
                 <FontAwesome name="angle-left" size={45} color="lightgreen" />
             </TouchableOpacity>
             <Text style={styles.title}>{title}</Text>
