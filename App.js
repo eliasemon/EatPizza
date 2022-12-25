@@ -13,6 +13,7 @@ import ThankYou from "./screens/ThankYou";
 import Profile from "./screens/Profile";
 import ProfileOrders from "./screens/ProfileOrders";
 import ProfileUpdate from "./screens/ProfileUpdate";
+import UploadPhoto from "./screens/UploadPhoto";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,7 +33,7 @@ const App = () => {
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
-            <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
+            <Stack.Screen name="UploadPhoto" component={UploadPhoto} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Notification" component={Notification} />
             <Stack.Screen name="Checkout" component={Checkout} />
@@ -41,6 +42,7 @@ const App = () => {
             <Stack.Screen name="ThankYou" component={ThankYou} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="ProfileOrders" component={ProfileOrders} />
+            <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
