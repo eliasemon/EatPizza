@@ -63,7 +63,7 @@ const Checkout = () => {
             </View>
             <View style={styles.cardContainer}>
                 <FlatList data={itemList} renderItem={
-                    ({ item }) => (<ProductCard checkoutButton title={item.title} category={item.category} price={item.price} />)
+                    ({ item }) => (<ProductCard cardsType="counter" title={item.title} category={item.category} price={item.price} />)
                 } keyExtractor={item => item.id} />
             </View>
             <View style={styles.placeOrder}>

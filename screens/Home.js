@@ -47,7 +47,7 @@ const Home = ({navigation}) => {
                 <Text style={styles.sectionTitle}>All Items</Text>
                 <View style={styles.cardContainer}>
                     {itemList.map((item) => (
-                        <ProductCard title={item.title} category={item.category} price={item.price} key={item.id} />
+                        <ProductCard cardsType="button" title={item.title} category={item.category} price={item.price} key={item.id} />
                     ))}
                 </View>
             </View>

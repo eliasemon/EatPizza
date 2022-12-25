@@ -3,7 +3,7 @@ import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import ImagePhoto from '../assets/images/ItemPhoto.png'
 import { FontAwesome } from "@expo/vector-icons"
 
-const ProductCard = ({ title, category, price, checkoutButton }) => {
+const ProductCard = ({ title, category, price, checkoutButton, cardsType }) => {
     const [itemCount, setItemCount] = useState(0)
 
     const handleUpPress = () => {
@@ -12,6 +12,24 @@ const ProductCard = ({ title, category, price, checkoutButton }) => {
 
     const handleDownPress = () => {
         setItemCount(count => count - 1)
+    }
+
+    const cardType = {
+        button: (<TouchableOpacity>
+            <FontAwesome name="cart-plus" size={26} color="#fff" />
+        </TouchableOpacity>),
+        chip: (<View style={styles.chip}>
+            <Text style={styles.chipText}>Done</Text>
+        </View>),
+        counter: (<View style={styles.buttonSet}>
+            <TouchableOpacity onPress={handleUpPress}>
+                <FontAwesome name="chevron-up" size={20} color="rgba(255,255,255,0.8)" />
+            </TouchableOpacity>
+            <Text style={styles.buttonNumber}>{itemCount}</Text>
+            <TouchableOpacity onPress={handleDownPress}>
+                <FontAwesome name="chevron-down" size={20} color="rgba(255,255,255,0.8)" />
+            </TouchableOpacity>
+        </View>)
     }
 
     return (
@@ -24,23 +42,7 @@ const ProductCard = ({ title, category, price, checkoutButton }) => {
                     <Text style={styles.cardTextPrice}>৳ {price}</Text>
                 </View>
             </View>
-            {
-                checkoutButton ?
-                    <View style={styles.buttonSet}>
-                        <TouchableOpacity onPress={handleUpPress}>
-                            <FontAwesome name="chevron-up" size={20} color="rgba(255,255,255,0.8)" />
-                        </TouchableOpacity>
-                        <Text style={styles.buttonNumber}>{itemCount}</Text>
-                        <TouchableOpacity onPress={handleDownPress}>
-                            <FontAwesome name="chevron-down" size={20} color="rgba(255,255,255,0.8)" />
-                        </TouchableOpacity>
-                    </View>
-                    :
-                    <TouchableOpacity>
-                        <FontAwesome name="cart-plus" size={26} color="#fff" />
-                    </TouchableOpacity>
-            }
-
+            {cardType[cardsType]}
         </View>
     )
 }
@@ -89,7 +91,16 @@ const styles = StyleSheet.create({
     buttonNumber: {
         color: '#ffff',
         fontSize: 25
-    }
+    },
+    chip: {
+        backgroundColor: 'rgba(255,255,255,.1)',
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        borderRadius: 20
+    },
+    chipText: {
+        color: "#fff"
+    },
 })
 
 export default ProductCard
