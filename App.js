@@ -8,6 +8,8 @@ import Notification from "./screens/Notification";
 import NavBar from "./components/NavBar";
 import Checkout from "./screens/Checkout";
 import Shipping from "./screens/Shipping";
+import Payment from "./screens/Payment";
+import ThankYou from "./screens/ThankYou";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,10 +29,12 @@ const App = () => {
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
-            <Stack.Screen name="Shipping" component={Shipping} />
+            <Stack.Screen name="ThankYou" component={ThankYou} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Notification" component={Notification} />
             <Stack.Screen name="Checkout" component={Checkout} />
+            <Stack.Screen name="Shipping" component={Shipping} />
+            <Stack.Screen name="Payment" component={Payment} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
