@@ -1,12 +1,13 @@
 import { View, StyleSheet } from "react-native";
 import "react-native-gesture-handler";
 import Background from "./components/Background";
-import BackgroundContainer from "./components/NavBar";
 import Home from "./screens/Home";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Notification from "./screens/Notification";
 import NavBar from "./components/NavBar";
+import Checkout from "./screens/Checkout";
+import Shipping from "./screens/Shipping";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,15 +20,17 @@ const MyTheme = {
 const App = () => {
   return (
     <View>
-      <NavBar/>
       <Background />
       <View style={styles.container}>
         <NavigationContainer theme={MyTheme}>
+          <NavBar />
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
+            <Stack.Screen name="Shipping" component={Shipping} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Notification" component={Notification} />
+            <Stack.Screen name="Checkout" component={Checkout} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

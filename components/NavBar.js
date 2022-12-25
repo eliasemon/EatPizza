@@ -1,16 +1,24 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+
 
 const NavBar = () => {
+    const navigation = useNavigation();
+
+    const handleNavButton = () => {
+        console.log('Clicked');
+    }
+
     return (
         <View style={styles.navigation}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleNavButton('Home')}>
                 <FontAwesome name="home" size={36} color="green" />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleNavButton('Notification')}>
                 <FontAwesome name="user" size={36} color="green" />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleNavButton('Home')}>
                 <FontAwesome name="shopping-cart" size={36} color="green" />
             </TouchableOpacity>
         </View>
@@ -21,7 +29,7 @@ const styles = StyleSheet.create({
     navigation: {
         elevation: 10,
         backgroundColor: '#333333',
-        width: '90%',
+        width: '100%',
         marginBottom: 5,
         height: 70,
         position: 'absolute',

@@ -1,6 +1,5 @@
 import { Image, View, StyleSheet } from "react-native";
 import background from "../assets/images/background.png";
-// import Loading from "./../screens/Loading";
 
 const Background = () => {
   return (
