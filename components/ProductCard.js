@@ -3,7 +3,7 @@ import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import ImagePhoto from '../assets/images/ItemPhoto.png'
 import { FontAwesome } from "@expo/vector-icons"
 
-const ProductCard = ({ title, category, price, checkoutButton, cardsType }) => {
+const ProductCard = ({ title, category, price, cardsType }) => {
     const [itemCount, setItemCount] = useState(0)
 
     const handleUpPress = () => {

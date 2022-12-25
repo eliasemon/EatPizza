@@ -34,17 +34,17 @@ const App = () => {
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
-            <Stack.Screen name="ConfirmUploadPhoto" component={ConfirmUploadPhoto} />
+            <Stack.Screen name="ProfileOrders" component={ProfileOrders} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Notification" component={Notification} />
-            <Stack.Screen name="Checkout" component={Checkout} />
             <Stack.Screen name="Shipping" component={Shipping} />
             <Stack.Screen name="Payment" component={Payment} />
             <Stack.Screen name="ThankYou" component={ThankYou} />
+            <Stack.Screen name="Checkout" component={Checkout} />
             <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="ProfileOrders" component={ProfileOrders} />
             <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
             <Stack.Screen name="UploadPhoto" component={UploadPhoto} />
+            <Stack.Screen name="ConfirmUploadPhoto" component={ConfirmUploadPhoto} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
