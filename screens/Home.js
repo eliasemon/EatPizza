@@ -4,7 +4,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Banner from '../assets/images/banner.png'
 import { itemList, categories as categoriesList } from '../constants/dummy'
 import ProductCard from '../components/ProductCard';
-import BackgroundContainer from '../components/BackgroundContainer';
+import BackgroundContainer from '../components/NavBar';
 
 
 
@@ -20,7 +20,6 @@ const Home = ({navigation}) => {
     }
 
     return (
-        <BackgroundContainer>
         <ScrollView>
             <View style={styles.heading}>
                 <Text style={styles.title}>Find Your Favorite Food</Text>
@@ -53,18 +52,8 @@ const Home = ({navigation}) => {
                 </View>
             </View>
         </ScrollView>
-            <View style={styles.navigation}>
-                <TouchableOpacity>
-                    <FontAwesome name="home" size={36} color="green" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <FontAwesome name="user" size={36} color="green" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <FontAwesome name="shopping-cart" size={36} color="green" />
-                </TouchableOpacity>
-            </View>
-        </BackgroundContainer>
+          
+
     );
 };
 
@@ -157,22 +146,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'rgba(21,190,119,1)'
     },
-    navigation: {
-        elevation: 10,
-        backgroundColor: '#333333',
-        width: '100%',
-        marginBottom: 5,
-        height: 70,
-        position: 'absolute',
-        bottom: 0,
-        alignSelf: 'center',
-        borderRadius: 15,
-        boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
-
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center'
-    }
+   
 });
 
 export default Home;

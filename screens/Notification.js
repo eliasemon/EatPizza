@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import Heading from '../components/Heading'
-import BackgroundContainer from "../components/BackgroundContainer";
+import BackgroundContainer from "../components/NavBar";
 
 const icons = {
   done: {
@@ -77,7 +77,6 @@ const notifications = [
 
 const Notification = ({navigation}) => {
   return (
-    <BackgroundContainer>
       <ScrollView>
         <Heading navigation={navigation} title="Notification" />
         <View>
@@ -96,7 +95,6 @@ const Notification = ({navigation}) => {
           }
         </View>
       </ScrollView>
-    </BackgroundContainer>
   );
 };
 
