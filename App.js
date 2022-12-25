@@ -14,6 +14,7 @@ import Profile from "./screens/Profile";
 import ProfileOrders from "./screens/ProfileOrders";
 import ProfileUpdate from "./screens/ProfileUpdate";
 import UploadPhoto from "./screens/UploadPhoto";
+import ConfirmUploadPhoto from "./screens/ConfirmUploadPhoto";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,7 +34,7 @@ const App = () => {
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
-            <Stack.Screen name="UploadPhoto" component={UploadPhoto} />
+            <Stack.Screen name="ConfirmUploadPhoto" component={ConfirmUploadPhoto} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Notification" component={Notification} />
             <Stack.Screen name="Checkout" component={Checkout} />
@@ -43,6 +44,7 @@ const App = () => {
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="ProfileOrders" component={ProfileOrders} />
             <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
+            <Stack.Screen name="UploadPhoto" component={UploadPhoto} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
