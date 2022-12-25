@@ -12,6 +12,7 @@ import Payment from "./screens/Payment";
 import ThankYou from "./screens/ThankYou";
 import Profile from "./screens/Profile";
 import ProfileOrders from "./screens/ProfileOrders";
+import ProfileUpdate from "./screens/ProfileUpdate";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +32,7 @@ const App = () => {
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
-            <Stack.Screen name="ProfileOrders" component={ProfileOrders} />
+            <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Notification" component={Notification} />
             <Stack.Screen name="Checkout" component={Checkout} />
@@ -39,6 +40,7 @@ const App = () => {
             <Stack.Screen name="Payment" component={Payment} />
             <Stack.Screen name="ThankYou" component={ThankYou} />
             <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="ProfileOrders" component={ProfileOrders} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
