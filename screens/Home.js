@@ -1,21 +1,25 @@
-import { useState } from 'react'
+import { useState , useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Banner from '../assets/images/banner.png'
 import { itemList, categories as categoriesList } from '../constants/dummy'
 import ProductCard from '../components/ProductCard';
+import { showDataWithOutPagination } from '../utils';
 
 
 
 const Home = ({navigation}) => {
-    const [categories, setCategories] = useState(categoriesList)
+    const [categories, setCategories] = useState("")
 
+    useEffect(() => {
+        showDataWithOutPagination(setCategories, "catagories");
+      }, []);
     const handleChipPress = (id) => {
-        setCategories((prev) => {
-            const temp = [...prev];
-            temp[id].activeStatus = !temp[id].activeStatus;
-            return temp;
-        })
+        // setCategories((prev) => {
+        //     const temp = [...prev];
+        //     temp[id].activeStatus = !temp[id].activeStatus;
+        //     return temp;
+        // })
     }
 
     return (
@@ -33,13 +37,16 @@ const Home = ({navigation}) => {
                 <Text style={styles.sectionTitle}>Categories</Text>
                 <View style={styles.chipContainer}>
                     {
-                        categories.map((item) => (
+                       categories && categories.map((doc) => {
+                           const item = doc.data()
+                           item.id = doc.id 
+                            return (
                             <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={item.activeStatus ?
                                 styles.activeChip
                                 : styles.chip} key={item.id}>
-                                <Text style={styles.chipText}>{item.title}</Text>
+                                <Text style={styles.chipText}>{item.name}</Text>
                             </TouchableOpacity>
-                    ))}
+                    )})}
                 </View>
             </View>
             <View style={styles.section}>

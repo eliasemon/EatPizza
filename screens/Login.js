@@ -2,11 +2,11 @@ import { useState ,useRef } from "react";
 import { View, Image, StyleSheet, TextInput } from "react-native";
 import logo from "../assets/images/logo.png";
 import { NextButton } from "./../components/Buttons";
-import {firebaseConfig} from '../config'
-import firebase from 'firebase/compat/app';
+import { auth , firebaseApp} from '../config'
 import {FirebaseRecaptchaVerifierModal} from "../expo-firebase-recaptcha/src/index"
 import Otp from "./Otp";
 import { useNavigation } from '@react-navigation/native';
+import {  PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
 
 const Login = ({ setIsLogged }) => {
   const [inputView , setInputView] = useState(true)
@@ -17,8 +17,7 @@ const Login = ({ setIsLogged }) => {
   const navigation = useNavigation();
 
   const sendVerfication =()=>{
-    const phoneProvider = new firebase.auth.PhoneAuthProvider()
-        phoneProvider.verifyPhoneNumber(phoneNumber,recaptchaVerification.current)
+    (new PhoneAuthProvider(auth)).verifyPhoneNumber(phoneNumber,recaptchaVerification.current)
         .then(setVerificationId)
         setPhoneNumber('')
         setInputView(false)
@@ -30,11 +29,9 @@ const Login = ({ setIsLogged }) => {
     navigation.navigate('Home')
   }
 
-  const confirmCode = ()=>{
-    const credential = firebase.auth.PhoneAuthProvider.credential(verificationId,code)
-
-    firebase.auth().signInWithCredential(credential)
-    .then(()=>{
+  const confirmCode = async ()=>{
+    const credential = PhoneAuthProvider.credential(verificationId, code);
+    await signInWithCredential(auth, credential).then(()=>{
         setCode('')
         console.log('success')
     })
@@ -63,7 +60,7 @@ const Login = ({ setIsLogged }) => {
     <View style={styles.container}>
       <FirebaseRecaptchaVerifierModal 
         ref={recaptchaVerification}
-        firebaseConfig={firebaseConfig}
+        firebaseConfig={firebaseApp.options}
         // appVerificationDisabledForTesting={true}
       />
         {inputView ? numberUi : otpUI}
