@@ -4,7 +4,6 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Banner from '../assets/images/banner.png'
 import { itemList, categories as categoriesList } from '../constants/dummy'
 import ProductCard from '../components/ProductCard';
-import BackgroundContainer from '../components/NavBar';
 
 
 

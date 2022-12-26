@@ -75,10 +75,10 @@ const notifications = [
   },
 ];
 
-const Notification = ({navigation}) => {
+const Notification = () => {
   return (
       <ScrollView>
-        <Heading navigation={navigation} title="Notification" />
+      <Heading title="Notification" />
         <View>
           {
             notifications.map((item) => (

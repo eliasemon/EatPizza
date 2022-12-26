@@ -6,19 +6,27 @@ import { useNavigation } from '@react-navigation/native';
 const NavBar = () => {
     const navigation = useNavigation();
 
-    const handleNavButton = () => {
-        console.log('Clicked');
+    const handlePressHome = () => {
+
+    }
+
+    const handlePressProfile = () => {
+
+    }
+
+    const handlePressCart = () => {
+        navigation.navigate('Checkout')
     }
 
     return (
         <View style={styles.navigation}>
-            <TouchableOpacity onPress={() => handleNavButton('Home')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                 <FontAwesome name="home" size={36} color="green" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleNavButton('Notification')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                 <FontAwesome name="user" size={36} color="green" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleNavButton('Home')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Checkout')}>
                 <FontAwesome name="shopping-cart" size={36} color="green" />
             </TouchableOpacity>
         </View>
@@ -27,7 +35,7 @@ const NavBar = () => {
 
 const styles = StyleSheet.create({
     navigation: {
-        elevation: 10,
+        elevation: 1,
         backgroundColor: '#333333',
         width: '100%',
         marginBottom: 5,
@@ -41,6 +49,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center'
+    },
+    button: {
+        flex: 1
     }
 })
 
