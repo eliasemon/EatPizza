@@ -39,7 +39,7 @@ const Home = ({ navigation }) => {
             })
             outputArray.push(
                 <TouchableOpacity onPress={() => { setIsCollapse((prev) => !prev) }} style={styles.chip} key="more">
-                    <Text style={styles.chipText}>...{inputArray.length} more</Text>
+                    <Text style={styles.chipText}>...{inputArray.length - 5} more</Text>
                 </TouchableOpacity>
             )
         }
