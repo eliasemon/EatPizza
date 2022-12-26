@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import "react-native-gesture-handler";
 import Background from "./components/Background";
 import Home from "./screens/Home";
@@ -34,7 +34,8 @@ const App = () => {
   const [isLogged, setIsLogged] = useState(false)
 
   return (
-    <View>
+    <SafeAreaView>
+      <StatusBar backgroundColor="#0D0D0D" barStyle="light-content" />
       <Background />
       <View style={styles.container}>
         <NavigationContainer theme={MyTheme}>
@@ -65,7 +66,7 @@ const App = () => {
           </Stack.Navigator>
         </NavigationContainer>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -74,7 +75,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     paddingHorizontal: 20,
-    paddingVertical: 30
   }
 })
 

@@ -5,6 +5,7 @@ import Banner from '../assets/images/banner.png'
 import { itemList, categories as categoriesList } from '../constants/dummy'
 import ProductCard from '../components/ProductCard';
 import { showDataWithOutPagination } from '../utils';
+import { AntDesign } from '@expo/vector-icons';
 
 
 
@@ -21,6 +22,10 @@ const Home = ({ navigation }) => {
         //     temp[id].activeStatus = !temp[id].activeStatus;
         //     return temp;
         // })
+    }
+
+    const handleCollapseButton = () => {
+        setIsCollapse(!isCollapse)
     }
 
     const getCategoryArray = (inputArray, isCollapse) => {
@@ -70,13 +75,6 @@ const Home = ({ navigation }) => {
             <View>
                 <Image source={Banner} style={styles.banner} />
             </View>
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Categories</Text>
-                <View style={styles.chipContainer}>
-                    {
-                        categories ? getCategoryArray(categories, isCollapse) : <ActivityIndicator size="large" color="#fff" />}
-                </View>
-            </View>
 
         </View>
     )
@@ -85,14 +83,29 @@ const Home = ({ navigation }) => {
         <View style={styles.cardContainer}>
             <FlatList
                 stickyHeaderIndices={[1]}
-                onEndReached={() => { console.log('ho vai kaj kore') }}
                 ListHeaderComponent={PageUi}
                 data={itemList}
                 renderItem={({ item }) => {
                     if (item.type) {
-                        return (<View style={styles.section}>
-                            <Text style={styles.sectionTitle}>All Items</Text>
-                        </View>)
+                        return (
+                            <View style={{ backgroundColor: '#0D0D0D' }}>
+                                <View style={styles.section}>
+                                    <View style={styles.categoriesHeader}>
+                                        <Text style={styles.sectionTitle}>Categories</Text>
+                                        <TouchableOpacity onPress={handleCollapseButton} style={styles.collapseButton}>
+                                            <AntDesign name={isCollapse ? 'down' : 'up'} size={22} color="white" />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.chipContainer}>
+                                        {
+                                            categories ? getCategoryArray(categories, isCollapse) : <ActivityIndicator size="large" color="#fff" />}
+                                    </View>
+                                </View>
+                                <View style={styles.section}>
+                                    <Text style={styles.sectionTitle}>All Items</Text>
+                                </View>
+                            </View>
+                        )
                     }
                     return (
                         <ProductCard cardsType="button" title={item.title} category={item.category} price={item.price} />
@@ -138,9 +151,15 @@ const styles = StyleSheet.create({
     sectionTitle: {
         color: '#fff',
         fontSize: 18,
-        paddingVertical: 10,
-        backgroundColor: 'rgba(0,0,0,.7)',
-        textAlign: 'center'
+        textAlign: 'left',
+    },
+    categoriesHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    collapseButton: {
+        paddingHorizontal: 20
     },
     chipContainer: {
         flexDirection: 'row',
@@ -165,7 +184,7 @@ const styles = StyleSheet.create({
         color: "#fff"
     },
     cardContainer: {
-        paddingVertical: 20,
+        // paddingBottom: '20%'
     },
     card: {
         width: '100%',

@@ -21,13 +21,13 @@ const NavBar = () => {
     return (
         <View style={styles.navigation}>
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                <FontAwesome name="home" size={36} color="green" />
+                <FontAwesome name="home" size={26} color="green" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-                <FontAwesome name="user" size={36} color="green" />
+                <FontAwesome name="user" size={26} color="green" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Checkout')}>
-                <FontAwesome name="shopping-cart" size={36} color="green" />
+                <FontAwesome name="shopping-cart" size={26} color="green" />
             </TouchableOpacity>
         </View>
     );
@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
         elevation: 1,
         backgroundColor: '#333333',
         width: '100%',
-        marginBottom: 5,
-        height: 70,
+        height: 50,
         position: 'absolute',
         bottom: 0,
         alignSelf: 'center',
-        borderRadius: 15,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
         boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
 
         flexDirection: 'row',
