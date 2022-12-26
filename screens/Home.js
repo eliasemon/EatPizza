@@ -1,5 +1,5 @@
-import { useState , useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList } from "react-native";
+import { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, ActivityIndicator } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Banner from '../assets/images/banner.png'
 import { itemList, categories as categoriesList } from '../constants/dummy'
@@ -8,12 +8,13 @@ import { showDataWithOutPagination } from '../utils';
 
 
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
     const [categories, setCategories] = useState("")
+    const [isCollapse, setIsCollapse] = useState(true)
 
     useEffect(() => {
         showDataWithOutPagination(setCategories, "catagories");
-      }, []);
+    }, []);
     const handleChipPress = (id) => {
         // setCategories((prev) => {
         //     const temp = [...prev];
@@ -37,16 +38,18 @@ const Home = ({navigation}) => {
                 <Text style={styles.sectionTitle}>Categories</Text>
                 <View style={styles.chipContainer}>
                     {
-                       categories && categories.map((doc) => {
-                           const item = doc.data()
-                           item.id = doc.id 
+                        categories ? categories.map((doc) => {
+                            const item = doc.data()
+                            item.id = doc.id
                             return (
-                            <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={item.activeStatus ?
-                                styles.activeChip
-                                : styles.chip} key={item.id}>
-                                <Text style={styles.chipText}>{item.name}</Text>
-                            </TouchableOpacity>
-                    )})}
+                                <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={item.activeStatus ?
+                                    styles.activeChip
+                                    : styles.chip} key={item.id}>
+                                    <Text style={styles.chipText}>{item.name}</Text>
+                                </TouchableOpacity>
+                            )
+                        })
+                            : <ActivityIndicator size="large" color="#fff" />}
                 </View>
             </View>
             <View style={styles.section}>
@@ -58,7 +61,7 @@ const Home = ({navigation}) => {
                 </View>
             </View>
         </ScrollView>
-          
+
 
     );
 };
@@ -152,7 +155,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'rgba(21,190,119,1)'
     },
-   
 });
 
 export default Home;
