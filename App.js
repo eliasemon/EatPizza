@@ -15,6 +15,10 @@ import ProfileOrders from "./screens/ProfileOrders";
 import ProfileUpdate from "./screens/ProfileUpdate";
 import UploadPhoto from "./screens/UploadPhoto";
 import ConfirmUploadPhoto from "./screens/ConfirmUploadPhoto";
+import Loading from "./screens/Loading";
+import Ready from "./screens/Ready";
+import Login from "./screens/Login";
+import { useState } from "react";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,15 +29,28 @@ const MyTheme = {
 };
 
 const App = () => {
+
+  // state for checking Login Status
+  const [isLogged, setIsLogged] = useState(false)
+
   return (
     <View>
       <Background />
       <View style={styles.container}>
         <NavigationContainer theme={MyTheme}>
-          <NavBar />
+          {isLogged && <NavBar />}
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
+            <Stack.Screen name="Loading" component={Loading} />
+            <Stack.Screen name="Ready" component={Ready} />
+            {/* <Stack.Screen name="Login" component={Login} initialParams={{
+              title: 'My App',
+              description: 'This is my app'
+            }} /> */}
+            <Stack.Screen name="Login">
+              {() => <Login setIsLogged={setIsLogged} />}
+            </Stack.Screen>
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Notification" component={Notification} />
             <Stack.Screen name="Shipping" component={Shipping} />

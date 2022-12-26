@@ -6,13 +6,15 @@ import {firebaseConfig} from '../config'
 import firebase from 'firebase/compat/app';
 import {FirebaseRecaptchaVerifierModal} from "../expo-firebase-recaptcha/src/index"
 import Otp from "./Otp";
+import { useNavigation } from '@react-navigation/native';
 
-const Login = () => {
+const Login = ({ setIsLogged }) => {
   const [inputView , setInputView] = useState(true)
   const [phoneNumber,setPhoneNumber]=useState('')
   const [code,setCode]=useState('')
   const [verificationId,setVerificationId]=useState(null)
   const recaptchaVerification = useRef(null);
+  const navigation = useNavigation();
 
   const sendVerfication =()=>{
     const phoneProvider = new firebase.auth.PhoneAuthProvider()
@@ -21,6 +23,13 @@ const Login = () => {
         setPhoneNumber('')
         setInputView(false)
   }
+
+  // this functionalies created for dummy screen change
+  const dummyPageChange = () => {
+    setIsLogged(true)
+    navigation.navigate('Home')
+  }
+
   const confirmCode = ()=>{
     const credential = firebase.auth.PhoneAuthProvider.credential(verificationId,code)
 
@@ -45,8 +54,10 @@ const Login = () => {
       keyboardType="numeric"
       placeholderTextColor="#fff"
     />
-    <NextButton onPress={sendVerfication} title="Login" />
+    {/* <NextButton onPress={sendVerfication} title="Login" /> */}
+    <NextButton onPress={dummyPageChange} title="Login" />
   </View>)
+
 
   return (
     <View style={styles.container}>
