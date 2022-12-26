@@ -1,5 +1,8 @@
 export const itemList = [
-
+    {
+        id: 100,
+        type: 'ui',
+    },
     {
         id: 0,
         title: 'Spacy fresh crab',

@@ -59,8 +59,8 @@ const Home = ({ navigation }) => {
         return outputArray
     }
 
-    return (
-        <ScrollView>
+    const PageUi = (
+        <View>
             <View style={styles.heading}>
                 <Text style={styles.title}>Find Your Favorite Food</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Notification')} style={styles.notification}>
@@ -77,29 +77,37 @@ const Home = ({ navigation }) => {
                         categories ? getCategoryArray(categories, isCollapse) : <ActivityIndicator size="large" color="#fff" />}
                 </View>
             </View>
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>All Items</Text>
-                <View style={styles.cardContainer}>
-                    <FlatList
-                        // onEndReached={() => {
-                        //     console.log('something');
-                        // }}
-                        data={itemList}
-                        renderItem={({ item }) => (
-                            <ProductCard cardsType="button" title={item.title} category={item.category} price={item.price} />)
-                        }
-                        keyExtractor={item => item.id}
-                    />
-                </View>
-                {/* <View style={styles.cardContainer}>
-                    {itemList.map((item) => (
-                        <ProductCard cardsType="button" title={item.title} category={item.category} price={item.price} key={item.id} />
-                        ))}
-                    </View> */}
-            </View>
-        </ScrollView>
+
+        </View>
+    )
+
+    return (
+        <View style={styles.cardContainer}>
+            <FlatList
+                stickyHeaderIndices={[1]}
+                onEndReached={() => { console.log('ho vai kaj kore') }}
+                ListHeaderComponent={PageUi}
+                data={itemList}
+                renderItem={({ item }) => {
+                    if (item.type) {
+                        return (<View style={styles.section}>
+                            <Text style={styles.sectionTitle}>All Items</Text>
+                        </View>)
+                    }
+                    return (
+                        <ProductCard cardsType="button" title={item.title} category={item.category} price={item.price} />
+                    )
+                }}
+                keyExtractor={item => item.id}
+            />
+        </View>
     );
 };
+{/* <View style={styles.cardContainer}>
+    {itemList.map((item) => (
+        <ProductCard cardsType="button" title={item.title} category={item.category} price={item.price} key={item.id} />
+        ))}
+    </View> */}
 
 const styles = StyleSheet.create({
     heading: {
@@ -125,11 +133,14 @@ const styles = StyleSheet.create({
         marginVertical: 30
     },
     section: {
-        marginVertical: 10
+        marginBottom: 10,
     },
     sectionTitle: {
         color: '#fff',
-        fontSize: 18
+        fontSize: 18,
+        paddingVertical: 10,
+        backgroundColor: 'rgba(0,0,0,.7)',
+        textAlign: 'center'
     },
     chipContainer: {
         flexDirection: 'row',
