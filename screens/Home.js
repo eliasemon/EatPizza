@@ -80,14 +80,24 @@ const Home = ({ navigation }) => {
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>All Items</Text>
                 <View style={styles.cardContainer}>
+                    <FlatList
+                        // onEndReached={() => {
+                        //     console.log('something');
+                        // }}
+                        data={itemList}
+                        renderItem={({ item }) => (
+                            <ProductCard cardsType="button" title={item.title} category={item.category} price={item.price} />)
+                        }
+                        keyExtractor={item => item.id}
+                    />
+                </View>
+                {/* <View style={styles.cardContainer}>
                     {itemList.map((item) => (
                         <ProductCard cardsType="button" title={item.title} category={item.category} price={item.price} key={item.id} />
-                    ))}
-                </View>
+                        ))}
+                    </View> */}
             </View>
         </ScrollView>
-
-
     );
 };
 

@@ -1,4 +1,5 @@
 export const itemList = [
+
     {
         id: 0,
         title: 'Spacy fresh crab',
@@ -43,6 +44,102 @@ export const itemList = [
     },
     {
         id: 7,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 8,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 9,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 10,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 11,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 12,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 13,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 14,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 15,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 16,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 17,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 18,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 19,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 20,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 21,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 22,
+        title: 'Spacy fresh crab',
+        category: 'Wareonk kita',
+        price: '35',
+    },
+    {
+        id: 23,
         title: 'Spacy fresh crab',
         category: 'Wareonk kita',
         price: '35',
