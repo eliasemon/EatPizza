@@ -23,6 +23,42 @@ const Home = ({ navigation }) => {
         // })
     }
 
+    const getCategoryArray = (inputArray, isCollapse) => {
+        let outputArray = [];
+        if (inputArray.length >= 5 && isCollapse) {
+            outputArray = categories.slice(0, 5).map((doc) => {
+                const item = doc.data()
+                item.id = doc.id
+                return (
+                    <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={item.activeStatus ?
+                        styles.activeChip
+                        : styles.chip} key={item.id}>
+                        <Text style={styles.chipText}>{item.name}</Text>
+                    </TouchableOpacity>
+                )
+            })
+            outputArray.push(
+                <TouchableOpacity onPress={() => { setIsCollapse((prev) => !prev) }} style={styles.chip} key="more">
+                    <Text style={styles.chipText}>...{inputArray.length} more</Text>
+                </TouchableOpacity>
+            )
+        }
+        else {
+            outputArray = outputArray = inputArray.map((doc) => {
+                const item = doc.data()
+                item.id = doc.id
+                return (
+                    <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={item.activeStatus ?
+                        styles.activeChip
+                        : styles.chip} key={item.id}>
+                        <Text style={styles.chipText}>{item.name}</Text>
+                    </TouchableOpacity>
+                )
+            })
+        }
+        return outputArray
+    }
+
     return (
         <ScrollView>
             <View style={styles.heading}>
@@ -38,18 +74,7 @@ const Home = ({ navigation }) => {
                 <Text style={styles.sectionTitle}>Categories</Text>
                 <View style={styles.chipContainer}>
                     {
-                        categories ? categories.map((doc) => {
-                            const item = doc.data()
-                            item.id = doc.id
-                            return (
-                                <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={item.activeStatus ?
-                                    styles.activeChip
-                                    : styles.chip} key={item.id}>
-                                    <Text style={styles.chipText}>{item.name}</Text>
-                                </TouchableOpacity>
-                            )
-                        })
-                            : <ActivityIndicator size="large" color="#fff" />}
+                        categories ? getCategoryArray(categories, isCollapse) : <ActivityIndicator size="large" color="#fff" />}
                 </View>
             </View>
             <View style={styles.section}>
