@@ -65,11 +65,7 @@ export const showDataByArrayQuers = (setState , collectionRef , queryArray , que
   const q = query(collection(db, `${collectionRef}`), where(`${queryField}`, 'array-contains-any', queryArray));
   
   onSnapshot(q, (snapshot) => {
-    
-    setState(() => {
-     
-      return snapshot.docs
-    })
+    setState(snapshot.docs)
   })
 
 }

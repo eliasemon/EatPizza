@@ -4,7 +4,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Banner from '../assets/images/banner.png'
 import { itemList, categories as categoriesList } from '../constants/dummy'
 import ProductCard from '../components/ProductCard';
-import { showDataWithOutPagination } from '../utils';
+import { showDataWithOutPagination, showDataByArrayQuers } from '../utils';
 import { AntDesign } from '@expo/vector-icons';
 
 
@@ -12,16 +12,35 @@ import { AntDesign } from '@expo/vector-icons';
 const Home = ({ navigation }) => {
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
+    const [isActiveCategoriesId, setisActiveCategoriesId] = useState({})
+    const [itemsSnapshot, setItemsSnapshot] = useState("")
+    if (itemsSnapshot) {
+        console.log(itemsSnapshot[0].data())
+    }
 
     useEffect(() => {
         showDataWithOutPagination(setCategories, "catagories");
     }, []);
+
+    useEffect(() => {
+        const isActiveCatArr = Object.keys(isActiveCategoriesId)
+        if (isActiveCatArr.length > 0) {
+            showDataByArrayQuers(
+                setItemsSnapshot,
+                "productlist",
+                isActiveCatArr,
+                "selectedCatagories"
+            );
+        } else {
+            showDataWithOutPagination(setItemsSnapshot, "productlist");
+        }
+    }, [isActiveCategoriesId])
+
     const handleChipPress = (id) => {
-        // setCategories((prev) => {
-        //     const temp = [...prev];
-        //     temp[id].activeStatus = !temp[id].activeStatus;
-        //     return temp;
-        // })
+        setisActiveCategoriesId((prv) => {
+            prv[`${id}`] = prv[`${id}`] ? false : true;
+            return ({ ...prv })
+        })
     }
 
     const handleCollapseButton = () => {
@@ -35,7 +54,7 @@ const Home = ({ navigation }) => {
                 const item = doc.data()
                 item.id = doc.id
                 return (
-                    <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={item.activeStatus ?
+                    <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={isActiveCategoriesId[`${item.id}`] ?
                         styles.activeChip
                         : styles.chip} key={item.id}>
                         <Text style={styles.chipText}>{item.name}</Text>
@@ -53,7 +72,7 @@ const Home = ({ navigation }) => {
                 const item = doc.data()
                 item.id = doc.id
                 return (
-                    <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={item.activeStatus ?
+                    <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={isActiveCategoriesId[`${item.id}`] ?
                         styles.activeChip
                         : styles.chip} key={item.id}>
                         <Text style={styles.chipText}>{item.name}</Text>
@@ -69,7 +88,7 @@ const Home = ({ navigation }) => {
             <View style={styles.heading}>
                 <Text style={styles.title}>Find Your Favorite Food</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Notification')} style={styles.notification}>
-                    <FontAwesome name="bell-o" size={32} color="green" />
+                    <FontAwesome name="bell-o" size={32} color="white" />
                 </TouchableOpacity>
             </View>
             <View>
