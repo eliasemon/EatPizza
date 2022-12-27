@@ -1,5 +1,6 @@
 // import { toast } from 'react-toastify'; 
 
+// import { async } from "@firebase/util";
 import {  
    where ,
    deleteDoc ,
@@ -13,10 +14,31 @@ import {
   query,
   orderBy,
   startAt,
+  startAfter,
   endAt,
   limit } from "firebase/firestore";
 import { db } from "../config";
 // import { closeLoading, showLoading } from '../src/components/loading/loading';
+
+
+
+export const getDataWithInfinityScroll = async ( setItems , collectionRef , limitation , lastDoc  ) =>{
+
+  const q = query(collection(db, `${collectionRef}`), orderBy("name"), startAfter (lastDoc || 0), limit(limitation));
+  const data = await getDocs(q)
+  // console.log(data.docs.length)
+  setItems(data.docs)
+}
+
+
+
+
+
+
+
+
+
+
 
 
 export const showDataWithPagination = (setState, collectionRef, startingPoint, limitation, fristAttemp) => {
