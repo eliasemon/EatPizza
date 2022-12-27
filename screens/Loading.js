@@ -1,7 +1,13 @@
 import { View, Image, StyleSheet } from "react-native";
 import logo from "../assets/images/logo.png";
 
-const Loading = () => {
+const Loading = ({ navigation }) => {
+
+  //dummy functionally to change screen after 2 second
+  setTimeout(() => {
+    navigation.navigate('Ready')
+  }, 2000)
+
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.image} />

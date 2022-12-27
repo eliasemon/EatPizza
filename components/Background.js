@@ -1,6 +1,5 @@
 import { Image, View, StyleSheet } from "react-native";
 import background from "../assets/images/background.png";
-// import Loading from "./../screens/Loading";
 
 const Background = () => {
   return (
@@ -11,7 +10,6 @@ const Background = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    zIndex: 1,
     height: "100%",
     justifyContent: "space-evenly",
     alignItems: "center",

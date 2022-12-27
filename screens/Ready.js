@@ -2,11 +2,14 @@ import { View, Image, Text, StyleSheet } from "react-native";
 import { NextButton } from "./../components/Buttons";
 import foods from "../assets/images/foods.png";
 
-const handlePress = (event) => {
-  console.log("Button Clicked");
-};
 
-const Ready = () => {
+const Ready = ({ navigation }) => {
+
+  // onClick this button change screen to Login screen
+  const handlePress = () => {
+    navigation.navigate('Login')
+  };
+
   return (
     <View style={styles.container}>
       <Image source={foods} style={styles.image} />
