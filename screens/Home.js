@@ -4,7 +4,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Banner from '../assets/images/banner.png'
 import { itemList, categories as categoriesList } from '../constants/dummy'
 import ProductCard from '../components/ProductCard';
-import { showDataWithOutPagination, showDataByArrayQuers , getDataWithInfinityScroll } from '../utils';
+import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../utils';
 import { AntDesign } from '@expo/vector-icons';
 
 
@@ -25,8 +25,14 @@ const Home = ({ navigation }) => {
     
 
     const infinityScrollHandle = () =>{
+        const isActiveCatArr = Object.keys(isActiveCategoriesId)
         if(itemsSnapshot && !!itemsSnapshot[4]){
-            getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 , itemsSnapshot[4])
+            if(isActiveCatArr.length > 0){
+                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 , itemsSnapshot[4] , {queryField : "selectedCatagories" , queryArray : isActiveCatArr}).catch(v => console.log(v))
+                // return;
+            }else{
+                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 , itemsSnapshot[4]).catch(v => console.log(v))
+            }
         }
     }
 
@@ -36,8 +42,8 @@ const Home = ({ navigation }) => {
     }
 
     useEffect(() => {
-        getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5)
-        showDataWithOutPagination(setCategories, "catagories");
+        // getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5)
+        getDataWithOutRealTimeUpdates(setCategories, "catagories");
     }, []);
 
     useEffect(()=>{
@@ -48,21 +54,19 @@ const Home = ({ navigation }) => {
         
     },[itemsSnapshot])
 
-    // useEffect(() => {
-    //     const isActiveCatArr = Object.keys(isActiveCategoriesId)
-    //     if (isActiveCatArr.length > 0) {
-    //         showDataByArrayQuers(
-    //             setItemsSnapshot,
-    //             "productlist",
-    //             isActiveCatArr,
-    //             "selectedCatagories"
-    //         );
-    //     } else {
-    //         showDataWithOutPagination(setItemsSnapshot, "productlist");
-    //     }
-    // }, [isActiveCategoriesId])
+    useEffect(() => {
+        const isActiveCatArr = Object.keys(isActiveCategoriesId)
+            if(isActiveCatArr.length > 0){
+                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 , false , {queryField : "selectedCatagories" , queryArray : isActiveCatArr}).catch(v => console.log(v))
+                return;
+            }
+            else{ 
+                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 ).catch(v => console.log(v))
+            }
+    }, [isActiveCategoriesId])
 
     const handleChipPress = (id) => {
+        setItemsDataForView([...dataHeadinforUi])
         setisActiveCategoriesId((prv) => {
             if(prv[`${id}`]){
                 delete prv[`${id}`]
@@ -159,7 +163,7 @@ const Home = ({ navigation }) => {
                         )
                     }
                     return (
-                        <ProductCard cardsType="button" title={item.title} category={item.category} price={item.price} />
+                        <ProductCard cardsType="button" item={item}/>
                     )
                 }}
                 keyExtractor={item => item.id}

@@ -1,6 +1,7 @@
 // import { toast } from 'react-toastify'; 
 
 // import { async } from "@firebase/util";
+// import { async } from "@firebase/util";
 import {  
    where ,
    deleteDoc ,
@@ -22,12 +23,26 @@ import { db } from "../config";
 
 
 
-export const getDataWithInfinityScroll = async ( setItems , collectionRef , limitation , lastDoc  ) =>{
-
-  const q = query(collection(db, `${collectionRef}`), orderBy("name"), startAfter (lastDoc || 0), limit(limitation));
-  const data = await getDocs(q)
+export const getDataWithInfinityScroll = async ( setItems , collectionRef , limitation , lastDoc , queryObj ) =>{
+  
+  let q;
+  if(queryObj){
+    q = query(collection(db, `${collectionRef}`),where(`${queryObj.queryField}` ,  'array-contains-any' , queryObj.queryArray ) ,orderBy("name"), startAfter(lastDoc || 0), limit(limitation));
+  }else{
+    q = query(collection(db, `${collectionRef}`), orderBy("name"), startAfter (lastDoc || 0), limit(limitation));
+  }
+    const data = await getDocs(q)
   // console.log(data.docs.length)
   setItems(data.docs)
+}
+
+export const getDataWithOutRealTimeUpdates = async (setState, collectionRef) => {
+
+  const q = query(collection(db, `${collectionRef}`));
+      const data = await getDocs(q)
+      setState(data.docs)
+ 
+  // return returnPromise
 }
 
 
