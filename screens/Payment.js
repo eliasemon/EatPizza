@@ -5,7 +5,7 @@ import nogodLogo from '../assets/images/nogodLogo.png'
 import codLogo from '../assets/images/codLogo.png'
 import bkashLogo from '../assets/images/bkashLogo.png'
 
-const Shipping = (navigation) => {
+const Payment = (navigation) => {
     return (
         <View>
             <Heading navigation={navigation} title="Shipping" />
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Shipping;
+export default Payment;

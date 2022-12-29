@@ -44,7 +44,6 @@ const App = () => {
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
-            <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
             <Stack.Screen name="Loading" component={Loading} />
             <Stack.Screen name="Ready" component={Ready} />
             {/* <Stack.Screen name="Login" component={Login} initialParams={{
@@ -60,6 +59,7 @@ const App = () => {
             <Stack.Screen name="Payment" component={Payment} />
             <Stack.Screen name="ThankYou" component={ThankYou} />
             <Stack.Screen name="Checkout" component={Checkout} />
+            <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="ProfileOrders" component={ProfileOrders} />
             <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
