@@ -18,6 +18,7 @@ import ConfirmUploadPhoto from "./screens/ConfirmUploadPhoto";
 import Loading from "./screens/Loading";
 import Ready from "./screens/Ready";
 import Login from "./screens/Login";
+import ProductDetailsScreen from "./screens/ProductDetailsScreen"
 import { useState } from "react";
 
 const Stack = createNativeStackNavigator();
@@ -43,6 +44,7 @@ const App = () => {
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
+            <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
             <Stack.Screen name="Loading" component={Loading} />
             <Stack.Screen name="Ready" component={Ready} />
             {/* <Stack.Screen name="Login" component={Login} initialParams={{
