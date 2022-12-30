@@ -3,7 +3,7 @@ import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import ImagePhoto from '../assets/images/ItemPhoto.png'
 import { FontAwesome } from "@expo/vector-icons"
 
-const ProductCard = ({ title, category, price, cardsType }) => {
+const ProductCard = ({ item , cardsType }) => {
     const [itemCount, setItemCount] = useState(0)
 
     const handleUpPress = () => {
@@ -35,11 +35,11 @@ const ProductCard = ({ title, category, price, cardsType }) => {
     return (
         <View style={styles.card}>
             <View style={styles.cardProduct}>
-                <Image source={ImagePhoto} style={styles.cardImage} />
+                <Image source={{uri : `${item?.image?.imageDownloadUrl}`}} style={styles.cardImage} />
                 <View style={styles.cardTextBox}>
-                    <Text style={styles.cardTextTitle}>{title}</Text>
-                    <Text style={styles.cardTextCategory}>{category}</Text>
-                    <Text style={styles.cardTextPrice}>৳ {price}</Text>
+                    <Text style={styles.cardTextTitle}>{item?.name}</Text>
+                    {/* <Text style={styles.cardTextCategory}>{category}</Text> */}
+                    <Text style={styles.cardTextPrice}>৳ {item?.defualtVariant?.sellingPrice}</Text>
                 </View>
             </View>
             {cardType[cardsType]}
