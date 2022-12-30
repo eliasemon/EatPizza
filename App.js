@@ -32,6 +32,7 @@ const App = () => {
 
   // state for checking Login Status
   const [isLogged, setIsLogged] = useState(false)
+  const [homeHeader , setHomeHeader] = useState(true)
 
   return (
     <SafeAreaView>
@@ -39,7 +40,6 @@ const App = () => {
       <Background />
       <View style={styles.container}>
         <NavigationContainer theme={MyTheme}>
-          {isLogged && <NavBar />}
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
@@ -52,7 +52,9 @@ const App = () => {
             <Stack.Screen name="Login">
               {() => <Login setIsLogged={setIsLogged} />}
             </Stack.Screen>
-            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Home"  >
+              {() => <Home setHomeHeader={setHomeHeader} homeHeader={homeHeader}   /> }
+            </Stack.Screen>
             <Stack.Screen name="Notification" component={Notification} />
             <Stack.Screen name="Shipping" component={Shipping} />
             <Stack.Screen name="Payment" component={Payment} />
@@ -64,6 +66,7 @@ const App = () => {
             <Stack.Screen name="UploadPhoto" component={UploadPhoto} />
             <Stack.Screen name="ConfirmUploadPhoto" component={ConfirmUploadPhoto} />
           </Stack.Navigator>
+          {isLogged && <NavBar setHomeHeader={setHomeHeader} />}
         </NavigationContainer>
       </View>
     </SafeAreaView>

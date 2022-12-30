@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect , useRef} from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, ActivityIndicator } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Banner from '../assets/images/banner.png'
@@ -6,6 +6,7 @@ import { itemList, categories as categoriesList } from '../constants/dummy'
 import ProductCard from '../components/ProductCard';
 import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../utils';
 import { AntDesign } from '@expo/vector-icons';
+
 
 
 const dataHeadinforUi = [
@@ -16,12 +17,13 @@ const dataHeadinforUi = [
 ]
 
 
-const Home = ({ navigation }) => {
+const Home = ({ setHomeHeader , homeHeader }) => {
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
     const [isActiveCategoriesId, setisActiveCategoriesId] = useState({})
     const [itemsSnapshot, setItemsSnapshot] = useState("")
     const [itemsDataForView , setItemsDataForView] = useState(dataHeadinforUi)
+    const flatListRef = useRef(null)
     
 
     const infinityScrollHandle = () =>{
@@ -50,6 +52,15 @@ const Home = ({ navigation }) => {
         if(itemsSnapshot && itemsSnapshot.length > 0){
            const data =  itemsSnapshot.map(doc => doc.data())
            setItemsDataForView(prv => ([...prv , ...data]))
+           if(Object.keys(isActiveCategoriesId).length > 0){
+                (async()=>{
+                   await flatListRef.current.scrollToOffset({offset : 70 , animated : true})
+                    setHomeHeader(false)
+                })()
+                // await flatListRef.current.scrollToOffset({offset : 276 , animated : true})
+                // //     setHomeHeader(false)
+                  
+           }
         }
         
     },[itemsSnapshot])
@@ -119,10 +130,10 @@ const Home = ({ navigation }) => {
 
     
     const PageUi = (
-        <View>
-            <View style={styles.heading}>
+        <View style={{height : 270 }}>
+            <View style={styles.heading }>
                 <Text style={styles.title}>Find Your Favorite Food</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Notification')} style={styles.notification}>
+                <TouchableOpacity  style={styles.notification}>
                     <FontAwesome name="bell-o" size={32} color="white" />
                 </TouchableOpacity>
             </View>
@@ -138,8 +149,9 @@ const Home = ({ navigation }) => {
             <FlatList
                 onEndReached={infinityScrollHandle}
                 stickyHeaderIndices={[1]}
-                ListHeaderComponent={PageUi}
+                ListHeaderComponent={()=> homeHeader ? PageUi : (<View></View>)}
                 data={itemsDataForView}
+                ref={flatListRef}
                 renderItem={({ item }) => {
                     if (item.type) {
                         return (
@@ -198,7 +210,8 @@ const styles = StyleSheet.create({
     },
     banner: {
         width: '100%',
-        marginVertical: 30
+        marginVertical: 5,
+        // display : "none",
     },
     section: {
         marginBottom: 10,
