@@ -18,6 +18,7 @@ import ConfirmUploadPhoto from "./screens/ConfirmUploadPhoto";
 import Loading from "./screens/Loading";
 import Ready from "./screens/Ready";
 import Login from "./screens/Login";
+import ProductDetailsScreen from "./screens/ProductDetailsScreen"
 import { useState } from "react";
 import FilteredProduct from "./screens/FilteredProduct";
 
@@ -59,6 +60,7 @@ const App = () => {
             <Stack.Screen name="Payment" component={Payment} />
             <Stack.Screen name="ThankYou" component={ThankYou} />
             <Stack.Screen name="Checkout" component={Checkout} />
+            <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
             <Stack.Screen name="FilteredProduct" component={FilteredProduct} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="ProfileOrders" component={ProfileOrders} />
