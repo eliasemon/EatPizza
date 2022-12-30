@@ -3,10 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, 
 import ProductCard from '../components/ProductCard';
 import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../utils';
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation , useRoute } from '@react-navigation/native';
 
 
 
-const FilteredProduct = ({ route, navigation }) => {
+const FilteredProduct = ({pdUIAddToCardHandle}) => {
+    const  navigation  = useNavigation();
+    const route = useRoute()
     const { activeID } = route.params;
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
@@ -54,7 +57,11 @@ const FilteredProduct = ({ route, navigation }) => {
 
     useEffect(()=>{
         if(itemsSnapshot && itemsSnapshot.length > 0){
-           const data =  itemsSnapshot.map(doc => doc.data())
+            const data =  itemsSnapshot.map((doc) =>{
+                    const item = doc.data()
+                    item.id = doc.id
+                    return item
+                })
            setItemsDataForView(prv => ([...prv , ...data]))
         //    if(Object.keys(isActiveCategoriesId).length > 0){
         //         // (async()=>{
@@ -145,7 +152,11 @@ const FilteredProduct = ({ route, navigation }) => {
             {itemsDataForView && (<FlatList
                 onEndReached={infinityScrollHandle}
                 data={itemsDataForView}
-                renderItem={({ item }) => (<ProductCard cardsType="button" item={item} />)}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={()=> pdUIAddToCardHandle(item)}>
+                        <ProductCard pdUIAddToCardHandle={pdUIAddToCardHandle}  cardsType="button" item={item}/>
+                    </TouchableOpacity>
+                )}
                 keyExtractor={item => item.id}
             />) }
             

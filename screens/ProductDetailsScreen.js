@@ -1,61 +1,44 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView, TextInput } from "react-native"
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView, TextInput, Alert } from "react-native"
 import Heading from "../components/Heading"
 import product from '../assets/images/product.png'
 import { NextButton } from "../components/Buttons"
 import { FontAwesome, Ionicons } from "@expo/vector-icons"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-const RadioButton = ({ product, id, variation, setVariation }) => {
+import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise } from "../utils"
+const RadioButton = ({ product, selectedId }) => {
     return (
-        <TouchableOpacity onPress={() => handleRadioButtonPress(id, variation, setVariation)} style={styles.radioButton}>
-
+        <View>
             <View>
                 {/* <Ionicons name={variation[id].isSelected ? "radio-button-on" : "radio-button-off"} size={24} color="white" /> */}
-                <Ionicons name={product.isSelected ? "radio-button-on" : "radio-button-off"} size={24} color="white" />
+                <Ionicons name={product.id == selectedId ? "radio-button-on" : "radio-button-off"} size={24} color="white" />
             </View>
             <Text style={styles.text}>
                 {product.name}
             </Text>
-            <Text>$100</Text>
-        </TouchableOpacity>
+            <Text style={styles.text}>{product.sellingPrice}</Text>
+        </View>
     )
 }
 
-const CheckBox = ({ id, product, addons, setAddons }) => {
+const CheckBox = ({ isSelected, product }) => {
     return (
-        <TouchableOpacity onPress={() => handleCheckboxPress(product, id, addons, setAddons)} style={styles.radioButton} >
+        <View style={styles.radioButton} >
             <View>
-                <FontAwesome name={product.isSelected ? "check-circle-o" : "circle-o"} size={24} color="#fff" />
+                <FontAwesome name={isSelected ? "check-circle-o" : "circle-o"} size={24} color="#fff" />
             </View>
             <Text style={styles.text}>
                 {product.name}
             </Text>
-        </TouchableOpacity >
+            <Text style={styles.text}>
+                {product.price}
+            </Text>
+        </View >
     )
 }
 
-const handleRadioButtonPress = (id, variation, setVariation) => {
-    let updateState = variation.map((addon) => addon.id === id ? { ...addon, isSelected: true } : { ...addon, isSelected: false })
-    setVariation(updateState)
-}
 
-const handleCheckboxPress = (product, id, addons, setAddons) => {
-    let updateState = [];
-    addons.find((item) => {
-        if (item.id === id) {
-            updateState.push({
-                ...item,
-                isSelected: !(item.isSelected)
-            })
-        } else {
-            updateState.push(item)
-        }
-    })
-    setAddons(updateState)
-}
-
-
-const ProductDetailsScreen = () => {
+const ProductDetailsScreen = ({ disCard, addToCardHandle, item }) => {
 
     const [itemCount, setItemCount] = useState(0)
 
@@ -114,120 +97,132 @@ const ProductDetailsScreen = () => {
         }
     }
 
-    const [variation, setVariation] = useState([
-        {
-            id: 1,
-            name: 'holud',
-            price: 10,
-            isSelected: false
-        },
-        {
-            id: 2,
-            name: 'morich',
-            price: 20,
-            isSelected: false
-        },
-        {
-            id: 3,
-            name: 'jira',
-            price: 30,
-            isSelected: false
-        },
-        {
-            id: 4,
-            name: 'pach foron',
-            price: 40,
-            isSelected: false
-        },
-        {
-            id: 5,
-            name: 'adha bata',
-            price: 50,
-            isSelected: false
-        },
-    ])
-    const [addons, setAddons] = useState([
-        {
-            id: 1,
-            name: 'holud',
-            price: 10,
-            isSelected: false
-        },
-        {
-            id: 2,
-            name: 'morich',
-            price: 20,
-            isSelected: false
-        },
-        {
-            id: 3,
-            name: 'jira',
-            price: 30,
-            isSelected: false
-        },
-        {
-            id: 4,
-            name: 'pach foron',
-            price: 40,
-            isSelected: false
-        },
-        {
-            id: 5,
-            name: 'adha bata',
-            price: 50,
-            isSelected: false
-        },
-    ])
+    const [selectedVariant, setSelectedVariant] = useState("")
+    const [selectedAddonsForCard, setSelectedAddonsForCard] = useState({})
+    const [specialInstructions, setSpecialInstructions] = useState("")
+
+    const [addons, setAddons] = useState("")
+
+
+
+    const addToCardLocalFn = () => {
+        if (selectedVariant == "") {
+            Alert.alert(
+                "Variant Selection Requiered",
+                "You haven't select a variant .Please select a variant",
+                [
+                    { text: "OK" }
+                ],
+                {
+                    cancelable: false,
+                    overlayStyle: stylesForAlert.overlay,
+                    alertContainerStyle: stylesForAlert.alertContainer,
+                    titleStyle: stylesForAlert.text,
+                    messageStyle: stylesForAlert.text,
+                    buttonStyle: stylesForAlert.buttonContainer,
+                    buttonTextStyle: stylesForAlert.buttonText,
+                }
+            );
+            return
+        }
+        const key = `${item.id}+${selectedVariant.id}+${Object.keys(selectedAddonsForCard).toString()}+${specialInstructions}`
+        const data = {
+            key: key,
+            id: item.id,
+            name: item.name,
+            image : item.image,
+            selectedVariant: selectedVariant,
+            selectedAddonsForCard: selectedAddonsForCard,
+            specialInstructions: specialInstructions,
+            itemCount: itemCount
+        }
+        addToCardHandle(key, data)
+
+    }
+    useEffect(() => {
+        if (item?.selectedAddons?.length > 0) {
+
+            const data = item.selectedAddons.map((addonId) => {
+                return (getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("Addons", addonId))
+            })
+            Promise.all(data).then((v) => setAddons([...v]))
+        }
+    }, [])
 
     return (
-        <ScrollView style={styles.checkoutContainer}>
-            <View>
-                <Heading title="Product Details" />
-            </View >
-            <View style={styles.imageContainer}>
-                <Image style={styles.image} source={product} />
-            </View>
-            <View>
-                <Text style={styles.title}>Title</Text>
-                <Text style={styles.description}>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.</Text>
-            </View>
-            <View>
-                <Text style={styles.title}>Select variation</Text>
-                <ScrollView>
-                    {variation.map((item) => (
-                        <RadioButton variation={variation} setVariation={setVariation} id={item.id} product={item} key={item.id} />
-                    ))}
-                </ScrollView>
-            </View>
-            <View>
-                <Text style={styles.title}>Select Addons</Text>
-                <ScrollView>
-                    {addons.map((item) => (<CheckBox setAddons={setAddons} id={item.id} product={item} addons={addons} key={item.id} />))}
-                </ScrollView>
-            </View>
-            <View>
-                <Text style={styles.title}>Special instructions</Text>
-                <TextInput style={styles.input} multilinef />
-            </View>
-            <View style={styles.cart}>
-                <NextButton title="Add to Cart" />
-                <View style={styles.buttonSet}>
-                    <TouchableOpacity onPress={handleUpPress}>
-                        <FontAwesome name="chevron-up" size={20} color="rgba(255,255,255,0.8)" />
-                    </TouchableOpacity>
-                    <Text style={styles.buttonNumber}>{itemCount}</Text>
-                    <TouchableOpacity onPress={handleDownPress}>
-                        <FontAwesome name="chevron-down" size={20} color="rgba(255,255,255,0.8)" />
-                    </TouchableOpacity>
+        <View style={styles.checkoutContainer}>
+            <Heading disCard={disCard} title="Product Details" />
+            <ScrollView >
+
+                <View style={styles.imageContainer}>
+                    <Image style={styles.image} source={{ uri: `${item?.image?.imageDownloadUrl}` }} />
                 </View>
-            </View>
-        </ScrollView>
+                <View>
+                    <Text style={styles.title}>{item.name}</Text>
+                    <Text style={styles.description}>{item.descriptions}</Text>
+                </View>
+                <View>
+                    <Text style={styles.title}>Select variation</Text>
+                    <ScrollView>
+                        {Object.keys(item.variants).map((key) => {
+                            const data = item.variants[key]
+                            data.id = key
+                            return (
+                                <TouchableOpacity key={data.id} onPress={() => setSelectedVariant(data)}>
+                                    <RadioButton selectedId={selectedVariant?.id} product={data} key={data.id} />
+                                </TouchableOpacity>
+                            )
+                        })}
+                    </ScrollView>
+                </View>
+                <View>
+                    <Text style={styles.title}>Select Addons</Text>
+                    <ScrollView>
+                        {addons && addons.map(addon => {
+                            return (
+                                <TouchableOpacity key={addon.id} onPress={() => {
+                                    setSelectedAddonsForCard((prv) => {
+                                        if (prv[`${addon.id}`]) {
+                                            delete prv[`${addon.id}`]
+                                        } else {
+                                            prv[`${addon.id}`] = addon
+                                        }
+                                        return { ...prv }
+                                    })
+                                }}>
+                                    <CheckBox isSelected={selectedAddonsForCard[`${addon.id}`] ? true : false} product={addon} key={addon.id} />
+                                </TouchableOpacity>
+                            )
+                        })}
+
+                        {/* // (<CheckBox setAddons={setAddons} id={item.id} product={item} addons={addons} key={item.id} />)) */}
+                    </ScrollView>
+                </View>
+                <View>
+                    <Text style={styles.title}>Special instructions</Text>
+                    <TextInput value={specialInstructions} onChangeText={setSpecialInstructions} style={styles.input} multilinef />
+                </View>
+                <View style={styles.cart}>
+                    <NextButton onPress={addToCardLocalFn} title="Add to Cart" />
+                    <View style={styles.buttonSet}>
+                        <TouchableOpacity onPress={handleUpPress}>
+                            <FontAwesome name="chevron-up" size={20} color="rgba(255,255,255,0.8)" />
+                        </TouchableOpacity>
+                        <Text style={styles.buttonNumber}>{itemCount}</Text>
+                        <TouchableOpacity onPress={handleDownPress}>
+                            <FontAwesome name="chevron-down" size={20} color="rgba(255,255,255,0.8)" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </ScrollView>
+        </View >
     )
 }
 
 const styles = StyleSheet.create({
     checkoutContainer: {
         height: '100%',
+        backgroundColor: "#000"
         // justifyContent: 'space-between'
     },
     cardContainer: {
@@ -284,4 +279,26 @@ const styles = StyleSheet.create({
     }
 })
 
+
+const stylesForAlert = StyleSheet.create({
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    },
+    alertContainer: {
+        backgroundColor: 'rgba(255, 255, 255, 0)',
+        borderRadius: 10,
+    },
+    text: {
+        fontSize: 18,
+        color: 'white',
+    },
+    buttonContainer: {
+        backgroundColor: 'red',
+        borderRadius: 10,
+    },
+    buttonText: {
+        fontSize: 18,
+        color: 'white',
+    },
+});
 export default ProductDetailsScreen

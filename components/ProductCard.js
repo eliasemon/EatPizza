@@ -3,7 +3,7 @@ import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import ImagePhoto from '../assets/images/ItemPhoto.png'
 import { FontAwesome } from "@expo/vector-icons"
 
-const ProductCard = ({ item , cardsType }) => {
+const ProductCard = ({ tottalCost, item , cardsType , pdUIAddToCardHandle }) => {
     const [itemCount, setItemCount] = useState(0)
 
     const handleUpPress = () => {
@@ -13,9 +13,9 @@ const ProductCard = ({ item , cardsType }) => {
     const handleDownPress = () => {
         setItemCount(count => count - 1)
     }
-
+    let totalPice = Number(item?.selectedVariant?.sellingPrice);
     const cardType = {
-        button: (<TouchableOpacity>
+        button: (<TouchableOpacity onPress={()=> pdUIAddToCardHandle(item)}>
             <FontAwesome name="cart-plus" size={26} color="#fff" />
         </TouchableOpacity>),
         chip: (<View style={styles.chip}>
@@ -38,6 +38,29 @@ const ProductCard = ({ item , cardsType }) => {
                 <Image source={{uri : `${item?.image?.imageDownloadUrl}`}} style={styles.cardImage} />
                 <View style={styles.cardTextBox}>
                     <Text style={styles.cardTextTitle}>{item?.name}</Text>
+                    {cardsType == "counter" && (
+                        <>
+                            <View style={{display : "flex" ,  flexDirection: 'row' ,justifyContent : "space-between"}}> 
+                                <Text style={styles.cardTextTitle}>{item?.selectedVariant?.name}</Text>
+                                <Text style={styles.cardTextTitle}>{item?.selectedVariant?.sellingPrice}৳</Text>
+                            </View>
+                            <View > 
+                                {Object.keys(item?.selectedAddonsForCard).map((key=>{
+                                    const data = item?.selectedAddonsForCard[key]
+                                    totalPice+=Number(data.price)
+                                    tottalCost.subTottal = Number(tottalCost.subTottal) + totalPice
+                                    return (
+                                        <View style={{display : "flex" ,  flexDirection: 'row' ,justifyContent : "space-between"}}> 
+                                            <Text style={styles.cardTextTitle}>{data.name}</Text>
+                                            <Text style={styles.cardTextTitle}>{data.price}৳</Text>
+                                        </View>
+                                    )
+                                }))}
+                                {/* <Text style={styles.cardTextTitle}>{item?.selectedVariant?.sellingPrice}৳</Text> */}
+                            </View>
+                            <Text style={styles.cardTextPrice}> {totalPice}৳</Text>
+                        </>
+                    )}
                     {/* <Text style={styles.cardTextCategory}>{category}</Text> */}
                     <Text style={styles.cardTextPrice}>৳ {item?.defualtVariant?.sellingPrice}</Text>
                 </View>

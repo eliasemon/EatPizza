@@ -6,7 +6,7 @@ import { itemList, categories as categoriesList } from '../constants/dummy'
 import ProductCard from '../components/ProductCard';
 import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../utils';
 import { AntDesign } from '@expo/vector-icons';
-
+import { useNavigation } from '@react-navigation/native';
 
 
 const dataHeadinforUi = [
@@ -17,7 +17,9 @@ const dataHeadinforUi = [
 ]
 
 
-const Home = ({navigation}) => {
+const Home = ({pdUIAddToCardHandle}) => {
+    const  navigation  = useNavigation();
+    // const route = useRoute()
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
     const [isActiveCategoriesId, setisActiveCategoriesId] = useState({})
@@ -39,9 +41,9 @@ const Home = ({navigation}) => {
     }
 
 
-    if (itemsSnapshot.length > 0) {
-        console.log(itemsSnapshot[0].data())
-    }
+    // if (itemsSnapshot.length > 0) {
+    //     console.log(itemsSnapshot[0].data())
+    // }
 
     useEffect(() => {
         // getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5)
@@ -51,7 +53,11 @@ const Home = ({navigation}) => {
 
     useEffect(()=>{
         if(itemsSnapshot && itemsSnapshot.length > 0){
-           const data =  itemsSnapshot.map(doc => doc.data())
+            const data =  itemsSnapshot.map((doc) =>{
+            const item = doc.data()
+            item.id = doc.id
+            return item
+           })
            setItemsDataForView(prv => ([...prv , ...data]))
         //    if(Object.keys(isActiveCategoriesId).length > 0){
         //         // (async()=>{
@@ -170,8 +176,10 @@ const Home = ({navigation}) => {
                         )
                     }
                     return (
-                        <ProductCard cardsType="button" item={item}/>
-                    )
+                        <TouchableOpacity onPress={()=> pdUIAddToCardHandle(item)}>
+                            <ProductCard pdUIAddToCardHandle={pdUIAddToCardHandle} cardsType="button" item={item}/>
+                        </TouchableOpacity>
+                        )
                 }}
                 keyExtractor={item => item.id}
             />

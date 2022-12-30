@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native"
+import { ScrollView } from "react-native-gesture-handler"
 import Heading from "../components/Heading"
 import ProductCard from '../components/ProductCard'
 
@@ -54,7 +55,9 @@ const itemList = [
 ]
 
 
-const Checkout = () => {
+const Checkout = ({addToCard , setAddToCard}) => {
+    const tottalCost = {subTottal : 0}
+
 
     return (
         <View style={styles.checkoutContainer}>
@@ -62,14 +65,14 @@ const Checkout = () => {
                 <Heading title="Order Details" />
             </View>
             <View style={styles.cardContainer}>
-                <FlatList data={itemList} renderItem={
-                    ({ item }) => (<ProductCard cardsType="counter" title={item.title} category={item.category} price={item.price} />)
-                } keyExtractor={item => item.id} />
+            <ScrollView>
+                {addToCard && Object.keys(addToCard).map(key => (<ProductCard tottalCost={tottalCost} key={key} cardsType="counter" item={addToCard[key]} />))}
+            </ScrollView>
             </View>
             <View style={styles.placeOrder}>
                 <View style={styles.placeOrderLine}>
                     <Text style={styles.textColor}>Sub Total</Text>
-                    <Text style={styles.textColor}>120 ৳</Text>
+                    <Text style={styles.textColor}>{tottalCost.subTottal} ৳</Text>
                 </View>
                 <View style={styles.placeOrderLine}>
                     <Text style={styles.textColor}>Delivery Charge</Text>
