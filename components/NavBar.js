@@ -3,12 +3,11 @@ import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
 
-const NavBar = ({setHomeHeader}) => {
+const NavBar = () => {
     const navigation = useNavigation();
 
     const handlePressHome = () => {
-        setHomeHeader(true)
-        navigation.navigate("Home")
+
     }
 
     const handlePressProfile = () => {
@@ -21,7 +20,7 @@ const NavBar = ({setHomeHeader}) => {
 
     return (
         <View style={styles.navigation}>
-            <TouchableOpacity onPress={handlePressHome}>
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
                 <FontAwesome name="home" size={26} color="green" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
@@ -37,7 +36,6 @@ const NavBar = ({setHomeHeader}) => {
 const styles = StyleSheet.create({
     navigation: {
         elevation: 1,
-        zIndex : 100,
         backgroundColor: '#333333',
         width: '100%',
         height: 50,
