@@ -1,39 +1,30 @@
-import { useState, useEffect , useRef} from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, ActivityIndicator } from "react-native";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Banner from '../assets/images/banner.png'
-import { itemList, categories as categoriesList } from '../constants/dummy'
 import ProductCard from '../components/ProductCard';
 import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../utils';
 import { AntDesign } from '@expo/vector-icons';
 
 
 
-const dataHeadinforUi = [
-    {
-        id : "type",
-        type : "ui"
-    }
-]
-
-
-const Home = ({navigation}) => {
+const FilteredProduct = ({ route, navigation }) => {
+    const { activeID } = route.params;
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
-    const [isActiveCategoriesId, setisActiveCategoriesId] = useState({})
+    const [isActiveCategoriesId, setisActiveCategoriesId] = useState(activeID)
     const [itemsSnapshot, setItemsSnapshot] = useState("")
-    const [itemsDataForView , setItemsDataForView] = useState(dataHeadinforUi)
-    const flatListRef = useRef(null)
+    const [itemsDataForView , setItemsDataForView] = useState("")
+
     
 
-    const infinityScrollHandle = () =>{
+
+    const infinityScrollHandle = () => {
         const isActiveCatArr = Object.keys(isActiveCategoriesId)
-        if(itemsSnapshot && !!itemsSnapshot[4]){
-            if(isActiveCatArr.length > 0){
-                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 , itemsSnapshot[4] , {queryField : "selectedCatagories" , queryArray : isActiveCatArr}).catch(v => console.log(v))
+        if (itemsSnapshot && !!itemsSnapshot[4]) {
+            if (isActiveCatArr.length > 0) {
+                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4], { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(v => console.log(v))
                 // return;
-            }else{
-                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 , itemsSnapshot[4]).catch(v => console.log(v))
+            } else {
+                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4]).catch(v => console.log(v))
             }
         }
     }
@@ -47,7 +38,19 @@ const Home = ({navigation}) => {
         // getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5)
         getDataWithOutRealTimeUpdates(setCategories, "catagories");
     }, []);
-    
+
+
+    useEffect(() => {
+        const isActiveCatArr = Object.keys(isActiveCategoriesId)
+        if (isActiveCatArr.length > 0) {
+            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, false, { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(v => console.log(v))
+            return;
+        }
+        else {
+            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(v => console.log(v))
+        }
+    }, [isActiveCategoriesId])
+
 
     useEffect(()=>{
         if(itemsSnapshot && itemsSnapshot.length > 0){
@@ -66,21 +69,16 @@ const Home = ({navigation}) => {
         
     },[itemsSnapshot])
 
-    useEffect(() => {
-        const isActiveCatArr = Object.keys(isActiveCategoriesId)
-            if(isActiveCatArr.length > 0){
-                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 , false , {queryField : "selectedCatagories" , queryArray : isActiveCatArr}).catch(v => console.log(v))
-                return;
-            }
-            else{ 
-                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 ).catch(v => console.log(v))
-            }
-    }, [isActiveCategoriesId])
-
     const handleChipPress = (id) => {
-        const activeID = {}
-        activeID[`${id}`] = true
-        navigation.navigate("FilteredProduct", {activeID : activeID})
+        setItemsDataForView("")
+        setisActiveCategoriesId((prv) => {
+            if (prv[`${id}`]) {
+                delete prv[`${id}`]
+            } else {
+                prv[`${id}`] = true
+            }
+            return ({ ...prv })
+        })
     }
 
     const handleCollapseButton = () => {
@@ -123,58 +121,34 @@ const Home = ({navigation}) => {
         return outputArray
     }
 
-    
-    const PageUi = (
-        <View style={{height : 270 }}>
-            <View style={styles.heading }>
-                <Text style={styles.title}>Find Your Favorite Food</Text>
-                <TouchableOpacity  style={styles.notification} onPress={()=> navigation.navigate("Notification")}>
-                    <FontAwesome name="bell-o" size={32} color="white" />
-                </TouchableOpacity>
-            </View>
-            <View>
-                <Image source={Banner} style={styles.banner} />
-            </View>
-
-        </View>
-    )
 
     return (
         <View style={styles.cardContainer}>
-            <FlatList
+            <View style={{ backgroundColor: '#0D0D0D' }}>
+                <View style={styles.section}>
+                    <View style={styles.categoriesHeader}>
+                        <Text style={styles.sectionTitle}>Categories</Text>
+                        <TouchableOpacity onPress={handleCollapseButton} style={styles.collapseButton}>
+                            <AntDesign name={isCollapse ? 'down' : 'up'} size={22} color="white" />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.chipContainer}>
+                        {
+                            categories ? getCategoryArray(categories, isCollapse) : <ActivityIndicator size="large" color="#fff" />
+                        }
+                    </View>
+                </View>
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>All Items</Text>
+                </View>
+            </View>
+            {itemsDataForView && (<FlatList
                 onEndReached={infinityScrollHandle}
-                stickyHeaderIndices={[1]}
-                ListHeaderComponent={PageUi}
                 data={itemsDataForView}
-                ref={flatListRef}
-                renderItem={({ item }) => {
-                    if (item.type) {
-                        return (
-                            <View style={{ backgroundColor: '#0D0D0D' }}>
-                                <View style={styles.section}>
-                                    <View style={styles.categoriesHeader}>
-                                        <Text style={styles.sectionTitle}>Categories</Text>
-                                        <TouchableOpacity onPress={handleCollapseButton} style={styles.collapseButton}>
-                                            <AntDesign name={isCollapse ? 'down' : 'up'} size={22} color="white" />
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={styles.chipContainer}>
-                                        {
-                                            categories ? getCategoryArray(categories, isCollapse) : <ActivityIndicator size="large" color="#fff" />}
-                                    </View>
-                                </View>
-                                <View style={styles.section}>
-                                    <Text style={styles.sectionTitle}>All Items</Text>
-                                </View>
-                            </View>
-                        )
-                    }
-                    return (
-                        <ProductCard cardsType="button" item={item}/>
-                    )
-                }}
+                renderItem={({ item }) => (<ProductCard cardsType="button" item={item} />)}
                 keyExtractor={item => item.id}
-            />
+            />) }
+            
         </View>
     );
 };
@@ -185,28 +159,10 @@ const Home = ({navigation}) => {
     </View> */}
 
 const styles = StyleSheet.create({
-    heading: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
     title: {
         color: "white",
         fontSize: 32,
         width: '70%'
-    },
-    notification: {
-        height: 54,
-        width: 54,
-        margin: 15,
-        borderRadius: 15,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(255,255,255, .12)'
-    },
-    banner: {
-        width: '100%',
-        marginVertical: 5,
-        // display : "none",
     },
     section: {
         marginBottom: 10,
@@ -285,4 +241,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Home;
+export default FilteredProduct;

@@ -20,6 +20,7 @@ import Ready from "./screens/Ready";
 import Login from "./screens/Login";
 import ProductDetailsScreen from "./screens/ProductDetailsScreen"
 import { useState } from "react";
+import FilteredProduct from "./screens/FilteredProduct";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,7 @@ const App = () => {
 
   // state for checking Login Status
   const [isLogged, setIsLogged] = useState(false)
+  const [addToCard , setAddToCard] = useState([]);
 
   return (
     <SafeAreaView>
@@ -40,7 +42,6 @@ const App = () => {
       <Background />
       <View style={styles.container}>
         <NavigationContainer theme={MyTheme}>
-          {isLogged && <NavBar />}
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
@@ -60,12 +61,14 @@ const App = () => {
             <Stack.Screen name="ThankYou" component={ThankYou} />
             <Stack.Screen name="Checkout" component={Checkout} />
             <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
+            <Stack.Screen name="FilteredProduct" component={FilteredProduct} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="ProfileOrders" component={ProfileOrders} />
             <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
             <Stack.Screen name="UploadPhoto" component={UploadPhoto} />
             <Stack.Screen name="ConfirmUploadPhoto" component={ConfirmUploadPhoto} />
           </Stack.Navigator>
+          {isLogged && <NavBar />}
         </NavigationContainer>
       </View>
     </SafeAreaView>
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    paddingHorizontal: 20,
+   
   }
 })
 

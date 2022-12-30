@@ -20,7 +20,7 @@ const NavBar = () => {
 
     return (
         <View style={styles.navigation}>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
                 <FontAwesome name="home" size={26} color="green" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
