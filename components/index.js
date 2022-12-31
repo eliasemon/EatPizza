@@ -13,5 +13,4 @@ export {
     NavBar,
     ProductCard,
     InputText,
-    OtpInput
 }

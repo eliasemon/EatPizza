@@ -1,28 +1,31 @@
 import { View, StyleSheet, SafeAreaView, StatusBar , Modal } from "react-native";
+import { useState } from "react";
 import "react-native-gesture-handler";
-import Background from "./components/Background";
-import Home from "./screens/Home";
+import { Background } from "./components";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Notification from "./screens/Notification";
 import NavBar from "./components/NavBar";
-import Checkout from "./screens/Checkout";
-import Shipping from "./screens/Shipping";
-import Payment from "./screens/Payment";
-import ThankYou from "./screens/ThankYou";
-import Profile from "./screens/Profile";
-import ProfileOrders from "./screens/ProfileOrders";
-import ProfileUpdate from "./screens/ProfileUpdate";
-import UploadPhoto from "./screens/UploadPhoto";
-import ConfirmUploadPhoto from "./screens/ConfirmUploadPhoto";
-import Loading from "./screens/Loading";
-import Ready from "./screens/Ready";
-import Login from "./screens/Login";
-import { useState } from "react";
 
-import ProductDetailsScreen from "./screens/ProductDetailsScreen";
-import FilteredProduct from "./screens/FilteredProduct";
-
+import {
+  Checkout,
+  ConfirmUploadPhoto,
+  FilteredProduct,
+  Home,
+  Loading,
+  Login,
+  Notification,
+  Otp,
+  Payment,
+  ProductDetailsScreen,
+  Profile,
+  ProfileOrders,
+  ProfileUpdate,
+  Ready,
+  Signup,
+  Shipping,
+  ThankYou,
+  UploadPhoto
+} from './screens'
 
 
 const Stack = createNativeStackNavigator();
@@ -131,7 +134,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-   
   }
 })
 
