@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native
 import { ScrollView } from "react-native-gesture-handler"
 import Heading from "../components/Heading"
 import ProductCard from '../components/ProductCard'
-import { styles } from '../styles/Checkout.style'
+import { CheckoutStyle as styles } from '../styles'
 
 const Checkout = ({addToCard , setAddToCard}) => {
     const tottalCost = {subTottal : 0}

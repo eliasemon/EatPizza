@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react
 import Heading from '../components/Heading'
 import profile from '../assets/images/profile.png'
 import ProductCard from '../components/ProductCard'
-import { styles } from '../styles/ProfileOrders.style'
+import { ProfileOrders as styles } from '../styles'
 
 const itemList = [
     {

@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView, TextInput, Alert } from "react-native"
 import Heading from "../components/Heading"
-import product from '../assets/images/product.png'
 import { NextButton } from "../components/Buttons"
 import { FontAwesome, Ionicons } from "@expo/vector-icons"
 import { useEffect, useState } from "react"

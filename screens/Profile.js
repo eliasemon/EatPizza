@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import Heading from '../components/Heading'
 import profile from '../assets/images/profile.png'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { styles } from '../styles/Profile.style';
+import { ProfileStyle as styles } from '../styles';
 
 const Profile = ({ navigation }) => {
     return (

@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native"
 import thanksImage from '../assets/images/thanks.png'
-import { styles } from "../styles/ThankYou.style"
+import { ThankYouStyle as styles } from "../styles"
 
 const ThankYou = () => {
     return (

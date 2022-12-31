@@ -7,7 +7,7 @@ import {FirebaseRecaptchaVerifierModal} from "../expo-firebase-recaptcha/src/ind
 import Otp from "./Otp";
 import { useNavigation } from '@react-navigation/native';
 import {  PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
-import { styles } from '../styles/Loading.style'
+import { LoginStyle as styles } from '../styles'
 
 const Login = ({ setIsLogged }) => {
   const [inputView , setInputView] = useState(true)

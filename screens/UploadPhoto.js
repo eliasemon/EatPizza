@@ -1,9 +1,9 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Image, Text, TouchableOpacity, View } from "react-native"
 import Heading from "../components/Heading"
 
 import galaryIcon from '../assets/images/galaryIcon.png'
 import cameraIcon from '../assets/images/cameraIcon.png'
-import { styles } from "../styles/UploadPhoto.style"
+import { UploadPhotoStyle as styles } from "../styles"
 
 const UploadPhoto = () => {
     return (

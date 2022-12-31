@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native"
 import Heading from "../components/Heading"
-import { styles } from "../styles/ProfileUpdate.style"
+import { ProfileStyle as styles } from "../styles"
 
 
 const ProfileUpdate = () => {

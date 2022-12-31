@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
-import { styles } from '../styles/ConfirmUpload.style'
+import { ConfirmUploadStyle as styles } from '../styles'
 import Heading from "../components/Heading"
 
 import demoPhoto from '../assets/images/demoPhoto.png'

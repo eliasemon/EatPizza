@@ -8,7 +8,7 @@ import {
 import { FontAwesome } from '@expo/vector-icons';
 import Heading from '../components/Heading'
 import BackgroundContainer from "../components/NavBar";
-import { styles } from '../styles/Notification.style'
+import { NotificationStyle as styles } from '../styles'
 
 const icons = {
   done: {

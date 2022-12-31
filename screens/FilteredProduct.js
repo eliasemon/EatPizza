@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, ActivityIndicator } from "react-native";
+import { AntDesign } from '@expo/vector-icons';
+
 import ProductCard from '../components/ProductCard';
 import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../utils';
-import { AntDesign } from '@expo/vector-icons';
-import { useNavigation , useRoute } from '@react-navigation/native';
-import { styles } from '../styles/FilterProduct.style'
+import { FilterProductStyle as styles } from '../styles'
 
 
 

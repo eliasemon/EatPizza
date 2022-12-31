@@ -1,6 +1,7 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native"
+import { View, Text, TextInput, TouchableOpacity } from "react-native"
 import { Ionicons } from '@expo/vector-icons';
 import Heading from "../components/Heading";
+import { ShippingStyle as styles } from "../styles";
 
 const Shipping = (navigation) => {
     return (

@@ -1,6 +1,6 @@
 import { View, Image, StyleSheet } from "react-native";
 import logo from "../assets/images/logo.png";
-import { styles } from '../styles/Loading.style'
+import { LoadingStyle as styles } from '../styles'
 
 const Loading = ({ navigation }) => {
 

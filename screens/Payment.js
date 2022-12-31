@@ -4,7 +4,7 @@ import Heading from "../components/Heading";
 import nogodLogo from '../assets/images/nogodLogo.png'
 import codLogo from '../assets/images/codLogo.png'
 import bkashLogo from '../assets/images/bkashLogo.png'
-import { styles } from "../styles/Payment.style";
+import { PaymentStyle as styles } from "../styles";
 
 const Payment = (navigation) => {
     return (

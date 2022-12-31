@@ -1,7 +1,7 @@
 import { View, Image, Text, StyleSheet } from "react-native";
 import { NextButton } from "./../components/Buttons";
 import foods from "../assets/images/foods.png";
-import { styles } from "../styles/Ready.style";
+import { ReadyStyle as styles } from "../styles";
 
 
 const Ready = ({ navigation }) => {
