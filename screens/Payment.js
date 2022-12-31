@@ -4,6 +4,7 @@ import Heading from "../components/Heading";
 import nogodLogo from '../assets/images/nogodLogo.png'
 import codLogo from '../assets/images/codLogo.png'
 import bkashLogo from '../assets/images/bkashLogo.png'
+import { PaymentStyle as styles } from "../styles";
 
 const Payment = (navigation) => {
     return (
@@ -21,17 +22,5 @@ const Payment = (navigation) => {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    card: {
-        width: '100%',
-        height: 100,
-        backgroundColor: '#282828',
-        marginVertical: 10,
-        borderRadius: 15,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-})
 
 export default Payment;

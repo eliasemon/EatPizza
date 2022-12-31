@@ -8,6 +8,7 @@ import {
 import { FontAwesome } from '@expo/vector-icons';
 import Heading from '../components/Heading'
 import BackgroundContainer from "../components/NavBar";
+import { NotificationStyle as styles } from '../styles'
 
 const icons = {
   done: {
@@ -98,32 +99,5 @@ const Notification = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    width: '100%',
-    height: 100,
-    backgroundColor: '#333333',
-    marginVertical: 10,
-    borderRadius: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 25,
-  },
-  statusBox: {
-    width: '15%',
-  },
-  messageBox: {
-    width: '80%',
-    margin: 10
-  },
-  message: {
-    color: 'rgba(255,255,255,0.9)',
-    fontSize: 20
-  },
-  time: {
-    color: 'rgba(255,255,255,.5)',
-    fontSize: 15
-  }
-});
 
 export default Notification;

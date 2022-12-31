@@ -1,8 +1,9 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Image, Text, TouchableOpacity, View } from "react-native"
 import Heading from "../components/Heading"
 
 import galaryIcon from '../assets/images/galaryIcon.png'
 import cameraIcon from '../assets/images/cameraIcon.png'
+import { UploadPhotoStyle as styles } from "../styles"
 
 const UploadPhoto = () => {
     return (
@@ -26,42 +27,5 @@ const UploadPhoto = () => {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    textGroup: {
-        marginVertical: 10
-    },
-    primaryText: {
-        color: '#fff',
-        fontSize: 32
-    },
-    secondaryText: {
-        color: '#fff',
-        fontSize: 18,
-        marginTop: 20
-    },
-    sectionBlock: {
-        height: 150,
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        marginVertical: 10,
-        borderRadius: 15,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    nextButton: {
-        alignItems: 'center',
-        alignSelf: 'center',
-        width: '60%',
-        backgroundColor: 'green',
-        marginVertical: '10%',
-        paddingVertical: 10,
-        paddingHorizontal: 25,
-        borderRadius: 10
-    },
-    nextButtonText: {
-        fontSize: 22,
-        color: '#fff'
-    }
-})
 
 export default UploadPhoto

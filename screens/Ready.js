@@ -1,6 +1,7 @@
 import { View, Image, Text, StyleSheet } from "react-native";
 import { NextButton } from "./../components/Buttons";
 import foods from "../assets/images/foods.png";
+import { ReadyStyle as styles } from "../styles";
 
 
 const Ready = ({ navigation }) => {
@@ -24,29 +25,5 @@ const Ready = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#0D0D0D",
-    justifyContent: "space-evenly",
-  },
-  largeText: {
-    color: "white",
-    fontSize: 28,
-    textAlign: "center",
-  },
-  smallText: {
-    color: "white",
-    fontSize: 18,
-    textAlign: "center",
-  },
-  image: {
-    width: 380,
-    height: 380,
-  },
-});
 
 export default Ready;
