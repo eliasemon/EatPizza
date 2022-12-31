@@ -1,5 +1,6 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native"
 import thanksImage from '../assets/images/thanks.png'
+import { styles } from "../styles/ThankYou.style"
 
 const ThankYou = () => {
     return (
@@ -14,31 +15,5 @@ const ThankYou = () => {
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        marginVertical: '30%',
-        alignItems: 'center'
-    },
-    primaryText: {
-        marginVertical: 15,
-        color: 'green',
-        fontSize: 36
-    },
-    secondaryText: {
-        color: '#fff',
-        fontSize: 28
-    },
-    continueButton: {
-        backgroundColor: 'green',
-        marginTop: '30%',
-        paddingVertical: 10,
-        paddingHorizontal: 25,
-        borderRadius: 10
-    },
-    continueButtonText: {
-        fontSize: 18,
-        color: '#fff'
-    }
-})
 
 export default ThankYou
