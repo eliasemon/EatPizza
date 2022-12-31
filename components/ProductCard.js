@@ -1,19 +1,53 @@
-import { useState } from 'react'
+import { useState , useRef, useEffect } from 'react'
 import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import ImagePhoto from '../assets/images/ItemPhoto.png'
 import { FontAwesome } from "@expo/vector-icons"
+import { MaterialIcons } from '@expo/vector-icons'; 
+import { CheckoutCardActions } from '../constants/enum';
 
-const ProductCard = ({ tottalCost, item , cardsType , pdUIAddToCardHandle }) => {
-    const [itemCount, setItemCount] = useState(0)
 
-    const handleUpPress = () => {
-        setItemCount(count => count + 1)
+const ProductCard = ({ updataCard , subTottal, item , cardsType , pdUIAddToCardHandle }) => {
+    const [itemAddonsUI, setItemAddonsUI] = useState("")
+    const totalPice = useRef(Number(item?.selectedVariant?.sellingPrice));
+    const unitPrice = useRef(0)
+    console.log("Unlimited")
+    const cardLocalAction = (action)=>{
+        if(action == CheckoutCardActions.delete){
+            subTottal.current = Number(subTottal.current) - totalPice.current
+            
+        }else if(action == CheckoutCardActions.increment){
+            totalPice.current += Number(unitPrice.current )
+            subTottal.current += Number(unitPrice.current)
+
+        }else if(action == CheckoutCardActions.decrement){
+            totalPice.current -= Number(unitPrice.current)
+            subTottal.current -= Number(unitPrice.current)
+        }
+
+        updataCard(action , item.key)
     }
 
-    const handleDownPress = () => {
-        setItemCount(count => count - 1)
-    }
-    let totalPice = Number(item?.selectedVariant?.sellingPrice);
+    useEffect(()=>{
+        if(item?.selectedAddonsForCard){
+            setItemAddonsUI(
+            Object.keys(item?.selectedAddonsForCard).map((key=>{
+                const data = item?.selectedAddonsForCard[key]
+                totalPice.current+=Number(data.price)
+                return (
+                    <View key={key} style={{display : "flex" ,  flexDirection: 'row' ,justifyContent : "space-between"}}> 
+                        <Text style={styles.cardTextTitle}>{data.name}</Text>
+                        <Text style={styles.cardTextTitle}>{data.price}৳</Text>
+                    </View>
+                )
+            }))
+            )
+            unitPrice.current = totalPice.current;
+            totalPice.current *= Number(item.itemCount)
+            subTottal.current = Number(subTottal.current) + totalPice.current
+        }
+    },[])
+
+    
     const cardType = {
         button: (<TouchableOpacity onPress={()=> pdUIAddToCardHandle(item)}>
             <FontAwesome name="cart-plus" size={26} color="#fff" />
@@ -22,13 +56,20 @@ const ProductCard = ({ tottalCost, item , cardsType , pdUIAddToCardHandle }) => 
             <Text style={styles.chipText}>Done</Text>
         </View>),
         counter: (<View style={styles.buttonSet}>
-            <TouchableOpacity onPress={handleUpPress}>
+            <TouchableOpacity onPress={()=> cardLocalAction(CheckoutCardActions.increment)}>
                 <FontAwesome name="chevron-up" size={20} color="rgba(255,255,255,0.8)" />
             </TouchableOpacity>
-            <Text style={styles.buttonNumber}>{itemCount}</Text>
-            <TouchableOpacity onPress={handleDownPress}>
-                <FontAwesome name="chevron-down" size={20} color="rgba(255,255,255,0.8)" />
-            </TouchableOpacity>
+            <Text style={styles.buttonNumber}>{item.itemCount}</Text>
+            {item.itemCount > 1 ? 
+                (<TouchableOpacity onPress={() =>  cardLocalAction(CheckoutCardActions.decrement)}>
+                    <FontAwesome name="chevron-down" size={20} color="rgba(255,255,255,0.8)" />
+                </TouchableOpacity>) :
+                (<TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.delete)}>
+                   <MaterialIcons name="delete-forever" size={20} color="rgba(255,255,255,0.8)" />
+                </TouchableOpacity>)
+
+            }
+            
         </View>)
     }
 
@@ -45,20 +86,10 @@ const ProductCard = ({ tottalCost, item , cardsType , pdUIAddToCardHandle }) => 
                                 <Text style={styles.cardTextTitle}>{item?.selectedVariant?.sellingPrice}৳</Text>
                             </View>
                             <View > 
-                                {Object.keys(item?.selectedAddonsForCard).map((key=>{
-                                    const data = item?.selectedAddonsForCard[key]
-                                    totalPice+=Number(data.price)
-                                    tottalCost.subTottal = Number(tottalCost.subTottal) + totalPice
-                                    return (
-                                        <View style={{display : "flex" ,  flexDirection: 'row' ,justifyContent : "space-between"}}> 
-                                            <Text style={styles.cardTextTitle}>{data.name}</Text>
-                                            <Text style={styles.cardTextTitle}>{data.price}৳</Text>
-                                        </View>
-                                    )
-                                }))}
+                                { itemAddonsUI }
                                 {/* <Text style={styles.cardTextTitle}>{item?.selectedVariant?.sellingPrice}৳</Text> */}
                             </View>
-                            <Text style={styles.cardTextPrice}> {totalPice}৳</Text>
+                            <Text style={styles.cardTextPrice}> {totalPice.current}৳</Text>
                         </>
                     )}
                     {/* <Text style={styles.cardTextCategory}>{category}</Text> */}

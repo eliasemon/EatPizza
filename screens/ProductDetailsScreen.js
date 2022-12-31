@@ -40,13 +40,16 @@ const CheckBox = ({ isSelected, product }) => {
 
 const ProductDetailsScreen = ({ disCard, addToCardHandle, item }) => {
 
-    const [itemCount, setItemCount] = useState(0)
+    const [itemCount, setItemCount] = useState(1)
 
     const handleUpPress = () => {
         setItemCount(count => count + 1)
     }
 
     const handleDownPress = () => {
+        if(itemCount <= 1){
+            return
+        }
         setItemCount(count => count - 1)
     }
 
@@ -209,7 +212,7 @@ const ProductDetailsScreen = ({ disCard, addToCardHandle, item }) => {
                             <FontAwesome name="chevron-up" size={20} color="rgba(255,255,255,0.8)" />
                         </TouchableOpacity>
                         <Text style={styles.buttonNumber}>{itemCount}</Text>
-                        <TouchableOpacity onPress={handleDownPress}>
+                        <TouchableOpacity style={{opacity : (itemCount > 1 ? 1 : 0.4)}} disabled={itemCount <= 1} onPress={handleDownPress}>
                             <FontAwesome name="chevron-down" size={20} color="rgba(255,255,255,0.8)" />
                         </TouchableOpacity>
                     </View>

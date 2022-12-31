@@ -1,9 +1,9 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity , Text } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
 
-const NavBar = () => {
+const NavBar = ({totalItemCount}) => {
     const navigation = useNavigation();
 
     const handlePressHome = () => {
@@ -27,7 +27,12 @@ const NavBar = () => {
                 <FontAwesome name="user" size={26} color="green" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Checkout')}>
-                <FontAwesome name="shopping-cart" size={26} color="green" />
+                <View style={{position : "relative"}}>
+                    {totalItemCount > 0 && (<Text style={{ zIndex: 100, position: "absolute" , top: -5, right : 0 , color : "yellow" }}>
+                    {totalItemCount}
+                    </Text>)}
+                    <FontAwesome name="shopping-cart" size={26} color="green" />
+                </View>
             </TouchableOpacity>
         </View>
     );

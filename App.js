@@ -41,14 +41,17 @@ const App = () => {
   // state for checking Login Status
   const [isLogged, setIsLogged] = useState(false)
   const [addToCard , setAddToCard] = useState({});
+  const [totalItemCount , setTotalItemCount] = useState(0)
   const [productDetailsUiForAddToCard , setproductDetailsUiForAddToCard] = useState("")
 
   console.log(JSON.stringify(addToCard))
 
   const addToCardHandle = (key , data) => {
+    const itemCount = Number(data.itemCount)
+    setTotalItemCount(totalItemCount + itemCount)
     if(addToCard[key]){ 
       setAddToCard((prv)=>{
-        prv[key].itemCount = prv[key].itemCount + 1
+        prv[key].itemCount = Number(prv[key].itemCount) + itemCount
         return {...prv} 
       })
     }else{
@@ -110,7 +113,7 @@ const App = () => {
             <Stack.Screen name="ThankYou" component={ThankYou} />
 
             <Stack.Screen name="Checkout">
-                {() => <Checkout addToCard={addToCard}  setAddToCard={setAddToCard} />}
+                {() => <Checkout setTotalItemCount={setTotalItemCount} addToCard={addToCard}  setAddToCard={setAddToCard} />}
             </Stack.Screen>
 
             <Stack.Screen name="FilteredProduct">
@@ -122,7 +125,7 @@ const App = () => {
             <Stack.Screen name="UploadPhoto" component={UploadPhoto} />
             <Stack.Screen name="ConfirmUploadPhoto" component={ConfirmUploadPhoto} />
           </Stack.Navigator>
-          {isLogged && <NavBar />}
+          {isLogged && <NavBar totalItemCount={totalItemCount} />}
           
         </NavigationContainer>
       </View>
