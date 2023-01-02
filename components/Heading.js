@@ -2,18 +2,13 @@ import { View, TouchableOpacity, StyleSheet, Text } from "react-native"
 import { FontAwesome } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native"
 
-const Heading = ({ disCard , title }) => {
+const Heading = ({ title }) => {
 
     const navigation = useNavigation()
 
     const handleBackButton = () => {
-        if(disCard){
-            disCard()
-            return
-        }else{
-            navigation.goBack()
-        }
-        
+        navigation.goBack()
+
     }
 
     return (

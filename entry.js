@@ -4,10 +4,13 @@ import { registerRootComponent } from "expo";
 import { activateKeepAwake } from "expo-keep-awake";
 import { createRoot } from "react-dom/client";
 import App from "./App"; /* CHANGE THE PATH BASED ON WHERE YOURS IS LOCATED */
-
+import { StoreProvider } from 'easy-peasy';
+import { store } from "./globalState/store";
 const Main = () => {
     return (
+      <StoreProvider store={store}>
         <App />
+      </StoreProvider>
     )
 }
 if (__DEV__) {

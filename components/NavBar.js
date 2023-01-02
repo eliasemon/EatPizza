@@ -1,9 +1,10 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { StyleSheet, View, TouchableOpacity , Text } from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import { useStoreState } from 'easy-peasy';
 
-
-const NavBar = ({totalItemCount}) => {
+const NavBar = () => {
+    const totalItemCount = useStoreState((state) => state.totalItemCount)
     const navigation = useNavigation();
 
     const handlePressHome = () => {

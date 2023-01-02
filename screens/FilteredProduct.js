@@ -9,9 +9,7 @@ import { FilterProductStyle as styles } from '../styles'
 
 
 
-const FilteredProduct = ({pdUIAddToCardHandle}) => {
-    const  navigation  = useNavigation();
-    const route = useRoute()
+const FilteredProduct = ({navigation , route}) => {
     const { activeID } = route.params;
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
@@ -155,8 +153,8 @@ const FilteredProduct = ({pdUIAddToCardHandle}) => {
                 onEndReached={infinityScrollHandle}
                 data={itemsDataForView}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={()=> pdUIAddToCardHandle(item)}>
-                        <ProductCard pdUIAddToCardHandle={pdUIAddToCardHandle}  cardsType="button" item={item}/>
+                    <TouchableOpacity onPress={()=> navigation.navigate("ProductDetailsScreen", {item : item})}>
+                        <ProductCard pdUIAddToCardHandle={()=> navigation.navigate("ProductDetailsScreen", {item : item})} cardsType="button" item={item}/>
                     </TouchableOpacity>
                 )}
                 keyExtractor={item => item.id}

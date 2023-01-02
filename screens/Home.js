@@ -17,9 +17,7 @@ const dataHeadinforUi = [
 ]
 
 
-const Home = ({pdUIAddToCardHandle}) => {
-    const  navigation  = useNavigation();
-    // const route = useRoute()
+const Home = ({navigation}) => {
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
     const [isActiveCategoriesId, setisActiveCategoriesId] = useState({})
@@ -176,8 +174,8 @@ const Home = ({pdUIAddToCardHandle}) => {
                         )
                     }
                     return (
-                        <TouchableOpacity onPress={()=> pdUIAddToCardHandle(item)}>
-                            <ProductCard pdUIAddToCardHandle={pdUIAddToCardHandle} cardsType="button" item={item}/>
+                        <TouchableOpacity onPress={()=> navigation.navigate("ProductDetailsScreen", {item : item})}>
+                            <ProductCard pdUIAddToCardHandle={()=> navigation.navigate("ProductDetailsScreen", {item : item})} cardsType="button" item={item}/>
                         </TouchableOpacity>
                         )
                 }}

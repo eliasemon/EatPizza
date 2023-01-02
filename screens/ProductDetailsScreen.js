@@ -1,11 +1,12 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView, TextInput, Alert } from "react-native"
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView, TextInput, Alert , Modal} from "react-native"
 import Heading from "../components/Heading"
 import { NextButton } from "../components/Buttons"
 import { FontAwesome, Ionicons } from "@expo/vector-icons"
 import { useEffect, useState } from "react"
 import { styles, stylesForAlert } from "../styles/ProductDetails.style"
-
 import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise } from "../utils"
+import { useStoreActions } from 'easy-peasy';
+
 const RadioButton = ({ product, selectedId }) => {
     return (
         <View>
@@ -38,8 +39,9 @@ const CheckBox = ({ isSelected, product }) => {
 }
 
 
-const ProductDetailsScreen = ({ disCard, addToCardHandle, item }) => {
-
+const ProductDetailsScreen = ({ navigation , route }) => {
+    const addTodo = useStoreActions((actions) => actions.addToCard);
+    const {item} = route.params;
     const [itemCount, setItemCount] = useState(1)
 
     const handleUpPress = () => {
@@ -139,7 +141,12 @@ const ProductDetailsScreen = ({ disCard, addToCardHandle, item }) => {
             specialInstructions: specialInstructions,
             itemCount: itemCount
         }
-        addToCardHandle(key, data)
+        addTodo({key : key , data : {...data}})
+        navigation.goBack()
+        setSelectedVariant("")
+        setSelectedAddonsForCard({})
+        setSpecialInstructions("")
+        setAddons("")
 
     }
     useEffect(() => {
@@ -153,8 +160,16 @@ const ProductDetailsScreen = ({ disCard, addToCardHandle, item }) => {
     }, [])
 
     return (
+      <Modal 
+      animationType="fade"
+      // transparent={true}
+      onRequestClose={() => {
+        navigation.goBack()
+      }}
+      visible={true}
+      >
         <View style={styles.checkoutContainer}>
-            <Heading disCard={disCard} title="Product Details" />
+            <Heading title="Product Details" />
             <ScrollView >
 
                 <View style={styles.imageContainer}>
@@ -219,6 +234,7 @@ const ProductDetailsScreen = ({ disCard, addToCardHandle, item }) => {
                 </View>
             </ScrollView>
         </View >
+    </Modal>
     )
 }
 
