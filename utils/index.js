@@ -103,7 +103,10 @@ export const getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise = async (co
   const docRef = doc(db, `${collectionRef}`, `${idRef}`);
   const docSnap = await getDoc(docRef);
   const data = docSnap.data();
-  data.id = docSnap.id
+  if(data){
+    data.id = docSnap.id
+  }
+  
   return data
 }
 

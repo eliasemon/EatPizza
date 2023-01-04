@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import { IconButton, NextButton } from "./../components/Buttons";
-import { OtpInput } from "../components/TextInput";
-import backButton from "../assets/icons/backOrange.png";
-import { OtpStyle as styles } from "../styles";
+import { IconButton, NextButton } from "../Buttons";
+import { OtpInput } from "../TextInput";
+import backButton from "../../assets/icons/backOrange.png";
+import { OtpStyle as styles } from "../../styles";
 
 
 const Otp = ({code , setCode , confirmCode}) => {

@@ -1,14 +1,16 @@
 import { View, Image, Text, StyleSheet } from "react-native";
-import { NextButton } from "./../components/Buttons";
-import foods from "../assets/images/foods.png";
-import { ReadyStyle as styles } from "../styles";
+// import { NextButton } from "./../components/Buttons";
+import foods from "../../assets/images/foods.png";
+import { NextButton } from "../Buttons";
+import { ReadyStyle as styles } from "../../styles";
+import { action } from "easy-peasy";
+// NextButton
 
-
-const Ready = ({ navigation }) => {
-
+const Ready = () => {
+  const LoadingChanger =   useStoreActions(action => action.LoadingChanger)
   // onClick this button change screen to Login screen
   const handlePress = () => {
-    navigation.navigate('Login')
+    LoadingChanger({status : true , type : "LoginUI"})
   };
 
   return (

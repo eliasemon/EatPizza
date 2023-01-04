@@ -2,20 +2,20 @@ import { TextInput, StyleSheet } from "react-native";
 import { useState } from "react";
 import { COLORS } from "../constants/theme";
 
-const handleChange = () => {
-  console.log("Handling Text Changes");
-};
+// const handleChange = () => {
+//   console.log("Handling Text Changes");
+// };
 
-const InputText = () => {
-  const [name, setName] = useState(null);
+const InputText = ({fullName , setFullName}) => {
+
   return (
     <TextInput
       style={styles.input}
-      onChangeText={handleChange}
-      value={name}
+      onChangeText={setFullName}
+      value={fullName}
       placeholder="Enter your full name"
       keyboardType="default"
-      placeholderTextColor={COLORS.white}
+      placeholderTextColor="#848484"
     />
   );
 };

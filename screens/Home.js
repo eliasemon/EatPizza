@@ -7,6 +7,7 @@ import ProductCard from '../components/ProductCard';
 import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../utils';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useStoreActions } from 'easy-peasy';
 
 
 const dataHeadinforUi = [
@@ -18,17 +19,25 @@ const dataHeadinforUi = [
 
 
 const Home = ({navigation}) => {
+    const LoadingChanger = useStoreActions(actions => actions.LoadingChanger)
+
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
     const [isActiveCategoriesId, setisActiveCategoriesId] = useState({})
     const [itemsSnapshot, setItemsSnapshot] = useState("")
     const [itemsDataForView , setItemsDataForView] = useState(dataHeadinforUi)
     const flatListRef = useRef(null)
+    const dataLoading = useRef(false)
     
 
     const infinityScrollHandle = () =>{
+        if(dataLoading.current) return;
         const isActiveCatArr = Object.keys(isActiveCategoriesId)
+        if(!itemsSnapshot[4]){
+            console.log("Items List End")
+        }
         if(itemsSnapshot && !!itemsSnapshot[4]){
+            dataLoading.current = true;
             if(isActiveCatArr.length > 0){
                 getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 , itemsSnapshot[4] , {queryField : "selectedCatagories" , queryArray : isActiveCatArr}).catch(v => console.log(v))
                 // return;
@@ -45,7 +54,9 @@ const Home = ({navigation}) => {
 
     useEffect(() => {
         // getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5)
-        getDataWithOutRealTimeUpdates(setCategories, "catagories");
+        getDataWithOutRealTimeUpdates(setCategories, "catagories").then(()=>{
+            LoadingChanger({status : false , type : "BootLoaderUi"})
+        });
     }, []);
     
 
@@ -57,6 +68,7 @@ const Home = ({navigation}) => {
             return item
            })
            setItemsDataForView(prv => ([...prv , ...data]))
+           dataLoading.current = false;
         //    if(Object.keys(isActiveCategoriesId).length > 0){
         //         // (async()=>{
         //         //    await flatListRef.current.scrollToOffset({offset : 70 , animated : true})

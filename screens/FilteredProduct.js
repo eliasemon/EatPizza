@@ -16,13 +16,15 @@ const FilteredProduct = ({navigation , route}) => {
     const [isActiveCategoriesId, setisActiveCategoriesId] = useState(activeID)
     const [itemsSnapshot, setItemsSnapshot] = useState("")
     const [itemsDataForView , setItemsDataForView] = useState("")
-
+    const dataLoading = useRef(false)
     
 
 
     const infinityScrollHandle = () => {
+        if(dataLoading.current) return;
         const isActiveCatArr = Object.keys(isActiveCategoriesId)
         if (itemsSnapshot && !!itemsSnapshot[4]) {
+            dataLoading.current = true;
             if (isActiveCatArr.length > 0) {
                 getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4], { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(v => console.log(v))
                 // return;
@@ -63,6 +65,7 @@ const FilteredProduct = ({navigation , route}) => {
                     return item
                 })
            setItemsDataForView(prv => ([...prv , ...data]))
+           dataLoading.current = false;
         //    if(Object.keys(isActiveCategoriesId).length > 0){
         //         // (async()=>{
         //         //    await flatListRef.current.scrollToOffset({offset : 70 , animated : true})

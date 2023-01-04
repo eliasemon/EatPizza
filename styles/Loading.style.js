@@ -8,9 +8,10 @@ export default StyleSheet.create({
         backgroundColor: "transparent",
         width: "100%",
         height: "100%",
-        zIndex: 2,
+        zIndex: 3,
     },
     image: {
+        zIndex: 10,
         width: 162,
         height: 202,
     },

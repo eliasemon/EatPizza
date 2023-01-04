@@ -5,27 +5,22 @@ import { Background } from "./components";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NavBar from "./components/NavBar";
-
 import {
   Checkout,
   ConfirmUploadPhoto,
   FilteredProduct,
   Home,
-  Loading,
-  Login,
   Notification,
-  Otp,
   Payment,
   ProductDetailsScreen,
   Profile,
   ProfileOrders,
   ProfileUpdate,
-  Ready,
-  Signup,
   Shipping,
   ThankYou,
   UploadPhoto
 } from './screens'
+import BootLoader from "./components/bootLoader";
 
 
 
@@ -40,7 +35,6 @@ const MyTheme = {
 const App = () => {
 
   // state for checking Login Status
-  const [isLogged, setIsLogged] = useState(false)
 
 
   return (
@@ -51,20 +45,15 @@ const App = () => {
         <View style={styles.container}>
           
           <NavigationContainer theme={MyTheme}>
-          {/* {productDetailsUiForAddToCard && (productDetailsUiForAddToCard) } */}
-
+            <BootLoader />
             <Stack.Navigator screenOptions={{
               headerShown: false
             }}>
-              <Stack.Screen name="Loading" component={Loading} />
-              <Stack.Screen name="Ready" component={Ready} />
+
               {/* <Stack.Screen name="Login" component={Login} initialParams={{
                 title: 'My App',
                 description: 'This is my app'
               }} /> */}
-              <Stack.Screen name="Login">
-                {() => <Login setIsLogged={setIsLogged} />}
-              </Stack.Screen>
               <Stack.Screen name="Home" component={Home} />
               <Stack.Screen name="Notification" component={Notification} />
               <Stack.Screen name="Shipping" component={Shipping} />
@@ -79,7 +68,7 @@ const App = () => {
               <Stack.Screen name="UploadPhoto" component={UploadPhoto} />
               <Stack.Screen name="ConfirmUploadPhoto" component={ConfirmUploadPhoto} />
             </Stack.Navigator>
-            {isLogged && <NavBar/>}
+              <NavBar/>
             
           </NavigationContainer>
         </View>

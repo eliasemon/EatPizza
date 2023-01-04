@@ -6,7 +6,23 @@ export const store = createStore({
     totalItemCount : 0,
     subTottal :  0,
 
+
+    bootloaderLoading : true,
+    LoginUI : false,
+
     // actions 
+
+    LoadingChanger : action((state, payload) => {
+        const {status , type} = payload
+        if(type === "LoginUI"){
+            state.LoginUI = status;
+            return
+        }        
+        state.bootloaderLoading = status;
+    }),
+
+
+    // -------------
     addToCard : action((state, payload) => {
         const {shopingCard} = state
         const {data , key} = payload
