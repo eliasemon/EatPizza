@@ -138,43 +138,44 @@ const Login = () => {
   const nameSubmitions = (fullName) => {
     console.log(auth.currentUser.user)
     if (!inputValidate(fullName, "name")) return;
+    const data = {
+      id : auth.currentUser.uid,
+      uid : auth.currentUser.uid,
+      isRestricted: false,
+      phoneNumber:  auth.currentUser.phoneNumber,
+      fullName : fullName,
+      shopingCart : {},
+      lastFiveOrdersID : [],
+      shipingAddress : "",
+      profileCreation : Date.now(),
+
+    }
+    setDataToCollection(data , "usersList" , false).then(()=>{
+      updateProfile(auth.currentUser, {
+        displayName:`${fullName}`, photoURL: undefined
+      }).then(()=>{
+        changeTheScreenHandle()
+      }).catch((error) => {
+        Alert.alert(
+          "SomeThings Went Worng",
+          "Please Try Again latter",
+          [
+            { text: "OK" }
+          ],
+          {
+            cancelable: false,
+            overlayStyle: stylesForAlert.overlay,
+            alertContainerStyle: stylesForAlert.alertContainer,
+            titleStyle: stylesForAlert.text,
+            messageStyle: stylesForAlert.text,
+            buttonStyle: stylesForAlert.buttonContainer,
+            buttonTextStyle: stylesForAlert.buttonText,
+          }
+        );
+        changeTheScreenHandle()
+      });
+    })
     
-    updateProfile(auth.currentUser, {
-      displayName:`${fullName}`, photoURL: undefined
-    }).then(() => {
-      const data = {
-        uid : auth.currentUser.uid,
-        isRestricted: false,
-        phoneNumber:  auth.currentUser.phoneNumber,
-        fullName : fullName,
-        shopingCart : {},
-        lastFiveOrdersID : [],
-        createdAt : auth.currentUser.createdAt,
-  
-      }
-      setDataToCollection(data , "userList", auth.currentUser.uid)
-      changeTheScreenHandle()
-    }).catch((error) => {
-      Alert.alert(
-        "SomeThings Went Worng",
-        "Please Try Again latter",
-        [
-          { text: "OK" }
-        ],
-        {
-          cancelable: false,
-          overlayStyle: stylesForAlert.overlay,
-          alertContainerStyle: stylesForAlert.alertContainer,
-          titleStyle: stylesForAlert.text,
-          messageStyle: stylesForAlert.text,
-          buttonStyle: stylesForAlert.buttonContainer,
-          buttonTextStyle: stylesForAlert.buttonText,
-        }
-      );
-      changeTheScreenHandle()
-    });
-
-
     
 
   }

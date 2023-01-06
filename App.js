@@ -24,6 +24,7 @@ import BootLoader from "./components/bootLoader";
 
 
 
+
 const Stack = createNativeStackNavigator();
 
 const MyTheme = {
@@ -35,7 +36,6 @@ const MyTheme = {
 const App = () => {
 
   // state for checking Login Status
-
 
   return (
     <SafeAreaView>

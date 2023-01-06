@@ -6,6 +6,8 @@ export const store = createStore({
     totalItemCount : 0,
     subTottal :  0,
 
+    cachesForOrder : {},
+
 
     bootloaderLoading : true,
     LoginUI : false,
@@ -23,6 +25,22 @@ export const store = createStore({
 
 
     // -------------
+        clearShopingCard : action((state , payload)=>{
+            state.shopingCard = {}
+            state.totalItemCount = 0,
+            state.subTottal = 0
+        }),
+
+        addDataToCachesForOrder : action((state , payload)=>{
+            const {type , data} = payload
+            if(type === "spread"){
+                const tempData = { ...state.cachesForOrder} 
+                state.cachesForOrder = {...tempData , ...data}
+            }else {
+                state.cachesForOrder  = {...data} 
+            }
+        }),
+    //
     addToCard : action((state, payload) => {
         const {shopingCard} = state
         const {data , key} = payload
