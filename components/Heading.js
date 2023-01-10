@@ -1,6 +1,7 @@
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native"
 import { FontAwesome } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native"
+import { GlobalStyle } from "../styles"
 
 const Heading = ({ title }) => {
 
@@ -12,7 +13,7 @@ const Heading = ({ title }) => {
     }
 
     return (
-        <View style={styles.heading}>
+        <View style={[styles.heading, GlobalStyle.sidePadding]}>
             <TouchableOpacity onPress={handleBackButton} style={styles.backButton}>
                 <FontAwesome name="angle-left" size={45} color="lightgreen" />
             </TouchableOpacity>

@@ -8,6 +8,7 @@ import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../uti
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useStoreActions } from 'easy-peasy';
+import { GlobalStyle } from '../styles';
 
 
 const dataHeadinforUi = [
@@ -142,7 +143,7 @@ const Home = ({navigation}) => {
     
     const PageUi = (
         <View style={{height : 270 }}>
-            <View style={styles.heading }>
+            <View style={[styles.heading, GlobalStyle.sidePadding]}>
                 <Text style={styles.title}>Find Your Favorite Food</Text>
                 <TouchableOpacity  style={styles.notification} onPress={()=> navigation.navigate("Notification")}>
                     <FontAwesome name="bell-o" size={32} color="white" />
@@ -166,7 +167,7 @@ const Home = ({navigation}) => {
                 renderItem={({ item }) => {
                     if (item.type) {
                         return (
-                            <View style={{ backgroundColor: '#0D0D0D' }}>
+                            <View style={[{ backgroundColor: '#0D0D0D' }, GlobalStyle.sidePadding]}>
                                 <View style={styles.section}>
                                     <View style={styles.categoriesHeader}>
                                         <Text style={styles.sectionTitle}>Categories</Text>
@@ -186,7 +187,7 @@ const Home = ({navigation}) => {
                         )
                     }
                     return (
-                        <TouchableOpacity onPress={()=> navigation.navigate("ProductDetailsScreen", {item : item})}>
+                        <TouchableOpacity style={GlobalStyle.sidePadding} onPress={() => navigation.navigate("ProductDetailsScreen", { item: item })}>
                             <ProductCard pdUIAddToCardHandle={()=> navigation.navigate("ProductDetailsScreen", {item : item})} cardsType="button" item={item}/>
                         </TouchableOpacity>
                         )
