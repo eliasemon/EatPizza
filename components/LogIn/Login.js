@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { View, Image, StyleSheet, TextInput, Modal, Text , Alert} from "react-native";
+import { View, Image, TouchableOpacity, TextInput, Modal, Text, Alert } from "react-native";
 import logo from "../../assets/images/logo.png";
 import { NextButton } from "../Buttons";
 import { auth, firebaseApp } from '../../config'
@@ -220,7 +220,7 @@ const Login = () => {
     phoneUi: (<View style={styles.container}>
       <Image source={logo} style={styles.image} />
       <View>
-        <Text> "+88" </Text>
+        {/* <Text> "+88" </Text> */}
         <TextInput
           style={styles.input}
           onChangeText={setPhoneNumber}
@@ -232,9 +232,14 @@ const Login = () => {
         />
       </View>
 
-
-      <NextButton onPress={sendVerfication} title="Login" />
-      <NextButton onPress={changeTheScreenHandle} title="Skip For Now" />
+      <View >
+        <NextButton onPress={sendVerfication} title="Login" />
+        <View style={{ height: 20 }} />
+        <TouchableOpacity onPress={changeTheScreenHandle} style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ color: '#fff' }}>Skip for now</Text>
+        </TouchableOpacity>
+        {/* <NextButton onPress={changeTheScreenHandle} title="Skip For Now" /> */}
+      </View>
     </View>),
     optUi: (<Otp changeTheScreenHandle={changeTheScreenHandle} phoneNumber={phoneNumber} code={code} setCode={setCode} confirmCode={confirmCode} />),
     placingNameUi: (<Signup nameSubmitions={nameSubmitions} />)
