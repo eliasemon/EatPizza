@@ -130,8 +130,9 @@ const Login = () => {
       return
     }
     (new PhoneAuthProvider(auth)).verifyPhoneNumber(ValidatedPhoneNumber, recaptchaVerification.current)
-      .then(setVerificationId)
-    setInputView("optUi")
+      .then(setVerificationId).then(() => {
+        setInputView("optUi")
+      })
   }
 
   // this functionalies created for dummy screen change
@@ -235,7 +236,7 @@ const Login = () => {
       <NextButton onPress={sendVerfication} title="Login" />
       <NextButton onPress={changeTheScreenHandle} title="Skip For Now" />
     </View>),
-    optUi: (<Otp phoneNumber={phoneNumber} code={code} setCode={setCode} confirmCode={confirmCode} />),
+    optUi: (<Otp changeTheScreenHandle={changeTheScreenHandle} phoneNumber={phoneNumber} code={code} setCode={setCode} confirmCode={confirmCode} />),
     placingNameUi: (<Signup nameSubmitions={nameSubmitions} />)
   }
 

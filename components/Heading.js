@@ -3,12 +3,16 @@ import { FontAwesome } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native"
 import { GlobalStyle } from "../styles"
 
-const Heading = ({ title }) => {
+const Heading = ({ changeTheScreenHandle, title }) => {
 
     const navigation = useNavigation()
 
     const handleBackButton = () => {
-        navigation.goBack()
+        if (changeTheScreenHandle) {
+            changeTheScreenHandle();
+        } else {
+            navigation.goBack()
+        }
 
     }
 

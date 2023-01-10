@@ -1,10 +1,9 @@
 import { TextInput, StyleSheet } from "react-native";
 import { useState } from "react";
 import { COLORS } from "../constants/theme";
+import { GlobalStyle } from "../styles";
 
-// const handleChange = () => {
-//   console.log("Handling Text Changes");
-// };
+
 
 const InputText = ({fullName , setFullName}) => {
 
@@ -48,15 +47,15 @@ const styles = StyleSheet.create({
   otpinput: {
     color: "#fff",
     backgroundColor: "#252525",
-    width: "90%",
+    marginHorizontal: 25,
     borderRadius: 10,
-    height: 100,
-    margin: 12,
     borderWidth: 1,
     padding: 20,
     fontSize: 50,
     textAlign: "center",
     letterSpacing: 15,
+    marginTop: 15,
+    marginBottom: 80
   },
 });
 

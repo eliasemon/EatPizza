@@ -11,7 +11,7 @@ export const NextButton = ({
   paddingY,
 }) => {
   return (
-    <View>
+    <View style={{ width: '100%', alignSelf: 'center' }}>
       <TouchableOpacity
         onPress={onPress}
         style={

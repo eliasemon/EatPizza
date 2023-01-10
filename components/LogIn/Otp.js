@@ -1,26 +1,38 @@
-import { useState } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-import { IconButton, NextButton } from "../Buttons";
+import { View, Text } from "react-native";
+import { NextButton } from "../Buttons";
 import { OtpInput } from "../TextInput";
-import backButton from "../../assets/icons/backOrange.png";
 import { OtpStyle as styles } from "../../styles";
+import Heading from "../Heading";
+import { GlobalStyle } from "../../styles";
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 
-const Otp = ({code , setCode , confirmCode}) => {
+const Otp = ({ changeTheScreenHandle, phoneNumber, code, setCode, confirmCode }) => {
+  console.log('Calling');
+  const [timer, setTimer] = useState(30)
+  useEffect(() => {
+    const timoutFunction = setTimeout(() => {
+      if (timer > 0) {
+        setTimer(timer - 1)
+      } else {
+        clearTimeout(timoutFunction)
+        changeTheScreenHandle()
+      }
+    }, 1000)
+  }, [timer])
+
+
+
   return (
     <View style={styles.container}>
-      <View>
-        <IconButton
-          onPress={null}
-          src={backButton}
-          paddingX={25}
-          paddingY={25}
-          width={15}
-          height={24}
-        />
+      <Heading changeTheScreenHandle={changeTheScreenHandle} />
+      <View style={[{ marginVertical: 15 }, GlobalStyle.sidePadding]}>
         <Text style={styles.largeText}>Enter 6 digit Verification code</Text>
         <Text style={styles.smallText}>
-          Code send to +8801771551*** . This code will expired in 01:30
+          Code send to +88{
+            phoneNumber.slice(0, 7)
+          }**** . This code will expired in 0{Math.floor(timer / 60)}:{timer % 60}
         </Text>
       </View>
       <OtpInput 
