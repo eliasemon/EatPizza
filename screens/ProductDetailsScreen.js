@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView, TextInput, Alert, Modal } from "react-native"
+import { View, Text, TouchableOpacity, Image, ScrollView, TextInput, Alert, Modal } from "react-native"
 import Heading from "../components/Heading"
 import { NextButton } from "../components/Buttons"
 import { FontAwesome, Ionicons } from "@expo/vector-icons"
@@ -10,14 +10,16 @@ import { GlobalStyle } from "../styles"
 
 const RadioButton = ({ product, selectedId }) => {
     return (
-        <View>
-            <View>
-                {/* <Ionicons name={variation[id].isSelected ? "radio-button-on" : "radio-button-off"} size={24} color="white" /> */}
-                <Ionicons name={product.id == selectedId ? "radio-button-on" : "radio-button-off"} size={24} color="white" />
+        <View style={styles.radioButton}>
+            <View style={{ flexDirection: 'row' }}>
+                <View>
+                    {/* <Ionicons name={variation[id].isSelected ? "radio-button-on" : "radio-button-off"} size={24} color="white" /> */}
+                    <Ionicons name={product.id == selectedId ? "radio-button-on" : "radio-button-off"} size={24} color="white" />
+                </View>
+                <Text style={styles.text}>
+                    {product.name}
+                </Text>
             </View>
-            <Text style={styles.text}>
-                {product.name}
-            </Text>
             <Text style={styles.text}>{product.sellingPrice}</Text>
         </View>
     )
@@ -26,12 +28,15 @@ const RadioButton = ({ product, selectedId }) => {
 const CheckBox = ({ isSelected, product }) => {
     return (
         <View style={styles.radioButton} >
-            <View>
-                <FontAwesome name={isSelected ? "check-circle-o" : "circle-o"} size={24} color="#fff" />
+            <View style={{ flexDirection: 'row' }}>
+
+                <View>
+                    <FontAwesome name={isSelected ? "check-circle-o" : "circle-o"} size={24} color="#fff" />
+                </View>
+                <Text style={styles.text}>
+                    {product.name}
+                </Text>
             </View>
-            <Text style={styles.text}>
-                {product.name}
-            </Text>
             <Text style={styles.text}>
                 {product.price}
             </Text>

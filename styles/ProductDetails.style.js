@@ -46,7 +46,8 @@ export const styles = StyleSheet.create({
     },
     radioButton: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     input: {
         color: '#fff',

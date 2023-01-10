@@ -1,4 +1,4 @@
-const COLORS = {
+export default {
     primary: "#15BE77",
     white: "#FFF",
     gray: "#252525",
@@ -19,5 +19,3 @@ const COLORS = {
 //     medium: 10,
 //     hard: 15,
 // };
-
-export { COLORS }
