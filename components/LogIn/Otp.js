@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 
 const Otp = ({ changeTheScreenHandle, phoneNumber, code, setCode, confirmCode }) => {
   console.log('Calling');
-  const [timer, setTimer] = useState(30)
+  const [timer, setTimer] = useState(120)
   useEffect(() => {
     const timoutFunction = setTimeout(() => {
       if (timer > 0) {

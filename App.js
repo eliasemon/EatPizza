@@ -58,7 +58,7 @@ const App = () => {
             <Stack.Screen name="Checkout" component={Checkout} />
             <Stack.Screen name="FilteredProduct" component={FilteredProduct} />
             <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
-            <Stack.Screen name="Profile" component={Otp} />
+            <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="ProfileOrders" component={ProfileOrders} />
             <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
             <Stack.Screen name="UploadPhoto" component={UploadPhoto} />
