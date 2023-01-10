@@ -1,14 +1,16 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import Heading from '../components/Heading'
 import profile from '../assets/images/profile.png'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import { ProfileStyle as styles } from '../styles';
+import { GlobalStyle, ProfileStyle as styles } from '../styles';
 import { auth } from '../config';
 import {  useStoreActions} from 'easy-peasy';
 import { useEffect , useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
+import { COLORS } from '../constants/theme';
+
 const Profile = ({ navigation }) => {
     const LoadingChanger = useStoreActions(action => action.LoadingChanger)
     const [froce, setForce] =  useState(true)
@@ -43,34 +45,34 @@ const Profile = ({ navigation }) => {
                     <Text style={styles.profileEmail}>{auth.currentUser.phoneNumber}</Text>
                 </View>
             </View>
-            <View>
+                <View style={GlobalStyle.sidePadding}>
                 <TouchableOpacity onPress={()=> navigation.navigate("ProfileUpdate")} style={styles.card}>
                     <View style={styles.icon}>
-                        <FontAwesome5 name="pen" size={24} color="green" />
+                            <FontAwesome5 name="pen" size={24} color={COLORS.primary} />
                     </View>
                     <Text style={styles.title}>Update your Profile</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.card}>
                     <View style={styles.icon}>
-                        <FontAwesome5 name="list" size={24} color="green" />
+                            <FontAwesome5 name="list" size={24} color={COLORS.primary} />
                     </View>
                     <Text style={styles.title}>My Orders</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.card}>
                     <View style={styles.icon}>
-                        <FontAwesome5 name="adjust" size={24} color="green" />
+                            <FontAwesome5 name="adjust" size={24} color={COLORS.primary} />
                     </View>
                     <Text style={styles.title}>Appearence</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.card}>
                     <View style={styles.icon}>
-                        <FontAwesome5 name="home" size={24} color="green" />
+                            <FontAwesome5 name="home" size={24} color={COLORS.primary} />
                     </View>
                     <Text style={styles.title}>Contact Us</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => auth.signOut()} style={styles.card}>
                     <View style={styles.icon}>
-                    <MaterialCommunityIcons name="logout" size={24} color="black" />
+                            <MaterialCommunityIcons name="logout" size={24} color={COLORS.primary} />
                     </View>
                     <Text style={styles.title}>SignOut</Text>
                 </TouchableOpacity>

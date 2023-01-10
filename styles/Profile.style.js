@@ -5,13 +5,13 @@ export default StyleSheet.create({
         marginVertical: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-evenly'
+        // justifyContent: 'space-evenly'
+        justifyContent: 'center',
     },
     profileImage: {
-
+        marginRight: 20
     },
     profileInfo: {
-
     },
     profileName: {
         color: '#fff',
