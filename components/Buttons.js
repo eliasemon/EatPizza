@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import React, { Children } from "react";
 import phone from "../assets/icons/phone.png";
 
 export const NextButton = ({
@@ -28,6 +28,20 @@ export const NextButton = ({
     </View>
   );
 };
+
+export const Button = (props) => {
+  return (
+    <TouchableOpacity {...props}>
+      <Text style={{
+        fontSize: 18,
+        color: '#fff',
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase",
+      }}>{props.children}</Text>
+    </TouchableOpacity>
+  )
+}
 
 export const IconButton = ({ onPress, src, width, height }) => {
   return (

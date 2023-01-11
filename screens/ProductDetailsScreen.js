@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Image, ScrollView, TextInput, Alert, Modal } from "react-native"
 import Heading from "../components/Heading"
-import { NextButton } from "../components/Buttons"
+import { Button, NextButton } from "../components/Buttons"
 import { FontAwesome, Ionicons } from "@expo/vector-icons"
 import { useEffect, useState } from "react"
 import { styles, stylesForAlert } from "../styles/ProductDetails.style"
@@ -179,16 +179,21 @@ const ProductDetailsScreen = ({ navigation, route }) => {
                         <TextInput value={specialInstructions} onChangeText={setSpecialInstructions} style={styles.input} multilinef />
                     </View>
                     <View style={styles.cart}>
-                        <NextButton onPress={addToCardLocalFn} title="Add to Cart" />
                         <View style={styles.buttonSet}>
-                            <TouchableOpacity onPress={handleUpPress}>
-                                <FontAwesome name="chevron-up" size={20} color="rgba(255,255,255,0.8)" />
+                            <TouchableOpacity style={{ marginHorizontal: 20 }} onPress={handleUpPress}>
+                                <FontAwesome name="plus" size={20} color="rgba(255,255,255,0.8)" />
                             </TouchableOpacity>
                             <Text style={styles.buttonNumber}>{itemCount}</Text>
-                            <TouchableOpacity style={{ opacity: (itemCount > 1 ? 1 : 0.4) }} disabled={itemCount <= 1} onPress={handleDownPress}>
-                                <FontAwesome name="chevron-down" size={20} color="rgba(255,255,255,0.8)" />
+                            <TouchableOpacity style={{ opacity: (itemCount > 1 ? 1 : 0.4), marginHorizontal: 20 }} disabled={itemCount <= 1} onPress={handleDownPress}>
+                                <FontAwesome name="minus" size={20} color="rgba(255,255,255,0.8)" />
                             </TouchableOpacity>
                         </View>
+                        <Button onPress={addToCardLocalFn} style={{
+                            paddingHorizontal: 20,
+                            paddingVertical: 10,
+                            backgroundColor: 'rgba(0,255,0,0.35)',
+                            borderRadius: 75
+                        }}>Add to cart</Button>
                     </View>
                 </ScrollView>
             </View >

@@ -30,15 +30,18 @@ export const styles = StyleSheet.create({
         color: '#fff'
     },
     buttonSet: {
+        flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
     },
     buttonNumber: {
         color: '#ffff',
-        fontSize: 25
+        fontSize: 25,
     },
     cart: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
         marginVertical: 30
     },
     addonList: {
