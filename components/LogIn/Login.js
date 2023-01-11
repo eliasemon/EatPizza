@@ -140,7 +140,7 @@ const Login = () => {
     console.log(auth.currentUser.user)
     if (!inputValidate(fullName, "name")) return;
     const data = {
-      id : auth.currentUser.uid,
+      id: auth.currentUser.phoneNumber,
       uid : auth.currentUser.uid,
       isRestricted: false,
       phoneNumber:  auth.currentUser.phoneNumber,

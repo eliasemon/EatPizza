@@ -1,7 +1,7 @@
 import { useStoreActions, useStoreState } from "easy-peasy"
 import { onAuthStateChanged } from "firebase/auth"
 import { useEffect, useRef, useState } from "react"
-import { View, Text, StyleSheet, FlatList, TouchableOpacity , TextInput, Alert , Modal} from "react-native"
+import { View, Text, TouchableOpacity, TextInput, Alert, Modal } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { NextButton } from "../components/Buttons"
 import Heading from "../components/Heading"
@@ -194,7 +194,11 @@ const Checkout = ({navigation}) => {
 
       if(Object.keys(shopingCard).length === 0){
            return( <View>
-                <Heading title="Card Is Empty ,Please Add Some Items" />
+               <Heading title="Order Details" />
+               <View style={{ height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                   <Text style={{ color: '#fff', color: 'rgba(255,255,255,0.9)', fontSize: 18 }}>Cart is empty !</Text>
+                   <Text style={{ color: '#fff', color: 'rgba(255,255,255,0.9)', fontSize: 18 }}>Please add some item. </Text>
+               </View>
             </View>
            )
       }

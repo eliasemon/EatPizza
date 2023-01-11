@@ -58,12 +58,12 @@ const Profile = ({ navigation }) => {
                     </View>
                     <Text style={styles.title}>My Orders</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.card}>
+                    {/* <TouchableOpacity style={styles.card}>
                     <View style={styles.icon}>
                             <FontAwesome5 name="adjust" size={24} color={COLORS.primary} />
                     </View>
                     <Text style={styles.title}>Appearence</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity style={styles.card}>
                     <View style={styles.icon}>
                             <FontAwesome5 name="home" size={24} color={COLORS.primary} />
