@@ -1,4 +1,4 @@
-import { useState, useEffect , useRef} from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, ActivityIndicator } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Banner from '../assets/images/banner.png'
@@ -13,37 +13,37 @@ import { GlobalStyle } from '../styles';
 
 const dataHeadinforUi = [
     {
-        id : "type",
-        type : "ui"
+        id: "type",
+        type: "ui"
     }
 ]
 
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
     const LoadingChanger = useStoreActions(actions => actions.LoadingChanger)
 
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
     const [isActiveCategoriesId, setisActiveCategoriesId] = useState({})
     const [itemsSnapshot, setItemsSnapshot] = useState("")
-    const [itemsDataForView , setItemsDataForView] = useState(dataHeadinforUi)
+    const [itemsDataForView, setItemsDataForView] = useState(dataHeadinforUi)
     const flatListRef = useRef(null)
     const dataLoading = useRef(false)
-    
 
-    const infinityScrollHandle = () =>{
-        if(dataLoading.current) return;
+
+    const infinityScrollHandle = () => {
+        if (dataLoading.current) return;
         const isActiveCatArr = Object.keys(isActiveCategoriesId)
-        if(!itemsSnapshot[4]){
+        if (!itemsSnapshot[4]) {
             console.log("Items List End")
         }
-        if(itemsSnapshot && !!itemsSnapshot[4]){
+        if (itemsSnapshot && !!itemsSnapshot[4]) {
             dataLoading.current = true;
-            if(isActiveCatArr.length > 0){
-                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 , itemsSnapshot[4] , {queryField : "selectedCatagories" , queryArray : isActiveCatArr}).catch(v => console.log(v))
+            if (isActiveCatArr.length > 0) {
+                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4], { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(v => console.log(v))
                 // return;
-            }else{
-                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 , itemsSnapshot[4]).catch(v => console.log(v))
+            } else {
+                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4]).catch(v => console.log(v))
             }
         }
     }
@@ -55,49 +55,49 @@ const Home = ({navigation}) => {
 
     useEffect(() => {
         // getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5)
-        getDataWithOutRealTimeUpdates(setCategories, "catagories").then(()=>{
-            LoadingChanger({status : false , type : "BootLoaderUi"})
+        getDataWithOutRealTimeUpdates(setCategories, "catagories").then(() => {
+            LoadingChanger({ status: false, type: "BootLoaderUi" })
         });
     }, []);
-    
 
-    useEffect(()=>{
-        if(itemsSnapshot && itemsSnapshot.length > 0){
-            const data =  itemsSnapshot.map((doc) =>{
-            const item = doc.data()
-            item.id = doc.id
-            return item
-           })
-           setItemsDataForView(prv => ([...prv , ...data]))
-           dataLoading.current = false;
-        //    if(Object.keys(isActiveCategoriesId).length > 0){
-        //         // (async()=>{
-        //         //    await flatListRef.current.scrollToOffset({offset : 70 , animated : true})
-        //         //     setHomeHeader(false)
-        //         // })()
-        //         // await flatListRef.current.scrollToOffset({offset : 276 , animated : true})
-        //         setHomeHeader(false)
-                  
-        //    }
+
+    useEffect(() => {
+        if (itemsSnapshot && itemsSnapshot.length > 0) {
+            const data = itemsSnapshot.map((doc) => {
+                const item = doc.data()
+                item.id = doc.id
+                return item
+            })
+            setItemsDataForView(prv => ([...prv, ...data]))
+            dataLoading.current = false;
+            //    if(Object.keys(isActiveCategoriesId).length > 0){
+            //         // (async()=>{
+            //         //    await flatListRef.current.scrollToOffset({offset : 70 , animated : true})
+            //         //     setHomeHeader(false)
+            //         // })()
+            //         // await flatListRef.current.scrollToOffset({offset : 276 , animated : true})
+            //         setHomeHeader(false)
+
+            //    }
         }
-        
-    },[itemsSnapshot])
+
+    }, [itemsSnapshot])
 
     useEffect(() => {
         const isActiveCatArr = Object.keys(isActiveCategoriesId)
-            if(isActiveCatArr.length > 0){
-                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 , false , {queryField : "selectedCatagories" , queryArray : isActiveCatArr}).catch(v => console.log(v))
-                return;
-            }
-            else{ 
-                getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5 ).catch(v => console.log(v))
-            }
+        if (isActiveCatArr.length > 0) {
+            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, false, { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(v => console.log(v))
+            return;
+        }
+        else {
+            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(v => console.log(v))
+        }
     }, [isActiveCategoriesId])
 
     const handleChipPress = (id) => {
         const activeID = {}
         activeID[`${id}`] = true
-        navigation.navigate("FilteredProduct", {activeID : activeID})
+        navigation.navigate("FilteredProduct", { activeID: activeID })
     }
 
     const handleCollapseButton = () => {
@@ -140,12 +140,12 @@ const Home = ({navigation}) => {
         return outputArray
     }
 
-    
+
     const PageUi = (
-        <View style={{height : 270 }}>
+        <View style={{ height: 270 }}>
             <View style={[styles.heading, GlobalStyle.sidePadding]}>
                 <Text style={styles.title}>Find Your Favorite Food</Text>
-                <TouchableOpacity  style={styles.notification} onPress={()=> navigation.navigate("Notification")}>
+                <TouchableOpacity style={styles.notification} onPress={() => navigation.navigate("Notification")}>
                     <FontAwesome name="bell-o" size={32} color="white" />
                 </TouchableOpacity>
             </View>
@@ -188,9 +188,9 @@ const Home = ({navigation}) => {
                     }
                     return (
                         <TouchableOpacity style={GlobalStyle.sidePadding} onPress={() => navigation.navigate("ProductDetailsScreen", { item: item })}>
-                            <ProductCard pdUIAddToCardHandle={()=> navigation.navigate("ProductDetailsScreen", {item : item})} cardsType="button" item={item}/>
+                            <ProductCard pdUIAddToCardHandle={() => navigation.navigate("ProductDetailsScreen", { item: item })} cardsType="button" item={item} />
                         </TouchableOpacity>
-                        )
+                    )
                 }}
                 keyExtractor={item => item.id}
             />

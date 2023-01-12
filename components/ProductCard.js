@@ -14,7 +14,7 @@ const ProductCard = ({ UpdateCardItem , item, cardsType, pdUIAddToCardHandle }) 
 
     const cardType = {
         button: (<TouchableOpacity onPress={() => pdUIAddToCardHandle()}>
-            <FontAwesome name="cart-plus" size={26} color="#fff" />
+            <FontAwesome name="cart-arrow-down" size={26} color="#fff" />
         </TouchableOpacity>),
         chip: (<View style={styles.chip}>
             <Text style={styles.chipText}>Done</Text>
