@@ -1,5 +1,6 @@
 import Checkout from './Checkout'
 import ConfirmUploadPhoto from './ConfirmUploadPhoto'
+import ContactUs from './ContactUs'
 import Home from './Home'
 import Notification from './Notification'
 import Payment from './Payment'
@@ -15,6 +16,7 @@ import FilteredProduct from './FilteredProduct';
 export {
     Checkout,
     ConfirmUploadPhoto,
+    ContactUs,
     FilteredProduct,
     Home,
     Notification,

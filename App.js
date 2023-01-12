@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import {
   Checkout,
   ConfirmUploadPhoto,
+  ContactUs,
   FilteredProduct,
   Home,
   Notification,
@@ -63,6 +64,7 @@ const App = () => {
             <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
             <Stack.Screen name="UploadPhoto" component={UploadPhoto} />
             <Stack.Screen name="ConfirmUploadPhoto" component={ConfirmUploadPhoto} />
+            <Stack.Screen name="ContactUs" component={ContactUs} />
           </Stack.Navigator>
           <NavBar />
         </NavigationContainer>

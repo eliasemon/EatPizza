@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native"
+import { View, TextInput } from "react-native"
 import { Button } from "../components/Buttons"
 import Heading from "../components/Heading"
 import { ProfileUpdateStyle as styles } from "../styles"

@@ -64,7 +64,7 @@ const Profile = ({ navigation }) => {
                     </View>
                     <Text style={styles.title}>Appearence</Text>
                 </TouchableOpacity> */}
-                <TouchableOpacity style={styles.card}>
+                    <TouchableOpacity onPress={() => navigation.navigate("ContactUs")} style={styles.card}>
                     <View style={styles.icon}>
                             <FontAwesome5 name="home" size={24} color={COLORS.primary} />
                     </View>
