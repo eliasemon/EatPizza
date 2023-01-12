@@ -1,76 +1,80 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native"
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Heading from "../components/Heading";
+import { ShippingStyle as styles } from "../styles";
+import { auth } from "../config";
+import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise } from "../utils";
+import { useEffect, useRef, useState } from "react";
+import { useStoreActions } from "easy-peasy";
+import { getFirestore , doc , updateDoc} from "firebase/firestore";
 
-const Shipping = (navigation) => {
+const Shipping = ({navigation}) => {
+    const { addDataToCachesForOrder , clearShopingCard } = useStoreActions(action => action)
+    const [shipingAddress , setShipingAddress] = useState("");
+    const [shipingRefforUi, setShipingRefforUi] = useState(false);
+    useEffect(()=>{
+        getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("usersList", auth.currentUser.phoneNumber).then((data) => {
+            if(data.shipingAddress){
+                setShipingAddress(data.shipingAddress)
+                setShipingRefforUi(data.shipingAddress)
+            }
+            
+        })  
+    },[])
+    const setShipingAddressToOrder = async () => {
+        try {
+            const db = getFirestore()
+            const colRef = doc(db, "usersList", `${auth.currentUser.phoneNumber}`);
+            await updateDoc( colRef ,{shipingAddress : shipingAddress })
+ 
+        } catch (error) {
+            console.log(error)
+        }
+        addDataToCachesForOrder({type : "spread" , data : {shipingAddress : shipingAddress}})
+        // const updates = {}
+        // updates['/usersList/' + auth.currentUser.uid + '/shipingAddress' ] = shipingAddress;
+        navigation.navigate("Payment")
+        
+    }
+    const continueWithPrv = () =>{
+        addDataToCachesForOrder({type : "spread" , data : {shipingAddress : shipingAddress}})
+        navigation.navigate("Payment")
+    }
     return (
         <View>
             <Heading navigation={navigation} title="Shipping" />
             <View>
-                <View style={styles.locationCard}>
-                    <Text style={styles.locationCardTitle}>Previous Delivered Location</Text>
-                    <View style={styles.locationDetails}>
-                        <Ionicons name="location" size={36} color="yellow" />
-                        <Text style={styles.locationCardValue}>8502 Preston Rd. Inglewood, Maine 98380</Text>
+                {shipingRefforUi && (
+                    <View style={styles.locationCard}>
+                        <Text style={styles.locationCardTitle}>Previous Delivered Location</Text>
+                        <View style={styles.locationDetails}>
+                            <Ionicons name="location" size={36} color="yellow" />
+                            <Text style={styles.locationCardValue}>{shipingRefforUi}</Text>
+                        </View>
                     </View>
-                </View>
+
+                )}
+                
                 <View style={styles.locationCard}>
                     <Text style={styles.locationCardTitle}>Set New Address</Text>
                     <View style={styles.locationDetails}>
                         <Ionicons name="location" size={36} color="yellow" />
-                        <TextInput style={styles.locationTextBox} placeholder="Put your address here" />
+                        <TextInput  onChangeText={setShipingAddress}  style={styles.locationTextBox} placeholder="Put your address here" />
                     </View>
-                    <TouchableOpacity style={styles.setLocationButton}>
+                    <TouchableOpacity onPress={setShipingAddressToOrder}  style={styles.setLocationButton}>
                         <Text style={styles.setLocationButtonText}>Set Location</Text>
                     </TouchableOpacity>
                 </View>
 
             </View>
+            {shipingRefforUi && (
+                <TouchableOpacity onPress={continueWithPrv} style={styles.setLocationButton}>
+                    <Text style={styles.setLocationButtonText}>Continue</Text>
+                </TouchableOpacity>
+            )}
+            
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    locationCard: {
-        width: '100%',
-        height: 140,
-        backgroundColor: '#282828',
-        marginVertical: 10,
-        borderRadius: 15,
-        paddingHorizontal: 15,
-        justifyContent: 'center',
-    },
-    locationDetails: {
-        flexDirection: 'row',
-    },
-    locationCardTitle: {
-        color: 'rgba(255,255,255,0.7)',
-        marginVertical: 10,
-        fontSize: 17,
-        marginLeft: 10,
-    },
-    locationCardValue: {
-        color: '#fff',
-        fontSize: 20,
-        marginLeft: 10
-    },
-    locationTextBox: {
-        color: '#fff',
-        width: '80%',
-        marginLeft: '5%',
-        paddingLeft: 15,
-        fontSize: 15,
-        backgroundColor: 'rgba(255,255,255,.2)',
-        borderRadius: 5
-    },
-    setLocationButton: {
-        marginVertical: 8,
-        marginLeft: '17%',
-    },
-    setLocationButtonText: {
-        color: 'green',
-        fontSize: 18
-    }
-})
 
 export default Shipping;

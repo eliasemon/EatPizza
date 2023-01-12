@@ -1,26 +1,27 @@
 import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import "react-native-gesture-handler";
-import Background from "./components/Background";
-import Home from "./screens/Home";
+import { Background } from "./components";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Notification from "./screens/Notification";
 import NavBar from "./components/NavBar";
-import Checkout from "./screens/Checkout";
-import Shipping from "./screens/Shipping";
-import Payment from "./screens/Payment";
-import ThankYou from "./screens/ThankYou";
-import Profile from "./screens/Profile";
-import ProfileOrders from "./screens/ProfileOrders";
-import ProfileUpdate from "./screens/ProfileUpdate";
-import UploadPhoto from "./screens/UploadPhoto";
-import ConfirmUploadPhoto from "./screens/ConfirmUploadPhoto";
-import Loading from "./screens/Loading";
-import Ready from "./screens/Ready";
-import Login from "./screens/Login";
-import ProductDetailsScreen from "./screens/ProductDetailsScreen"
-import { useState } from "react";
-import FilteredProduct from "./screens/FilteredProduct";
+import {
+  Checkout,
+  ConfirmUploadPhoto,
+  ContactUs,
+  FilteredProduct,
+  Home,
+  Notification,
+  Payment,
+  ProductDetailsScreen,
+  Profile,
+  ProfileOrders,
+  ProfileUpdate,
+  Shipping,
+  ThankYou,
+  UploadPhoto
+} from './screens'
+import BootLoader from "./components/bootLoader";
+import Otp from "./components/LogIn/Otp";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,42 +34,39 @@ const MyTheme = {
 const App = () => {
 
   // state for checking Login Status
-  const [isLogged, setIsLogged] = useState(false)
-  const [addToCard , setAddToCard] = useState([]);
 
   return (
     <SafeAreaView>
       <StatusBar backgroundColor="#0D0D0D" barStyle="light-content" />
       <Background />
+
       <View style={styles.container}>
         <NavigationContainer theme={MyTheme}>
+          <BootLoader />
           <Stack.Navigator screenOptions={{
             headerShown: false
           }}>
-            <Stack.Screen name="Loading" component={Loading} />
-            <Stack.Screen name="Ready" component={Ready} />
+
             {/* <Stack.Screen name="Login" component={Login} initialParams={{
-              title: 'My App',
-              description: 'This is my app'
-            }} /> */}
-            <Stack.Screen name="Login">
-              {() => <Login setIsLogged={setIsLogged} />}
-            </Stack.Screen>
+                title: 'My App',
+                description: 'This is my app'
+              }} /> */}
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Notification" component={Notification} />
             <Stack.Screen name="Shipping" component={Shipping} />
             <Stack.Screen name="Payment" component={Payment} />
             <Stack.Screen name="ThankYou" component={ThankYou} />
             <Stack.Screen name="Checkout" component={Checkout} />
-            <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
             <Stack.Screen name="FilteredProduct" component={FilteredProduct} />
+            <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="ProfileOrders" component={ProfileOrders} />
             <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
             <Stack.Screen name="UploadPhoto" component={UploadPhoto} />
             <Stack.Screen name="ConfirmUploadPhoto" component={ConfirmUploadPhoto} />
+            <Stack.Screen name="ContactUs" component={ContactUs} />
           </Stack.Navigator>
-          {isLogged && <NavBar />}
+          <NavBar />
         </NavigationContainer>
       </View>
     </SafeAreaView>
@@ -79,7 +77,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-   
   }
 })
 

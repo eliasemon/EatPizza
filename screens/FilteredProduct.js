@@ -1,25 +1,30 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, ActivityIndicator } from "react-native";
-import ProductCard from '../components/ProductCard';
-import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../utils';
 import { AntDesign } from '@expo/vector-icons';
 
+import ProductCard from '../components/ProductCard';
+import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../utils';
+import { FilterProductStyle as styles } from '../styles'
 
 
-const FilteredProduct = ({ route, navigation }) => {
+
+const FilteredProduct = ({navigation , route}) => {
     const { activeID } = route.params;
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
     const [isActiveCategoriesId, setisActiveCategoriesId] = useState(activeID)
     const [itemsSnapshot, setItemsSnapshot] = useState("")
     const [itemsDataForView , setItemsDataForView] = useState("")
-
+    const dataLoading = useRef(false)
     
 
 
     const infinityScrollHandle = () => {
+        if(dataLoading.current) return;
         const isActiveCatArr = Object.keys(isActiveCategoriesId)
         if (itemsSnapshot && !!itemsSnapshot[4]) {
+            dataLoading.current = true;
             if (isActiveCatArr.length > 0) {
                 getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4], { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(v => console.log(v))
                 // return;
@@ -54,8 +59,13 @@ const FilteredProduct = ({ route, navigation }) => {
 
     useEffect(()=>{
         if(itemsSnapshot && itemsSnapshot.length > 0){
-           const data =  itemsSnapshot.map(doc => doc.data())
+            const data =  itemsSnapshot.map((doc) =>{
+                    const item = doc.data()
+                    item.id = doc.id
+                    return item
+                })
            setItemsDataForView(prv => ([...prv , ...data]))
+           dataLoading.current = false;
         //    if(Object.keys(isActiveCategoriesId).length > 0){
         //         // (async()=>{
         //         //    await flatListRef.current.scrollToOffset({offset : 70 , animated : true})
@@ -145,7 +155,11 @@ const FilteredProduct = ({ route, navigation }) => {
             {itemsDataForView && (<FlatList
                 onEndReached={infinityScrollHandle}
                 data={itemsDataForView}
-                renderItem={({ item }) => (<ProductCard cardsType="button" item={item} />)}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={()=> navigation.navigate("ProductDetailsScreen", {item : item})}>
+                        <ProductCard pdUIAddToCardHandle={()=> navigation.navigate("ProductDetailsScreen", {item : item})} cardsType="button" item={item}/>
+                    </TouchableOpacity>
+                )}
                 keyExtractor={item => item.id}
             />) }
             
@@ -158,87 +172,5 @@ const FilteredProduct = ({ route, navigation }) => {
         ))}
     </View> */}
 
-const styles = StyleSheet.create({
-    title: {
-        color: "white",
-        fontSize: 32,
-        width: '70%'
-    },
-    section: {
-        marginBottom: 10,
-    },
-    sectionTitle: {
-        color: '#fff',
-        fontSize: 18,
-        textAlign: 'left',
-    },
-    categoriesHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    collapseButton: {
-        paddingHorizontal: 20
-    },
-    chipContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        paddingVertical: 10,
-    },
-    chip: {
-        backgroundColor: 'rgba(255,255,255,.1)',
-        paddingHorizontal: 15,
-        paddingVertical: 5,
-        margin: 5,
-        borderRadius: 20
-    },
-    activeChip: {
-        backgroundColor: 'rgba(0,255,0,.125)',
-        paddingHorizontal: 15,
-        paddingVertical: 5,
-        margin: 5,
-        borderRadius: 20
-    },
-    chipText: {
-        color: "#fff"
-    },
-    cardContainer: {
-        // paddingBottom: '20%'
-    },
-    card: {
-        width: '100%',
-        height: 120,
-        backgroundColor: '#252525',
-        borderRadius: 20,
-        paddingHorizontal: 15,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 10
-    },
-    cardProduct: {
-        flexDirection: 'row'
-    },
-    cardImage: {
-        width: "30%",
-        height: 80,
-    },
-    cardTextBox: {
-        marginLeft: 20,
-        justifyContent: 'space-between'
-    },
-    cardTextTitle: {
-        fontSize: 20,
-        color: '#fff'
-    },
-    cardTextCategory: {
-        fontSize: 16,
-        color: '#808080'
-    },
-    cardTextPrice: {
-        fontSize: 18,
-        color: 'rgba(21,190,119,1)'
-    },
-});
 
 export default FilteredProduct;

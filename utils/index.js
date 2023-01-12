@@ -98,6 +98,19 @@ export const getSingleDataWithOutRealTimeUpdates = async (collectionRef , idRef)
 }
 
 
+
+export const getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise = async (collectionRef , idRef) => {
+  const docRef = doc(db, `${collectionRef}`, `${idRef}`);
+  const docSnap = await getDoc(docRef);
+  const data = docSnap.data();
+  if(data){
+    data.id = docSnap.id
+  }
+  
+  return data
+}
+
+
 export const showDataByArrayQuers = (setState , collectionRef , queryArray , queryField ) => {
   const q = query(collection(db, `${collectionRef}`), where(`${queryField}`, 'array-contains-any', queryArray));
   
@@ -129,17 +142,18 @@ export const setDataToCollection = async (items , collectionRef , isSingle = tru
   try {
   
     if(isSingle && await isExist(collection(db, `${collectionRef}`) , items.name)){
-     
       return
     }
     const colRef = doc(db, `${collectionRef}` , `${items.id}`)
+    console.log(JSON.stringify(items))
     // delete items["id"]
     await setDoc( colRef ,  {...items});
  
   } catch (e) {
-   
+    console.log(e)
   }
 }
+
 
 
 
