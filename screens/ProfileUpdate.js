@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native"
+import { Button } from "../components/Buttons"
 import Heading from "../components/Heading"
-import { ProfileStyle as styles } from "../styles"
+import { ProfileUpdateStyle as styles } from "../styles"
 
 
 const ProfileUpdate = () => {
@@ -14,9 +15,7 @@ const ProfileUpdate = () => {
                 <TextInput style={styles.input} placeholder="Last Name" placeholderTextColor="rgba(255,255,255,.8)" />
                 <TextInput style={styles.input} placeholder="Email Address" placeholderTextColor="rgba(255,255,255,.8)" />
             </View>
-            <TouchableOpacity style={styles.saveButton}>
-                <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
+            <Button style={styles.saveButton}>Save</Button>
         </View >
     )
 }

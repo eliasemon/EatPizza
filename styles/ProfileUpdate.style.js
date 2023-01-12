@@ -5,26 +5,21 @@ export default StyleSheet.create({
         marginVertical: 40
     },
     input: {
-        backgroundColor: 'rgba(255,255,255,.15)',
-        height: 70,
-        marginVertical: 10,
-        borderRadius: 15,
-        paddingLeft: 20,
-        fontSize: 18,
-        color: '#fff',
+        color: "white",
+        backgroundColor: "#252525",
+        width: "80%",
+        alignSelf: 'center',
+        borderRadius: 10,
+        height: 60,
+        margin: 12,
+        borderWidth: 1,
+        padding: 20,
     },
     saveButton: {
-        alignItems: 'center',
+        backgroundColor: 'rgba(0,255,0,.5)',
+        paddingVertical: 15,
+        paddingHorizontal: 80,
         alignSelf: 'center',
-        width: '60%',
-        backgroundColor: 'green',
-        marginTop: '30%',
-        paddingVertical: 10,
-        paddingHorizontal: 25,
         borderRadius: 10
     },
-    saveButtonText: {
-        fontSize: 22,
-        color: '#fff'
-    }
 })
