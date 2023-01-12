@@ -13,7 +13,7 @@ const Shipping = ({navigation}) => {
     const [shipingAddress , setShipingAddress] = useState("");
     const [shipingRefforUi, setShipingRefforUi] = useState(false);
     useEffect(()=>{
-        getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("usersList" , auth.currentUser.uid).then((data) =>{
+        getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("usersList", auth.currentUser.phoneNumber).then((data) => {
             if(data.shipingAddress){
                 setShipingAddress(data.shipingAddress)
                 setShipingRefforUi(data.shipingAddress)
@@ -24,7 +24,7 @@ const Shipping = ({navigation}) => {
     const setShipingAddressToOrder = async () => {
         try {
             const db = getFirestore()
-            const colRef = doc(db, "usersList" , `${auth.currentUser.uid}`  );
+            const colRef = doc(db, "usersList", `${auth.currentUser.phoneNumber}`);
             await updateDoc( colRef ,{shipingAddress : shipingAddress })
  
         } catch (error) {

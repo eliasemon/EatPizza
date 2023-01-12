@@ -17,12 +17,11 @@ export default StyleSheet.create({
         padding: 20,
     },
     sectionBlock: {
-
-        width: '90%',
-        height: 150,
+        width: '50%',
+        height: 180,
         backgroundColor: '#252525',
-        marginVertical: 10,
-        borderRadius: 15,
+        marginVertical: 5,
+        borderRadius: 100,
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center'

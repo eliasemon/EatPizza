@@ -18,7 +18,7 @@ const Payment = ({navigation}) => {
     const {cachesForOrder} = useStoreState(state => state)
     const ordersNumber = useRef(0)
     useEffect(()=>{
-        getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("usersList" , auth.currentUser.uid).then((data) =>{
+        getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("usersList", auth.currentUser.phoneNumber).then((data) => {
             if(data.ordersNumber){
                 ordersNumber.current = Number(data.ordersNumber)
             }
@@ -27,7 +27,8 @@ const Payment = ({navigation}) => {
     },[])
     const placeOrder = async() =>{
         const data = {...cachesForOrder}
-        data.userID = auth.currentUser.uid;
+        data.userID = auth.currentUser.uid
+        data.userPhoneNumber = auth.currentUser.phoneNumber
         data.userName = auth.currentUser.displayName
         data.status = "pending"
         data.paymentType = "cashon"
@@ -37,7 +38,7 @@ const Payment = ({navigation}) => {
         await setDataToCollection({id : data.id} , "unHandleOrdersIds" , false)
         try {
             const db = getFirestore()
-            const colRef = doc(db, "usersList" , `${auth.currentUser.uid}`  );
+            const colRef = doc(db, "usersList", `${auth.currentUser.phoneNumber}`);
             await updateDoc( colRef ,{ordersNumber : Number( ordersNumber.current)+1 })
  
         } catch (error) {
