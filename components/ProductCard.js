@@ -23,8 +23,8 @@ const ProductCard = ({ UpdateCardItem , item, cardsType, pdUIAddToCardHandle }) 
             <TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.increment)}>
                 <FontAwesome name="chevron-up" size={20} color="rgba(255,255,255,0.8)" />
             </TouchableOpacity>
-            <Text style={styles.buttonNumber}>{item.itemCount}</Text>
-            {item.itemCount > 1 ?
+            <Text style={styles.buttonNumber}>{item?.itemCount}</Text>
+            {item?.itemCount > 1 ?
                 (<TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.decrement)}>
                     <FontAwesome name="chevron-down" size={20} color="rgba(255,255,255,0.8)" />
                 </TouchableOpacity>) :
@@ -54,14 +54,14 @@ const ProductCard = ({ UpdateCardItem , item, cardsType, pdUIAddToCardHandle }) 
                                     const data = item?.selectedAddonsForCard[key]
                                     return (
                                         <View key={key} style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between" }}>
-                                            <Text style={styles.cardTextTitle}>{data.name}</Text>
-                                            <Text style={styles.cardTextTitle}>{data.price}৳</Text>
+                                            <Text style={styles.cardTextTitle}>{data?.name}</Text>
+                                            <Text style={styles.cardTextTitle}>{data?.price}৳</Text>
                                         </View>
                                     )
                                 }))}
                                 {/* <Text style={styles.cardTextTitle}>{item?.selectedVariant?.sellingPrice}৳</Text> */}
                             </View>
-                            <Text style={styles.cardTextPrice}> {`${item.itemCount} x ${item.unitPrice} = ${Number(item.unitPrice) * Number(item.itemCount) }`}৳</Text>
+                            <Text style={styles.cardTextPrice}> {`${item?.itemCount} x ${item?.unitPrice} = ${Number(item?.unitPrice) * Number(item?.itemCount)}`}৳</Text>
                         </>
                     )}
                     {/* <Text style={styles.cardTextCategory}>{category}</Text> */}

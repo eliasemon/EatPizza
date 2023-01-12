@@ -52,7 +52,7 @@ const Profile = ({ navigation }) => {
                     </View>
                     <Text style={styles.title}>Update your Profile</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.card}>
+                    <TouchableOpacity onPress={() => navigation.navigate("ProfileOrders")} style={styles.card}>
                     <View style={styles.icon}>
                             <FontAwesome5 name="list" size={24} color={COLORS.primary} />
                     </View>
