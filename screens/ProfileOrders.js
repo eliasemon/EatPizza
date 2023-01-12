@@ -2,7 +2,7 @@ import { View, Text, Image, FlatList } from 'react-native'
 import Heading from '../components/Heading'
 import profile from '../assets/images/profile.png'
 import ProductCard from '../components/ProductCard'
-import { ProfileOrdersStyle as styles } from '../styles'
+import { GlobalStyle, ProfileOrdersStyle as styles } from '../styles'
 import { itemList } from './../constants/dummy';
 
 
@@ -30,7 +30,7 @@ const ProfileOrders = ({ navigation }) => {
                     // itemList.map((item) => <ProductCard cardsType="chip" title={item.title} category={item.category} price={item.price} />)
                 }
             </ScrollView> */}
-            <FlatList style={styles.cardContainer} data={itemList} renderItem={
+            <FlatList style={[GlobalStyle.sidePadding, styles.cardContainer]} data={itemList} renderItem={
                 ({ item }) => (<ProductCard cardsType="chip" item={item} />)
             } keyExtractor={item => item.id} />
             {/* <FlatList style={styles.cardContainer} data={itemList} renderItem={
