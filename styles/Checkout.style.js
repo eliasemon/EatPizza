@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { COLORS } from '../constants/theme';
 
 export default StyleSheet.create({
     checkoutContainer: {
-        height: '100%',
+        height: '90%',
         justifyContent: 'space-between'
+
     },
     cardContainer: {
         paddingVertical: 20,
@@ -44,17 +46,20 @@ export default StyleSheet.create({
         color: 'rgba(21,190,119,1)'
     },
     placeOrder: {
-        paddingVertical: 10,
+        alignSelf: 'center',
+        width: '95%',
+        paddingVertical: 5,
         paddingHorizontal: 20,
-        backgroundColor: 'green',
+        backgroundColor: COLORS.primary,
         borderRadius: 15
     },
     placeOrderLine: {
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-    textColor: {
-        color: 'white'
+    text: {
+        color: 'white',
+        fontSize: 16
     },
     totalPrice: {
         marginTop: 5,
@@ -62,15 +67,29 @@ export default StyleSheet.create({
         fontSize: 20
     },
     placeOrderButton: {
-        margin: 10,
-        padding: 20,
+        margin: 5,
+        padding: 12,
+        maxWidth: '50%',
         backgroundColor: 'white',
         borderRadius: 15,
+        alignSelf: 'center'
     },
     placeOrderButtonText: {
         textAlign: 'center',
         color: 'green',
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: 'bold'
-    }
+    },
+    input: {
+        color: "white",
+        backgroundColor: "#252525",
+        flex: 1,
+        alignSelf: 'center',
+        borderRadius: 10,
+        // height: 60,
+        borderWidth: 1,
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        marginRight: 10
+    },
 })

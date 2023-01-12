@@ -1,6 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
 import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native'
-import ImagePhoto from '../assets/images/ItemPhoto.png'
 import { FontAwesome } from "@expo/vector-icons"
 import { MaterialIcons } from '@expo/vector-icons';
 import { CheckoutCardActions } from '../constants/enum';
@@ -31,9 +29,7 @@ const ProductCard = ({ UpdateCardItem , item, cardsType, pdUIAddToCardHandle }) 
                 (<TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.delete)}>
                     <MaterialIcons name="delete-forever" size={20} color="rgba(255,255,255,0.8)" />
                 </TouchableOpacity>)
-
             }
-
         </View>)
     }
 
@@ -79,10 +75,11 @@ const styles = StyleSheet.create({
     },
     card: {
         width: '100%',
-        height: 120,
+        // height: 120,
         backgroundColor: '#252525',
         borderRadius: 20,
         paddingHorizontal: 15,
+        paddingVertical: 15,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',

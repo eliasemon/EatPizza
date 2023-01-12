@@ -3,13 +3,14 @@ import { onAuthStateChanged } from "firebase/auth"
 import { useEffect, useRef, useState } from "react"
 import { View, Text, TouchableOpacity, TextInput, Alert, Modal } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
-import { NextButton } from "../components/Buttons"
+import { Button, NextButton } from "../components/Buttons"
+import CheckoutCard from "../components/CheckoutCard"
 import Heading from "../components/Heading"
 import ProductCard from '../components/ProductCard'
 import { auth } from "../config"
 import { CheckoutCardActions } from "../constants/enum"
-import { CheckoutStyle as styles } from '../styles'
-import { showDataWithOutPagination , getSingleDataWithOutRealTimeUpdates } from "../utils"
+import { CheckoutStyle as styles, GlobalStyle } from '../styles'
+import { showDataWithOutPagination, getSingleDataWithOutRealTimeUpdates } from "../utils"
 import { findTheResturentStatus } from "../utils/ResturentOpenCloseStatus"
 
 // key: key,
@@ -22,35 +23,36 @@ import { findTheResturentStatus } from "../utils/ResturentOpenCloseStatus"
 //             itemCount: itemCount
 //         }
 
-const Checkout = ({navigation}) => {
-    const {LoadingChanger , addDataToCachesForOrder , clearShopingCard , UpdateCardItem} = useStoreActions(action => action)
-    const [resturentOpenClosedData , setResturentOpenClosedData] = useState("")
-    const [openingStatus , setOpeningStatus] = useState("")
-    const [froce, setForce] =  useState(true)
-    const [promoCode , setPromoCode] = useState("")
+const Checkout = ({ navigation }) => {
+    const [isClickedPromo, setIsClickedPromo] = useState(false)
+    const { LoadingChanger, addDataToCachesForOrder, clearShopingCard, UpdateCardItem } = useStoreActions(action => action)
+    const [resturentOpenClosedData, setResturentOpenClosedData] = useState("")
+    const [openingStatus, setOpeningStatus] = useState("")
+    const [froce, setForce] = useState(true)
+    const [promoCode, setPromoCode] = useState("")
 
-    const {subTottal , shopingCard} = useStoreState(state => state)
-    
-    const [extraCostFirebaseData , setExtraCostFirebaseData] = useState(false);
-    const [extraCostUI , setExtraCostUI] = useState("");
-    const [discountAmmount , setDiscountAmmount] = useState(false)
-    const [totalExtraCost , setTotalExtraCost] = useState(0)
+    const { subTottal, shopingCard } = useStoreState(state => state)
+
+    const [extraCostFirebaseData, setExtraCostFirebaseData] = useState(false);
+    const [extraCostUI, setExtraCostUI] = useState("");
+    const [discountAmmount, setDiscountAmmount] = useState(false)
+    const [totalExtraCost, setTotalExtraCost] = useState(0)
 
     const disCheckRef = useRef(false)
-    const TotalOrderAmmount = Number(subTottal) + Number(totalExtraCost) - Number(discountAmmount) 
-    
+    const TotalOrderAmmount = Number(subTottal) + Number(totalExtraCost) - Number(discountAmmount)
 
-    const storeTheOrderCaches = () =>{
+
+    const storeTheOrderCaches = () => {
         const data = {
-            items : shopingCard,
-            subTottal : subTottal,
-            discountAmmount : discountAmmount,
-            promoCode : promoCode,
-            totalExtraCost : totalExtraCost,
-            TotalOrderAmmount : TotalOrderAmmount
+            items: shopingCard,
+            subTottal: subTottal,
+            discountAmmount: discountAmmount,
+            promoCode: promoCode,
+            totalExtraCost: totalExtraCost,
+            TotalOrderAmmount: TotalOrderAmmount
 
         }
-        addDataToCachesForOrder({type : "Add" ,data : data })
+        addDataToCachesForOrder({ type: "Add", data: data })
         setDiscountAmmount(false)
         setPromoCode("")
         disCheckRef.current = false;
@@ -60,11 +62,11 @@ const Checkout = ({navigation}) => {
 
 
     useEffect(() => {
-      showDataWithOutPagination(setExtraCostFirebaseData, "extraCost")
-      showDataWithOutPagination(setResturentOpenClosedData, "ResturentOpeningHr")
-      onAuthStateChanged(auth ,(user)=>{
-            if(!user){
-                LoadingChanger({status : true , type :  "LoginUI"})
+        showDataWithOutPagination(setExtraCostFirebaseData, "extraCost")
+        showDataWithOutPagination(setResturentOpenClosedData, "ResturentOpeningHr")
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                LoadingChanger({ status: true, type: "LoginUI" })
             }
             setForce(prv => !prv)
         })
@@ -72,18 +74,18 @@ const Checkout = ({navigation}) => {
 
 
     useEffect(() => {
-      if(resturentOpenClosedData.length > 0)
-      setOpeningStatus(findTheResturentStatus(resturentOpenClosedData[0].data()))
+        if (resturentOpenClosedData.length > 0)
+            setOpeningStatus(findTheResturentStatus(resturentOpenClosedData[0].data()))
     }, [resturentOpenClosedData]);
 
     // useEffect(()=>{
-        
+
     // },[])
 
-    const promocodeCheck = () =>{
-        getSingleDataWithOutRealTimeUpdates("promoCode" , promoCode ).then((data)=>{
+    const promocodeCheck = () => {
+        getSingleDataWithOutRealTimeUpdates("promoCode", promoCode).then((data) => {
             const timeStampInMsForPromo = Date.parse(data.validity)
-            if(timeStampInMsForPromo < Date.now()){
+            if (timeStampInMsForPromo < Date.now()) {
                 setDiscountAmmount(false)
                 setPromoCode("")
                 disCheckRef.current = false;
@@ -96,7 +98,7 @@ const Checkout = ({navigation}) => {
                 );
                 return
             }
-            if(Number(data.conditionAmmount) > subTottal){
+            if (Number(data.conditionAmmount) > subTottal) {
                 setDiscountAmmount(false)
                 disCheckRef.current = false;
                 setPromoCode("")
@@ -111,13 +113,13 @@ const Checkout = ({navigation}) => {
             }
 
             disCheckRef.current = true;
-            if(data.discountType === "%"){
-                const ammount = (subTottal / 100 ) * Number(data.discountValue)
+            if (data.discountType === "%") {
+                const ammount = (subTottal / 100) * Number(data.discountValue)
                 setDiscountAmmount(ammount)
                 return
             }
             setDiscountAmmount(Number(data.discountValue))
-        }).catch((error) =>{
+        }).catch((error) => {
             setDiscountAmmount(false)
             disCheckRef.current = false;
             setPromoCode("")
@@ -131,25 +133,25 @@ const Checkout = ({navigation}) => {
         })
     }
 
-    useEffect(()=>{
-        if(disCheckRef.current && auth.currentUser){
+    useEffect(() => {
+        if (disCheckRef.current && auth.currentUser) {
             promocodeCheck()
         }
 
         let costInLocalFn = 0
-        if(extraCostFirebaseData.length > 0 ){
-         setExtraCostUI(extraCostFirebaseData.map((doc)=>{
+        if (extraCostFirebaseData.length > 0) {
+            setExtraCostUI(extraCostFirebaseData.map((doc) => {
                 const data = doc.data()
-                if(data.costType === "%"){
-                    costInLocalFn+= ((subTottal / 100) * Number(data.costValue) )
-                }else{
-                    costInLocalFn+= Number(data.costValue)
+                if (data.costType === "%") {
+                    costInLocalFn += ((subTottal / 100) * Number(data.costValue))
+                } else {
+                    costInLocalFn += Number(data.costValue)
                 }
-                
+
                 return (
                     <View key={doc.id} style={styles.placeOrderLine}>
-                        <Text style={styles.totalPrice}>{`${data.name}- ${(data.costType === "%") ? `${data.costValue}%` : "" }`}</Text>
-                        <Text style={styles.totalPrice}>{(data.costType === "%") ? (subTottal / 100) * Number(data.costValue) : data.costValue }৳</Text>
+                        <Text style={styles.text}>{`${data.name}- ${(data.costType === "%") ? `${data.costValue}%` : ""}`}</Text>
+                        <Text style={styles.text}>{(data.costType === "%") ? (subTottal / 100) * Number(data.costValue) : data.costValue}৳</Text>
                     </View>
                 )
             }))
@@ -157,9 +159,9 @@ const Checkout = ({navigation}) => {
             // setExtraCostUI(ui)
         }
 
-    },[subTottal ,extraCostFirebaseData])
+    }, [subTottal, extraCostFirebaseData])
 
-    const  amPmTimeFormat = (time) => {
+    const amPmTimeFormat = (time) => {
         let hours = time.split('.')[0];
         let minutes = time.split('.')[1];
         let ampm = hours >= 12 ? 'pm' : 'am';
@@ -167,98 +169,107 @@ const Checkout = ({navigation}) => {
         hours = hours ? hours : 12; // the hour '0' should be '12'
         let strTime = hours + ':' + minutes + ' ' + ampm;
         return strTime;
-      }
-      const [skip , setSkitp] = useState(false)
+    }
+    const [skip, setSkitp] = useState(false)
 
-      if(openingStatus && !openingStatus.status && !skip){
-        return(<Modal 
+    if (openingStatus && !openingStatus.status && !skip) {
+        return (<Modal
             animationType="fade"
             // transparent={true}
             visible={true}
-            >
+        >
             <View>
                 <Text>
                     {resturentOpenClosedData && `Resturent IS Closed Now. For getting Delivary Plz Wait Before ${amPmTimeFormat(resturentOpenClosedData[0].data().openingHR)} to open the resturent`}
                 </Text>
-                <NextButton onPress={()=> setSkitp(true)} title="Order Now" />
+                <NextButton onPress={() => setSkitp(true)} title="Order Now" />
             </View>
-            </Modal>)
-      }
-      if(!openingStatus){
+        </Modal>)
+    }
+    if (!openingStatus) {
         return (
-            <View style={styles.checkoutContainer}> 
+            <View style={styles.checkoutContainer}>
                 <Text> Loading </Text>
             </View>
         )
-      }
+    }
 
-      if(Object.keys(shopingCard).length === 0){
-           return( <View>
-               <Heading title="Order Details" />
-               <View style={{ height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                   <Text style={{ color: '#fff', color: 'rgba(255,255,255,0.9)', fontSize: 18 }}>Cart is empty !</Text>
-                   <Text style={{ color: '#fff', color: 'rgba(255,255,255,0.9)', fontSize: 18 }}>Please add some item. </Text>
-               </View>
+    if (Object.keys(shopingCard).length === 0) {
+        return (<View>
+            <Heading title="Order Details" />
+            <View style={{ height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: '#fff', color: 'rgba(255,255,255,0.9)', fontSize: 18 }}>Cart is empty !</Text>
+                <Text style={{ color: '#fff', color: 'rgba(255,255,255,0.9)', fontSize: 18 }}>Please add some item. </Text>
             </View>
-           )
-      }
+        </View>
+        )
+    }
 
     return (
-        <View style={styles.checkoutContainer}>
+        <>
             <View>
                 <Heading title="Order Details" />
             </View>
-            <View style={styles.cardContainer}>
-            <ScrollView>
-                {shopingCard && Object.keys(shopingCard).map(key => (<ProductCard UpdateCardItem={UpdateCardItem}  key={key} cardsType="counter" item={shopingCard[key]} />))}
-
-
+            <View style={styles.checkoutContainer}>
+                <View style={styles.cardContainer}>
+                    <ScrollView>
+                        {shopingCard && Object.keys(shopingCard).map(key => (
+                            <CheckoutCard
+                                UpdateCardItem={UpdateCardItem}
+                                key={key}
+                                cardsType="counter"
+                                item={shopingCard[key]}
+                            />)
+                        )}
+                    </ScrollView>
+                </View>
                 <View>
-                    <Text>Place The PromoCode If You Have</Text>
-                    <TextInput
-                    // style={styles.input}
-                    onChangeText={setPromoCode}
-                    value={promoCode}
-                    placeholder="Promo Code"
-                    placeholderTextColor="#fff"
-                    />
-                <NextButton onPress={promocodeCheck} title="Apply PromoCode" />
-
-
-                </View>
-
-
-
-
-
-            </ScrollView>
-            </View>
-            <View style={styles.placeOrder}>
-                <View style={styles.placeOrderLine}>
-                    <Text style={styles.textColor}>Sub Total</Text>
-                    <Text style={styles.textColor}>{subTottal} ৳</Text>
-                </View>
-                {extraCostUI}
-                {discountAmmount && (
-                    <View style={styles.placeOrderLine}>
-                        <Text style={styles.totalPrice}>Discount</Text>
-                        <Text style={styles.totalPrice}> -{discountAmmount}৳</Text>
+                    <View style={[GlobalStyle.sidePadding,
+                    { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }
+                    ]}>
+                        {!isClickedPromo ?
+                            <Text style={{ color: '#fff', fontSize: 16 }}>Do you have any promocode ?</Text> :
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={setPromoCode}
+                                value={promoCode}
+                                placeholder="Promo Code"
+                                placeholderTextColor="#fff"
+                            />
+                        }
+                        <Button onPress={isClickedPromo ? promocodeCheck : () => setIsClickedPromo(true)} style={{ borderColor: 'red', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, paddingVertical: 3 }} >{isClickedPromo ? 'apply' : 'use it'}</Button>
+                        {/* <Button onPress={promocodeCheck} style={{ borderColor: 'red', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, paddingVertical: 3 }} >Use it</Button> */}
+                        {/* <NextButton title="Apply PromoCode" /> */}
                     </View>
-                )}
-                <View style={styles.placeOrderLine}>
-                    <Text style={styles.totalPrice}>Total</Text>
-                    <Text style={styles.totalPrice}>{TotalOrderAmmount}৳</Text>
+                    <View style={styles.placeOrder}>
+                        <View style={styles.placeOrderLine}>
+                            <Text style={styles.text}>Sub Total</Text>
+                            <Text style={styles.text}>{subTottal} ৳</Text>
+                        </View>
+                        {extraCostUI}
+                        {discountAmmount && (
+                            <View style={styles.placeOrderLine}>
+                                <Text style={styles.text}>Discount</Text>
+                                <Text style={styles.text}> -{discountAmmount}৳</Text>
+                            </View>
+                        )}
+                        <View style={{ height: 1, width: '100%', backgroundColor: 'grey', marginVertical: 5 }} />
+                        <View style={styles.placeOrderLine}>
+                            <Text style={[styles.text, { fontSize: 20 }]}>Total</Text>
+                            <Text style={[styles.text, { fontSize: 20 }]}>{TotalOrderAmmount}৳</Text>
+                        </View>
+                        {auth.currentUser ? (
+                            <TouchableOpacity onPress={storeTheOrderCaches} style={styles.placeOrderButton}>
+                                <Text style={styles.placeOrderButtonText}> {!openingStatus.status ? "Order For Latter" : "Place My Order"}</Text>
+                            </TouchableOpacity>
+                        ) : <TouchableOpacity onPress={() => LoadingChanger({ status: true, type: "LoginUI" })} style={styles.placeOrderButton}>
+                            <Text style={styles.placeOrderButtonText}>Login Before Order</Text>
+                        </TouchableOpacity>}
+
+                    </View>
                 </View>
-                {auth.currentUser ? (
-                    <TouchableOpacity  onPress={storeTheOrderCaches} style={styles.placeOrderButton}>
-                        <Text style={styles.placeOrderButtonText}> {!openingStatus.status ? "Order For Latter" : "Place My Order"}</Text>
-                    </TouchableOpacity>
-                ) : <TouchableOpacity onPress={()=> LoadingChanger({status : true , type :  "LoginUI"})} style={styles.placeOrderButton}>
-                        <Text style={styles.placeOrderButtonText}>Login Before Order</Text>
-                    </TouchableOpacity>}
-                
-            </View>
-        </View >
+            </View >
+        </>
     )
 }
 
