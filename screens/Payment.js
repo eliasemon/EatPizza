@@ -31,7 +31,8 @@ const Payment = ({navigation}) => {
         data.userName = auth.currentUser.displayName
         data.status = "pending"
         data.paymentType = "cashon"
-        data.id = `${auth.currentUser.uid}order-${Number( ordersNumber.current)+1}`
+        data.creationTime = Date.now()
+        data.id = `orderId-${Number(ordersNumber.current) + 1}-${auth.currentUser.phoneNumber}`
         await setDataToCollection(data , "ordersList" , false)
         await setDataToCollection({id : data.id} , "unHandleOrdersIds" , false)
         try {

@@ -20,7 +20,7 @@ export default StyleSheet.create({
 
         width: '90%',
         height: 150,
-        backgroundColor: 'rgba(255,255,255,0.2)',
+        backgroundColor: '#252525',
         marginVertical: 10,
         borderRadius: 15,
         justifyContent: 'center',
