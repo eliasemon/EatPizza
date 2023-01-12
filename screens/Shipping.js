@@ -1,12 +1,13 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Heading from "../components/Heading";
-import { ShippingStyle as styles } from "../styles";
+import { GlobalStyle, ShippingStyle as styles } from "../styles";
 import { auth } from "../config";
 import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise } from "../utils";
 import { useEffect, useRef, useState } from "react";
 import { useStoreActions } from "easy-peasy";
 import { getFirestore , doc , updateDoc} from "firebase/firestore";
+import { Button } from "../components/Buttons";
 
 const Shipping = ({navigation}) => {
     const { addDataToCachesForOrder , clearShopingCard } = useStoreActions(action => action)
@@ -22,6 +23,25 @@ const Shipping = ({navigation}) => {
         })  
     },[])
     const setShipingAddressToOrder = async () => {
+        // if (shipingAddress == "") {
+        //     Alert.alert(
+        //         "Variant Selection Requiered",
+        //         "You haven't select a variant .Please select a variant",
+        //         [
+        //             { text: "OK" }
+        //         ],
+        //         {
+        //             cancelable: false,
+        //             overlayStyle: stylesForAlert.overlay,
+        //             alertContainerStyle: stylesForAlert.alertContainer,
+        //             titleStyle: stylesForAlert.text,
+        //             messageStyle: stylesForAlert.text,
+        //             buttonStyle: stylesForAlert.buttonContainer,
+        //             buttonTextStyle: stylesForAlert.buttonText,
+        //         }
+        //     );
+        //     return
+        // }
         try {
             const db = getFirestore()
             const colRef = doc(db, "usersList", `${auth.currentUser.phoneNumber}`);
@@ -43,7 +63,7 @@ const Shipping = ({navigation}) => {
     return (
         <View>
             <Heading navigation={navigation} title="Shipping" />
-            <View>
+            <View style={GlobalStyle.sidePadding}>
                 {shipingRefforUi && (
                     <View style={styles.locationCard}>
                         <Text style={styles.locationCardTitle}>Previous Delivered Location</Text>
@@ -66,12 +86,14 @@ const Shipping = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
 
-            </View>
             {shipingRefforUi && (
-                <TouchableOpacity onPress={continueWithPrv} style={styles.setLocationButton}>
-                    <Text style={styles.setLocationButtonText}>Continue</Text>
-                </TouchableOpacity>
+                    <Button onPress={continueWithPrv} style={styles.setLocationButton}>
+                        Continue
+                    </Button>
+                // <TouchableOpacity  style={styles.setLocationButton}>
+                // </TouchableOpacity>
             )}
+            </View>
             
         </View>
     )

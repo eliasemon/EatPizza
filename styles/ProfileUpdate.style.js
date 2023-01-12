@@ -3,7 +3,7 @@ import { COLORS } from '../constants/theme';
 
 export default StyleSheet.create({
     inputGroup: {
-        marginVertical: 40
+        marginVertical: 25
     },
     input: {
         color: "white",

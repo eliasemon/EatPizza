@@ -1,13 +1,15 @@
 import { StyleSheet } from 'react-native';
+import { COLORS } from '../constants/theme';
 
 export default StyleSheet.create({
     locationCard: {
         width: '100%',
-        height: 140,
+        // height: '30%',
         backgroundColor: '#282828',
         marginVertical: 10,
         borderRadius: 15,
         paddingHorizontal: 15,
+        paddingVertical: 15,
         justifyContent: 'center',
     },
     locationDetails: {
@@ -34,8 +36,12 @@ export default StyleSheet.create({
         borderRadius: 5
     },
     setLocationButton: {
-        marginVertical: 8,
-        marginLeft: '17%',
+        backgroundColor: COLORS.primary,
+        alignSelf: 'center',
+        paddingVertical: 15,
+        paddingHorizontal: 25,
+        borderRadius: 10,
+        marginTop: 15,
     },
     setLocationButtonText: {
         color: 'green',
