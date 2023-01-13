@@ -9,19 +9,19 @@ import { FilterProductStyle as styles } from '../styles'
 
 
 
-const FilteredProduct = ({navigation , route}) => {
+const FilteredProduct = ({ navigation, route }) => {
     const { activeID } = route.params;
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
     const [isActiveCategoriesId, setisActiveCategoriesId] = useState(activeID)
     const [itemsSnapshot, setItemsSnapshot] = useState("")
-    const [itemsDataForView , setItemsDataForView] = useState("")
+    const [itemsDataForView, setItemsDataForView] = useState("")
     const dataLoading = useRef(false)
-    
+
 
 
     const infinityScrollHandle = () => {
-        if(dataLoading.current) return;
+        if (dataLoading.current) return;
         const isActiveCatArr = Object.keys(isActiveCategoriesId)
         if (itemsSnapshot && !!itemsSnapshot[4]) {
             dataLoading.current = true;
@@ -57,27 +57,27 @@ const FilteredProduct = ({navigation , route}) => {
     }, [isActiveCategoriesId])
 
 
-    useEffect(()=>{
-        if(itemsSnapshot && itemsSnapshot.length > 0){
-            const data =  itemsSnapshot.map((doc) =>{
-                    const item = doc.data()
-                    item.id = doc.id
-                    return item
-                })
-           setItemsDataForView(prv => ([...prv , ...data]))
-           dataLoading.current = false;
-        //    if(Object.keys(isActiveCategoriesId).length > 0){
-        //         // (async()=>{
-        //         //    await flatListRef.current.scrollToOffset({offset : 70 , animated : true})
-        //         //     setHomeHeader(false)
-        //         // })()
-        //         // await flatListRef.current.scrollToOffset({offset : 276 , animated : true})
-        //         setHomeHeader(false)
-                  
-        //    }
+    useEffect(() => {
+        if (itemsSnapshot && itemsSnapshot.length > 0) {
+            const data = itemsSnapshot.map((doc) => {
+                const item = doc.data()
+                item.id = doc.id
+                return item
+            })
+            setItemsDataForView(prv => ([...prv, ...data]))
+            dataLoading.current = false;
+            //    if(Object.keys(isActiveCategoriesId).length > 0){
+            //         // (async()=>{
+            //         //    await flatListRef.current.scrollToOffset({offset : 70 , animated : true})
+            //         //     setHomeHeader(false)
+            //         // })()
+            //         // await flatListRef.current.scrollToOffset({offset : 276 , animated : true})
+            //         setHomeHeader(false)
+
+            //    }
         }
-        
-    },[itemsSnapshot])
+
+    }, [itemsSnapshot])
 
     const handleChipPress = (id) => {
         setItemsDataForView("")
@@ -134,8 +134,8 @@ const FilteredProduct = ({navigation , route}) => {
 
     return (
         <View style={styles.cardContainer}>
-            <View style={{ backgroundColor: '#0D0D0D' }}>
-                <View style={styles.section}>
+            <View style={{ backgroundColor: '#0D0D0D', height: '23%' }}>
+                <ScrollView style={styles.section}>
                     <View style={styles.categoriesHeader}>
                         <Text style={styles.sectionTitle}>Categories</Text>
                         <TouchableOpacity onPress={handleCollapseButton} style={styles.collapseButton}>
@@ -147,22 +147,26 @@ const FilteredProduct = ({navigation , route}) => {
                             categories ? getCategoryArray(categories, isCollapse) : <ActivityIndicator size="large" color="#fff" />
                         }
                     </View>
-                </View>
+                </ScrollView>
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>All Items</Text>
                 </View>
             </View>
+            <View style={{ height: '77%' }}>
+
             {itemsDataForView && (<FlatList
+                    ListFooterComponent={<ActivityIndicator />}
                 onEndReached={infinityScrollHandle}
                 data={itemsDataForView}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={()=> navigation.navigate("ProductDetailsScreen", {item : item})}>
-                        <ProductCard pdUIAddToCardHandle={()=> navigation.navigate("ProductDetailsScreen", {item : item})} cardsType="button" item={item}/>
+                    <TouchableOpacity onPress={() => navigation.navigate("ProductDetailsScreen", { item: item })}>
+                        <ProductCard pdUIAddToCardHandle={() => navigation.navigate("ProductDetailsScreen", { item: item })} cardsType="button" item={item} />
                     </TouchableOpacity>
                 )}
                 keyExtractor={item => item.id}
-            />) }
-            
+                />)
+                }
+            </View>
         </View>
     );
 };

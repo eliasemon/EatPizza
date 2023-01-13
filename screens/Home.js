@@ -164,6 +164,7 @@ const Home = ({ navigation }) => {
                 ListHeaderComponent={PageUi}
                 data={itemsDataForView}
                 ref={flatListRef}
+                ListFooterComponent={<ActivityIndicator />}
                 renderItem={({ item }) => {
                     if (item.type) {
                         return (

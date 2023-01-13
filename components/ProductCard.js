@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { CheckoutCardActions } from '../constants/enum';
 
 
-const ProductCard = ({ UpdateCardItem , item, cardsType, pdUIAddToCardHandle }) => {
+const ProductCard = ({ UpdateCardItem, item, cardsType, pdUIAddToCardHandle }) => {
 
     const cardLocalAction = (action) => {
         UpdateCardItem({ action: action, key: item.key })
@@ -38,11 +38,11 @@ const ProductCard = ({ UpdateCardItem , item, cardsType, pdUIAddToCardHandle }) 
             <View style={styles.cardProduct}>
                 <Image source={{ uri: `${item?.image?.imageDownloadUrl}` }} style={styles.cardImage} />
                 <View style={styles.cardTextBox}>
-                    <Text style={styles.cardTextTitle}>{item?.name}</Text>
+                    <Text style={styles.cardTextTitle}>{item?.name?.slice(0, 20)}</Text>
                     {cardsType == "counter" && (
                         <>
                             <View style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between" }}>
-                                <Text style={styles.cardTextTitle}>{item?.selectedVariant?.name}</Text>
+                                <Text style={styles.cardTextTitle}>{(item?.selectedVariant?.name)}</Text>
                                 <Text style={styles.cardTextTitle}>{item?.selectedVariant?.sellingPrice}৳</Text>
                             </View>
                             <View >
@@ -90,7 +90,9 @@ const styles = StyleSheet.create({
     },
     cardImage: {
         width: "30%",
-        height: 80,
+        height: 70,
+        width: 85,
+        borderRadius: 10
     },
     cardTextBox: {
         marginLeft: 20,
