@@ -43,8 +43,4 @@ export default StyleSheet.create({
         borderRadius: 10,
         marginTop: 15,
     },
-    setLocationButtonText: {
-        color: 'green',
-        fontSize: 18
-    }
 })

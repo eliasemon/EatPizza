@@ -237,7 +237,7 @@ const Checkout = ({ navigation }) => {
                                 placeholderTextColor="#fff"
                             />
                         }
-                        <Button onPress={isClickedPromo ? promocodeCheck : () => setIsClickedPromo(true)} style={{ borderColor: 'red', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, paddingVertical: 3 }} >{isClickedPromo ? 'apply' : 'use it'}</Button>
+                        <Button onPress={isClickedPromo ? promocodeCheck : () => setIsClickedPromo(true)} style={{ borderColor: 'yellow', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, paddingVertical: 3 }} >{isClickedPromo ? 'apply' : 'use it'}</Button>
                         {/* <Button onPress={promocodeCheck} style={{ borderColor: 'red', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, paddingVertical: 3 }} >Use it</Button> */}
                         {/* <NextButton title="Apply PromoCode" /> */}
                     </View>

@@ -71,6 +71,9 @@ const Shipping = ({navigation}) => {
                             <Ionicons name="location" size={36} color="yellow" />
                             <Text style={styles.locationCardValue}>{shipingRefforUi}</Text>
                         </View>
+                        <Button onPress={continueWithPrv} style={styles.setLocationButton}>
+                            Continue
+                        </Button>
                     </View>
 
                 )}
@@ -81,18 +84,13 @@ const Shipping = ({navigation}) => {
                         <Ionicons name="location" size={36} color="yellow" />
                         <TextInput  onChangeText={setShipingAddress}  style={styles.locationTextBox} placeholder="Put your address here" />
                     </View>
-                    <TouchableOpacity onPress={setShipingAddressToOrder}  style={styles.setLocationButton}>
+                    <Button onPress={setShipingAddressToOrder} style={styles.setLocationButton}>Set Location</Button>
+                    {/* <TouchableOpacity  style={styles.setLocationButton}>
                         <Text style={styles.setLocationButtonText}>Set Location</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
 
-            {shipingRefforUi && (
-                    <Button onPress={continueWithPrv} style={styles.setLocationButton}>
-                        Continue
-                    </Button>
-                // <TouchableOpacity  style={styles.setLocationButton}>
-                // </TouchableOpacity>
-            )}
+
             </View>
             
         </View>
