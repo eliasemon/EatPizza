@@ -181,7 +181,7 @@ const Checkout = ({ navigation }) => {
             visible={true}
         >
             <View style={[GlobalStyle.sidePadding, { height: '100%', backgroundColor: '#121212', justifyContent: 'center' }]}>
-                <Text style={{ color: 'cooked', marginBottom: 20, marginHorizontal: 20, fontSize: 16, lineHeight: 22 }}>
+                <Text style={{ color: 'yellow', marginBottom: 20, marginHorizontal: 20, fontSize: 16, lineHeight: 22 }}>
                     {resturentOpenClosedData && `Restaurant Is Closed Now. For getting Delivery Please Wait Before ${amPmTimeFormat(resturentOpenClosedData[0].data().openingHR)} to open the restaurant`}
                 </Text>
                 <NextButton onPress={() => setSkitp(true)} title="Order Now" />
