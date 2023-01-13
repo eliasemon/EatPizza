@@ -6,9 +6,7 @@ import { ScrollView } from "react-native-gesture-handler"
 import { Button, NextButton } from "../components/Buttons"
 import CheckoutCard from "../components/CheckoutCard"
 import Heading from "../components/Heading"
-import ProductCard from '../components/ProductCard'
 import { auth } from "../config"
-import { CheckoutCardActions } from "../constants/enum"
 import { CheckoutStyle as styles, GlobalStyle } from '../styles'
 import { showDataWithOutPagination, getSingleDataWithOutRealTimeUpdates } from "../utils"
 import { findTheResturentStatus } from "../utils/ResturentOpenCloseStatus"
@@ -162,7 +160,11 @@ const Checkout = ({ navigation }) => {
     }, [subTottal, extraCostFirebaseData])
 
     const amPmTimeFormat = (time) => {
+        if (Number.isInteger(Number(time))) {
+            time += `.00`
+        }
         let hours = time.split('.')[0];
+
         let minutes = time.split('.')[1];
         let ampm = hours >= 12 ? 'pm' : 'am';
         hours = hours % 12;
@@ -178,9 +180,9 @@ const Checkout = ({ navigation }) => {
             // transparent={true}
             visible={true}
         >
-            <View>
-                <Text>
-                    {resturentOpenClosedData && `Resturent IS Closed Now. For getting Delivary Plz Wait Before ${amPmTimeFormat(resturentOpenClosedData[0].data().openingHR)} to open the resturent`}
+            <View style={[GlobalStyle.sidePadding, { height: '100%', backgroundColor: '#121212', justifyContent: 'center' }]}>
+                <Text style={{ color: 'cooked', marginBottom: 20, marginHorizontal: 20, fontSize: 16, lineHeight: 22 }}>
+                    {resturentOpenClosedData && `Restaurant Is Closed Now. For getting Delivery Please Wait Before ${amPmTimeFormat(resturentOpenClosedData[0].data().openingHR)} to open the restaurant`}
                 </Text>
                 <NextButton onPress={() => setSkitp(true)} title="Order Now" />
             </View>

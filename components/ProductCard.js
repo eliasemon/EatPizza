@@ -38,7 +38,7 @@ const ProductCard = ({ UpdateCardItem, item, cardsType, pdUIAddToCardHandle }) =
             <View style={styles.cardProduct}>
                 <Image source={{ uri: `${item?.image?.imageDownloadUrl}` }} style={styles.cardImage} />
                 <View style={styles.cardTextBox}>
-                    <Text style={styles.cardTextTitle}>{item?.name.slice(0, 20)}</Text>
+                    <Text style={styles.cardTextTitle}>{item?.name?.slice(0, 20)}</Text>
                     {cardsType == "counter" && (
                         <>
                             <View style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between" }}>
