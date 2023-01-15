@@ -16,8 +16,8 @@ export default StyleSheet.create({
         fontSize: 16
     },
     tab: {
-        width: '65%',
-        height: 65,
+        width: '50%',
+        height: 50,
         backgroundColor: '#282828',
         marginVertical: 20,
         borderRadius: 15,
@@ -33,7 +33,8 @@ export default StyleSheet.create({
         backgroundColor: 'rgba(0,255,0,0.1)'
     },
     tabOptionText: {
-        color: '#fff'
+        color: '#fff',
+        fontSize: 18
     },
     cardContainer: {
         marginBottom: '20%'

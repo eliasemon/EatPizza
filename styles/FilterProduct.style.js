@@ -45,6 +45,7 @@ export default StyleSheet.create({
         color: "#fff"
     },
     cardContainer: {
+        // paddingBottom: '45%'
         // paddingBottom: '20%'
     },
     card: {

@@ -14,7 +14,6 @@ export const styles = StyleSheet.create({
         width: '100%',
     },
     image: {
-        borderRadius: 10,
         width: '100%',
         height: 250
     },
@@ -31,15 +30,18 @@ export const styles = StyleSheet.create({
         color: '#fff'
     },
     buttonSet: {
+        flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
     },
     buttonNumber: {
         color: '#ffff',
-        fontSize: 25
+        fontSize: 25,
     },
     cart: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
         marginVertical: 30
     },
     addonList: {
@@ -47,7 +49,8 @@ export const styles = StyleSheet.create({
     },
     radioButton: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     input: {
         color: '#fff',

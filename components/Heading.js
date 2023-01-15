@@ -1,23 +1,23 @@
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native"
 import { FontAwesome } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native"
+import { GlobalStyle } from "../styles"
 
-const Heading = ({ disCard , title }) => {
+const Heading = ({ changeTheScreenHandle, title }) => {
 
     const navigation = useNavigation()
 
     const handleBackButton = () => {
-        if(disCard){
-            disCard()
-            return
-        }else{
+        if (changeTheScreenHandle) {
+            changeTheScreenHandle();
+        } else {
             navigation.goBack()
         }
-        
+
     }
 
     return (
-        <View style={styles.heading}>
+        <View style={[styles.heading, GlobalStyle.sidePadding]}>
             <TouchableOpacity onPress={handleBackButton} style={styles.backButton}>
                 <FontAwesome name="angle-left" size={45} color="lightgreen" />
             </TouchableOpacity>

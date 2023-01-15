@@ -1,14 +1,14 @@
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
   ScrollView,
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import Heading from '../components/Heading'
 import BackgroundContainer from "../components/NavBar";
 import { NotificationStyle as styles } from '../styles'
+import { GlobalStyle } from "../styles"
+
 
 const icons = {
   done: {
@@ -80,7 +80,7 @@ const Notification = () => {
   return (
       <ScrollView>
       <Heading title="Notification" />
-        <View>
+      <View style={GlobalStyle.sidePadding}>
           {
             notifications.map((item) => (
               <View key={item.id} style={styles.card} >

@@ -1,30 +1,36 @@
 import { StyleSheet } from 'react-native';
+import { COLORS } from '../constants/theme';
 
 export default StyleSheet.create({
     inputGroup: {
-        marginVertical: 40
+        marginVertical: 25
     },
     input: {
-        backgroundColor: 'rgba(255,255,255,.15)',
-        height: 70,
-        marginVertical: 10,
-        borderRadius: 15,
-        paddingLeft: 20,
-        fontSize: 18,
-        color: '#fff',
+        color: "white",
+        backgroundColor: "#252525",
+        width: "90%",
+        alignSelf: 'center',
+        borderRadius: 10,
+        height: 60,
+        margin: 12,
+        borderWidth: 1,
+        padding: 20,
+    },
+    sectionBlock: {
+        width: '50%',
+        height: 180,
+        backgroundColor: '#252525',
+        marginVertical: 5,
+        borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center'
     },
     saveButton: {
-        alignItems: 'center',
+        backgroundColor: COLORS.primary,
+        paddingVertical: 15,
+        paddingHorizontal: 80,
         alignSelf: 'center',
-        width: '60%',
-        backgroundColor: 'green',
-        marginTop: '30%',
-        paddingVertical: 10,
-        paddingHorizontal: 25,
         borderRadius: 10
     },
-    saveButtonText: {
-        fontSize: 22,
-        color: '#fff'
-    }
 })

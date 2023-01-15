@@ -1,6 +1,7 @@
 import CheckoutStyle from "./Checkout.style";
 import ConfirmUploadStyle from "./ConfirmUpload.style";
 import FilterProductStyle from "./FilterProduct.style";
+import GlobalStyle from "./Global.style";
 import LoadingStyle from "./Loading.style";
 import LoginStyle from "./Login.style";
 import NotificationStyle from "./Notification.style";
@@ -20,6 +21,7 @@ export {
     CheckoutStyle,
     ConfirmUploadStyle,
     FilterProductStyle,
+    GlobalStyle,
     LoadingStyle,
     LoginStyle,
     NotificationStyle,

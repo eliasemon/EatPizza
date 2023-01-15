@@ -103,7 +103,10 @@ export const getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise = async (co
   const docRef = doc(db, `${collectionRef}`, `${idRef}`);
   const docSnap = await getDoc(docRef);
   const data = docSnap.data();
-  data.id = docSnap.id
+  if(data){
+    data.id = docSnap.id
+  }
+  
   return data
 }
 
@@ -139,17 +142,18 @@ export const setDataToCollection = async (items , collectionRef , isSingle = tru
   try {
   
     if(isSingle && await isExist(collection(db, `${collectionRef}`) , items.name)){
-     
       return
     }
     const colRef = doc(db, `${collectionRef}` , `${items.id}`)
+    console.log(JSON.stringify(items))
     // delete items["id"]
     await setDoc( colRef ,  {...items});
  
   } catch (e) {
-   
+    console.log(e)
   }
 }
+
 
 
 

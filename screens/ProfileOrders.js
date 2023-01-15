@@ -1,67 +1,10 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, Image, FlatList } from 'react-native'
 import Heading from '../components/Heading'
 import profile from '../assets/images/profile.png'
 import ProductCard from '../components/ProductCard'
-import { ProfileOrders as styles } from '../styles'
+import { GlobalStyle, ProfileOrdersStyle as styles } from '../styles'
+import { itemList } from './../constants/dummy';
 
-const itemList = [
-    {
-        id: 0,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'pending'
-    },
-    {
-        id: 1,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'done'
-    },
-    {
-        id: 2,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'failed'
-    },
-    {
-        id: 3,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'pending'
-    },
-    {
-        id: 4,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'done'
-    },
-    {
-        id: 5,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'failed'
-    },
-    {
-        id: 6,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'pending'
-    },
-    {
-        id: 7,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'done'
-    },
-]
 
 const ProfileOrders = ({ navigation }) => {
     return (
@@ -77,16 +20,38 @@ const ProfileOrders = ({ navigation }) => {
                 </View>
             </View>
             <View style={styles.tab}>
-                <TouchableOpacity style={styles.tabOption}>
-                    <Text style={styles.tabOptionText}>All Orders</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.tabOption}>
-                    <Text style={styles.tabOptionText}>Processing</Text>
-                </TouchableOpacity>
+                <Text style={styles.tabOptionText}>Last 5 Orders</Text>
             </View>
-            <FlatList style={styles.cardContainer} data={itemList} renderItem={
-                ({ item }) => (<ProductCard cardsType="chip" title={item.title} category={item.category} price={item.price} />)
+            {/* <ScrollView>
+                {
+                    // console.log(itemList.length)
+                    // itemList.map((item) => <Text key={item.id} style={{ color: '#fff' }}>Hello</Text>)
+                    itemList.map((item) => <ProductCard title={item.title} />)
+                    // itemList.map((item) => <ProductCard cardsType="chip" title={item.title} category={item.category} price={item.price} />)
+                }
+            </ScrollView> */}
+            <FlatList style={[GlobalStyle.sidePadding, styles.cardContainer]} data={itemList} renderItem={
+                ({ item }) => (<ProductCard cardsType="chip" item={item} />)
             } keyExtractor={item => item.id} />
+            {/* <FlatList style={styles.cardContainer} data={itemList} renderItem={
+                ({ item }) => {
+                    return (
+                        <ProductCard
+                        // cardsType="chip"
+                        // title={item.title}
+                        // category={item.category}
+                        // price={item.price}
+                        />
+                    )
+                }
+            }
+             keyExtractor={item => item.id}
+            /> */}
+            {/* <FlatList
+                data={itemList}
+                renderItem={<Text>Hello</Text>}
+                keyExtractor={item => item.id}
+            /> */}
 
         </View>
     )
