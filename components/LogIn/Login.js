@@ -149,7 +149,6 @@ const Login = () => {
       lastFiveOrdersID : [],
       shipingAddress : "",
       profileCreation : Date.now(),
-
     }
     setDataToCollection(data , "usersList" , false).then(()=>{
       updateProfile(auth.currentUser, {

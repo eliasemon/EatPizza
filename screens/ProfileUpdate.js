@@ -3,13 +3,17 @@ import { Button } from "../components/Buttons"
 import Heading from "../components/Heading"
 import { GlobalStyle, ProfileUpdateStyle as styles } from "../styles"
 import uploadIcon from '../assets/images/uploadIcon.png'
-
 import * as ImagePicker from 'expo-image-picker'
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { auth, firebaseApp } from "../config"
+import { getStorage, ref, uploadBytes , getDownloadURL} from "firebase/storage";
+import { updateProfile } from "firebase/auth";
+import { doc, getFirestore } from "firebase/firestore"
 const ProfileUpdate = () => {
-    const [selectedImage, setSelectedImage] = useState(null)
-
+    const [selectedImage, setSelectedImage] = useState(auth.currentUser.photoURL)
+    const [name , setName] = useState(auth.currentUser.displayName)
+    const [loadingStatus , setLoadingStatus] = useState(false)
+    console.log(setSelectedImage)
     const pickImageAsync = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -25,9 +29,32 @@ const ProfileUpdate = () => {
             alert('You did not select any image.');
         }
     };
+    
 
     const handleOnPress = () => {
+        setLoadingStatus(!loadingStatus)
+        const storage = getStorage(firebaseApp);
+        const storageRef = ref(storage, `profile/${auth.currentUser.phoneNumber}.jpeg`);
+        const uploadTask = uploadBytes(storageRef , selectedImage , 'data_url');
+        // uploadTask.then(v =>  getDownloadURL(v.ref).then((downloadURL)=>{
+
+        //     return downloadURL
+        //     // mainResolver({imageDownloadUrl : downloadURL , imgRef : `${fileRef}/${name}.jpeg` })
+        // }).then((downloadURL)=>{
+        //     updateProfile(auth.currentUser, {
+        //         displayName:`${name}`, photoURL: downloadURL
+        //       })
+        //       return downloadURL
+        // }).then(async (downloadURL)=>{
+        //     const db = getFirestore()
+        //     const colRef = doc(db, "usersList" , auth.currentUser.phoneNumber );
+        //     await updateDoc( colRef ,{fullName :name , photoURL: downloadURL })
+        // }).finally(()=>{
+        //     setLoadingStatus(!loadingStatus)
+        // }))
+
         // you have to read the result and send to the server
+
     }
 
     // let image = isPicked ? require('./../assets/images/galaryIcon.png') : require(imageLink)
@@ -39,9 +66,9 @@ const ProfileUpdate = () => {
             </View>
             <View>
                 <View style={[GlobalStyle.sidePadding, styles.inputGroup]}>
-                    <TextInput style={styles.input} placeholder="First Name" placeholderTextColor="rgba(255,255,255,.8)" />
-                    <TextInput style={styles.input} placeholder="Last Name" placeholderTextColor="rgba(255,255,255,.8)" />
-                    <TextInput style={styles.input} placeholder="Email Address" placeholderTextColor="rgba(255,255,255,.8)" />
+                    <TextInput value={name} onChangeText={setName} style={styles.input} placeholder="Full Name" placeholderTextColor="rgba(255,255,255,.8)" />
+                    {/* <TextInput style={styles.input} placeholder="Last Name" placeholderTextColor="rgba(255,255,255,.8)" />
+                    <TextInput style={styles.input} placeholder="Email Address" placeholderTextColor="rgba(255,255,255,.8)" /> */}
                     <TouchableOpacity onPress={pickImageAsync} style={styles.sectionBlock}>
                         <Image
                             style={{
