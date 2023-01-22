@@ -35,10 +35,6 @@ const FilteredProduct = ({ navigation, route }) => {
     }
 
 
-    if (itemsSnapshot.length > 0) {
-        console.log(itemsSnapshot[0].data())
-    }
-
     useEffect(() => {
         // getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5)
         getDataWithOutRealTimeUpdates(setCategories, "catagories");
@@ -155,7 +151,7 @@ const FilteredProduct = ({ navigation, route }) => {
             <View style={{ height: '77%' }}>
 
             {itemsDataForView && (<FlatList
-                    ListFooterComponent={<ActivityIndicator />}
+                 ListFooterComponent={ itemsSnapshot[4] ? <ActivityIndicator /> : (<Text style={{color : "white"}}>Items List End </Text>)}
                 onEndReached={infinityScrollHandle}
                 data={itemsDataForView}
                 renderItem={({ item }) => (

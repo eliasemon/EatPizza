@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { View, Image, TouchableOpacity, TextInput, Modal, Text, Alert } from "react-native";
 import logo from "../../assets/images/logo.png";
 import { NextButton } from "../Buttons";
-import { auth, firebaseApp } from '../../config'
+import { auth, firebaseApp, functions } from '../../config'
 import { FirebaseRecaptchaVerifierModal } from "../../expo-firebase-recaptcha/src/index"
 import Otp from "./Otp";
 import { useNavigation } from '@react-navigation/native';
@@ -11,7 +11,7 @@ import { LoginStyle as styles } from '../../styles'
 import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise, setDataToCollection } from "../../utils/index"
 import { stylesForAlert } from "../../styles/ProductDetails.style"
 import { updateProfile } from "firebase/auth";
-
+import { httpsCallable } from "firebase/functions";
 
 import Signup from "./Signup"
 import { action, useStoreActions } from "easy-peasy";
@@ -112,7 +112,6 @@ const Login = () => {
   const [code, setCode] = useState('')
   const [verificationId, setVerificationId] = useState(null)
   const recaptchaVerification = useRef(null);
-  const navigation = useNavigation();
 
 
   useEffect(()=>{
@@ -140,17 +139,21 @@ const Login = () => {
     console.log(auth.currentUser.user)
     if (!inputValidate(fullName, "name")) return;
     const data = {
-      id: auth.currentUser.phoneNumber,
+      id: auth.currentUser.uid,
       uid : auth.currentUser.uid,
       isRestricted: false,
       phoneNumber:  auth.currentUser.phoneNumber,
       fullName : fullName,
-      shopingCart : {},
-      lastFiveOrdersID : [],
       shipingAddress : "",
       profileCreation : Date.now(),
     }
-    setDataToCollection(data , "usersList" , false).then(()=>{
+
+    const setUsersInfoInDatabase = httpsCallable(functions , 'setUsersInfoInDatabase')
+
+
+
+
+    setUsersInfoInDatabase(data).then(()=>{
       updateProfile(auth.currentUser, {
         displayName:`${fullName}`, photoURL: undefined
       }).then(()=>{
@@ -180,8 +183,6 @@ const Login = () => {
 
   }
 
-
-  // getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("Addons", "65xtKxCPzqAy2u9Z6")
 
   const confirmCode = async () => {
     if (!(inputValidate(code, "code"))) return;

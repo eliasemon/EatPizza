@@ -3,7 +3,7 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { CheckoutCardActions } from '../constants/enum';
 import { GlobalStyle } from '../styles';
 
-const CheckoutCard = ({ UpdateCardItem, item }) => {
+const CheckoutCard = ({ UpdateCardItem, item, cardsType }) => {
 
     const cardLocalAction = (action) => {
         UpdateCardItem({ action: action, key: item.key })
@@ -15,18 +15,25 @@ const CheckoutCard = ({ UpdateCardItem, item }) => {
                 <View style={{ minWidth: '25%', justifyContent: 'space-between' }}>
                     <Image source={{ uri: `${item?.image?.imageDownloadUrl}` }} style={styles.cardImage} />
                     <View style={styles.buttonSet}>
-                        <TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.increment)}>
-                            <FontAwesome name="chevron-left" size={20} color="rgba(255,255,255,0.8)" />
-                        </TouchableOpacity>
-                        <Text style={styles.buttonNumber}>{item?.itemCount}</Text>
-                        {item?.itemCount > 1 ?
-                            (<TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.decrement)}>
-                                <FontAwesome name="chevron-right" size={20} color="rgba(255,255,255,0.8)" />
-                            </TouchableOpacity>) :
-                            (<TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.delete)}>
-                                <MaterialIcons name="delete-forever" size={20} color="rgba(255,255,255,0.8)" />
-                            </TouchableOpacity>)
-                        }
+
+                        {cardsType === "nonInteractive" ? (<Text style={styles.buttonNumber}>{item?.itemCount}</Text>) : (
+                            <>
+                                <TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.increment)}>
+                                    <FontAwesome name="chevron-left" size={20} color="rgba(255,255,255,0.8)" />
+                                </TouchableOpacity>
+                                <Text style={styles.buttonNumber}>{item?.itemCount}</Text>
+                                {item?.itemCount > 1 ?
+                                    (<TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.decrement)}>
+                                        <FontAwesome name="chevron-right" size={20} color="rgba(255,255,255,0.8)" />
+                                    </TouchableOpacity>) :
+                                    (<TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.delete)}>
+                                        <MaterialIcons name="delete-forever" size={20} color="rgba(255,255,255,0.8)" />
+                                    </TouchableOpacity>)
+                                }
+                            </>
+
+                        )}
+
                     </View>
                 </View>
                 <View style={styles.cardTextBox}>

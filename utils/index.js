@@ -23,6 +23,30 @@ import { db } from "../config";
 
 
 
+
+
+export const getUsersOrderHistory = async ( setItems , collectionRef , queryObj  ) =>{
+  
+  const q = query(collection(db, `${collectionRef}`) , where(`${queryObj.queryField}` ,  '==' , queryObj.targetItem ));
+
+  const data = await getDocs(q)
+  // const reverseData = (data.docs).reverse()
+  setItems(data.docs)
+}
+
+// export const getCurrentOrder = async ( setItems , collectionRef , queryObj  ) =>{
+  
+//   const q = query(collection(db, `${collectionRef}`) , where(`${queryObj.queryField}` ,  '==' , queryObj.targetItem ));
+
+//   const data = await getDocs(q)
+//   // const reverseData = (data.docs).reverse()
+//   setItems(data.docs)
+// }
+
+
+
+
+
 export const getDataWithInfinityScroll = async ( setItems , collectionRef , limitation , lastDoc , queryObj ) =>{
   
   let q;

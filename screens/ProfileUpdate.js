@@ -5,53 +5,71 @@ import { GlobalStyle, ProfileUpdateStyle as styles } from "../styles"
 import uploadIcon from '../assets/images/uploadIcon.png'
 import * as ImagePicker from 'expo-image-picker'
 import { useEffect, useState } from 'react';
-import { auth, firebaseApp } from "../config"
+import { auth, firebaseApp , functions } from "../config"
 import { getStorage, ref, uploadBytes , getDownloadURL} from "firebase/storage";
 import { updateProfile } from "firebase/auth";
-import { doc, getFirestore } from "firebase/firestore"
-const ProfileUpdate = () => {
-    const [selectedImage, setSelectedImage] = useState(auth.currentUser.photoURL)
+import { httpsCallable } from "firebase/functions";
+import {decode, encode} from "base-64"
+
+if (!global.btoa) {
+    global.btoa = encode;
+}
+
+if (!global.atob) {
+    global.atob = decode;
+}
+
+const ProfileUpdate = ({navigation}) => {
+    
+    const [selectedImage, setSelectedImage] = useState(auth.currentUser.photoURL ? {uri : auth.currentUser.photoURL } : "")
+
+    // useEffect()
     const [name , setName] = useState(auth.currentUser.displayName)
     const [loadingStatus , setLoadingStatus] = useState(false)
     console.log(setSelectedImage)
     const pickImageAsync = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
-            quality: 1,
-            aspect: [1, 1]
+            quality: 0,
+            aspect: [1, 1],
+            height : 50,
+            width : 50,
+            base64 : true
         });
 
-        if (!result.canceled) {
-            console.log(result.assets[0].uri);
+        if (!result.canceled && result.assets[0].type === 'image') {
             imageLink = result.assets[0].uri;
-            setSelectedImage(result.assets[0].uri)
+            setSelectedImage(result.assets[0])
         } else {
             alert('You did not select any image.');
         }
     };
-    
 
-    const handleOnPress = () => {
+    const handleOnPress = async () => {
         setLoadingStatus(!loadingStatus)
         const storage = getStorage(firebaseApp);
-        const storageRef = ref(storage, `profile/${auth.currentUser.phoneNumber}.jpeg`);
-        const uploadTask = uploadBytes(storageRef , selectedImage , 'data_url');
-        // uploadTask.then(v =>  getDownloadURL(v.ref).then((downloadURL)=>{
-
-        //     return downloadURL
-        //     // mainResolver({imageDownloadUrl : downloadURL , imgRef : `${fileRef}/${name}.jpeg` })
-        // }).then((downloadURL)=>{
-        //     updateProfile(auth.currentUser, {
-        //         displayName:`${name}`, photoURL: downloadURL
-        //       })
-        //       return downloadURL
-        // }).then(async (downloadURL)=>{
-        //     const db = getFirestore()
-        //     const colRef = doc(db, "usersList" , auth.currentUser.phoneNumber );
-        //     await updateDoc( colRef ,{fullName :name , photoURL: downloadURL })
-        // }).finally(()=>{
-        //     setLoadingStatus(!loadingStatus)
-        // }))
+        const type = selectedImage.uri.split(".")
+        const storageRef = ref(storage, `profile/${auth.currentUser.uid}.jpeg`);
+        const response = await fetch(selectedImage.uri);
+        const blob = await response.blob();
+        try {
+            await uploadBytes(storageRef , blob  , {contentType: 'image/jpeg',}).then(v =>  getDownloadURL(v.ref).then(async(downloadURL)=>{
+                const  updateUsersInformation = httpsCallable(functions , 'updateUsersInformation')
+                await  updateUsersInformation({fullName : name , photoURL : downloadURL })
+                await updateProfile(auth.currentUser, {
+                    displayName:`${name}`, photoURL: downloadURL
+                  })
+            }).catch((error)=>{
+                console.log(JSON.stringify(error))
+            }).finally(()=>{
+                setLoadingStatus(!loadingStatus)
+                navigation.goBack();
+            }))
+        } catch (error) {
+            console.log(error)
+        }
+       
+        
 
         // you have to read the result and send to the server
 
@@ -78,7 +96,7 @@ const ProfileUpdate = () => {
                                 borderRadius: 100
                             }}
                             source={selectedImage ?
-                                { uri: selectedImage } :
+                                { uri: selectedImage.uri} :
                                 uploadIcon
                             }
                         />

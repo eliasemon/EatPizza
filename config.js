@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app'
 import { getFirestore } from "firebase/firestore";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth/react-native';
-
+import { getFunctions } from 'firebase/functions';
 export const firebaseConfig = {
   // apiKey: "AIzaSyC792GylNpvacFDj89j9W97jBYpq7fNNQE",
   // authDomain: "eatpizza-cdcd6.firebaseapp.com",
@@ -19,7 +19,7 @@ export const firebaseConfig = {
   //appId: "1:1046079182430:web:353d60443cfc4e7b5186cf",
 //  measurementId: "G-56XRY7LQHS"
   
-     apiKey: "AIzaSyDv-e-HYg7o3wo5gJ5d12g4dXpleg_R-IE",
+    apiKey: "AIzaSyDv-e-HYg7o3wo5gJ5d12g4dXpleg_R-IE",
     authDomain: "eliasemondevs.firebaseapp.com",
     projectId: "eliasemondevs",
     storageBucket: "eliasemondevs.appspot.com",
@@ -33,6 +33,8 @@ export const db = getFirestore(firebaseApp);
 export const auth = initializeAuth(firebaseApp , {
   persistence: getReactNativePersistence(AsyncStorage)
 })
+
+export const functions = getFunctions(firebaseApp);
 
 
 

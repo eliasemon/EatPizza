@@ -2,60 +2,59 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Heading from "../components/Heading";
 import { GlobalStyle, ShippingStyle as styles } from "../styles";
-import { auth } from "../config";
+import { auth, functions } from "../config";
 import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise } from "../utils";
 import { useEffect, useRef, useState } from "react";
 import { useStoreActions } from "easy-peasy";
 import { getFirestore , doc , updateDoc} from "firebase/firestore";
 import { Button } from "../components/Buttons";
+import { httpsCallable } from "firebase/functions";
 
 const Shipping = ({navigation}) => {
-    const { addDataToCachesForOrder , clearShopingCard } = useStoreActions(action => action)
+    const { addDataToCachesForOrder } = useStoreActions(action => action)
     const [shipingAddress , setShipingAddress] = useState("");
     const [shipingRefforUi, setShipingRefforUi] = useState(false);
     useEffect(()=>{
-        getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("usersList", auth.currentUser.phoneNumber).then((data) => {
+        getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("usersList", auth.currentUser.uid).then((data) => {
             if(data.shipingAddress){
                 setShipingAddress(data.shipingAddress)
                 setShipingRefforUi(data.shipingAddress)
             }
-            
         })  
     },[])
     const setShipingAddressToOrder = async () => {
-        // if (shipingAddress == "") {
-        //     Alert.alert(
-        //         "Variant Selection Requiered",
-        //         "You haven't select a variant .Please select a variant",
-        //         [
-        //             { text: "OK" }
-        //         ],
-        //         {
-        //             cancelable: false,
-        //             overlayStyle: stylesForAlert.overlay,
-        //             alertContainerStyle: stylesForAlert.alertContainer,
-        //             titleStyle: stylesForAlert.text,
-        //             messageStyle: stylesForAlert.text,
-        //             buttonStyle: stylesForAlert.buttonContainer,
-        //             buttonTextStyle: stylesForAlert.buttonText,
-        //         }
-        //     );
-        //     return
-        // }
+        if (shipingAddress == "") {
+            Alert.alert(
+                "Shiping Address Missed",
+                "Shiping Address Field Can't be empty",
+                [
+                    { text: "OK" }
+                ],
+            );
+            return
+        }
+        const setUsersShipingAddress = httpsCallable(functions , 'setUsersShipingAddress')
+
         try {
-            const db = getFirestore()
-            const colRef = doc(db, "usersList", `${auth.currentUser.phoneNumber}`);
-            await updateDoc( colRef ,{shipingAddress : shipingAddress })
+            setUsersShipingAddress({shipingAddress : shipingAddress }).then(()=>{
+                addDataToCachesForOrder({type : "spread" , data : {shipingAddress : shipingAddress}})
+                navigation.navigate("Payment")
+            })
  
         } catch (error) {
             console.log(error)
+            Alert.alert(
+                "SomeThings Went Worng",
+                "Take The step Again",
+                [
+                    { text: "OK" }
+                ]
+            );
         }
-        addDataToCachesForOrder({type : "spread" , data : {shipingAddress : shipingAddress}})
-        // const updates = {}
-        // updates['/usersList/' + auth.currentUser.uid + '/shipingAddress' ] = shipingAddress;
-        navigation.navigate("Payment")
+       
         
     }
+
     const continueWithPrv = () =>{
         addDataToCachesForOrder({type : "spread" , data : {shipingAddress : shipingAddress}})
         navigation.navigate("Payment")

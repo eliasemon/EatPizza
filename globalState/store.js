@@ -1,5 +1,6 @@
-import { createStore , action } from 'easy-peasy';
+import { createStore , action , thunk } from 'easy-peasy';
 import { CheckoutCardActions } from '../constants/enum';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const store = createStore({
     shopingCard : {},
@@ -25,10 +26,28 @@ export const store = createStore({
 
 
     // -------------
-        clearShopingCard : action((state , payload)=>{
+
+    clearShopingCard : thunk(async (actions, payload , {getStoreState}) => {
+        await actions.clearShopingCardAction(payload);
+        const {shopingCard , totalItemCount , subTottal } = getStoreState();
+        const data = {shopingCard : {...shopingCard} ,totalItemCount : totalItemCount , subTottal : subTottal    }
+        await AsyncStorage.setItem(
+        'shopingCardLocalStorage',
+            JSON.stringify(data),
+        )
+      }),
+
+        clearShopingCardAction : action((state , payload)=>{
             state.shopingCard = {}
             state.totalItemCount = 0,
             state.subTottal = 0
+        }),
+
+
+        addDataFromLocalStorage : action((state,payload)=>{
+            state.shopingCard = payload.shopingCard
+            state.subTottal = payload.subTottal
+            state.totalItemCount = payload.totalItemCount
         }),
 
         addDataToCachesForOrder : action((state , payload)=>{
@@ -41,7 +60,18 @@ export const store = createStore({
             }
         }),
     //
-    addToCard : action((state, payload) => {
+    
+    addToCard : thunk(async (actions, payload , {getStoreState}) => {
+        await actions.addToShopingCart(payload);
+        const {shopingCard , totalItemCount , subTottal } = getStoreState();
+        const data = {shopingCard : {...shopingCard} ,totalItemCount : totalItemCount , subTottal : subTottal    }
+        await AsyncStorage.setItem(
+        'shopingCardLocalStorage',
+            JSON.stringify(data),
+        )
+      }),
+
+    addToShopingCart : action((state, payload) => {
         const {shopingCard} = state
         const {data , key} = payload
         
@@ -61,10 +91,22 @@ export const store = createStore({
           }else{
             shopingCard[key] = data
         }
-        console.log(state.subTottal)
+        
       }),
 
-    UpdateCardItem :  action((state, payload) =>{
+
+      UpdateCardItem : thunk(async (actions, payload , {getStoreState}) => {
+        await actions.UpdateShopingCardItems(payload);
+        const {shopingCard , totalItemCount , subTottal } = getStoreState();
+        const data = {shopingCard : {...shopingCard} ,totalItemCount : totalItemCount , subTottal : subTottal    }
+        await AsyncStorage.setItem(
+        'shopingCardLocalStorage',
+            JSON.stringify(data),
+        )
+      }),
+
+
+    UpdateShopingCardItems :  action((state, payload) =>{
         const {action , key} = payload
         const {shopingCard} = state
 
@@ -87,8 +129,6 @@ export const store = createStore({
             state.subTottal -= shopingCard[key].unitPrice
             return
         }
-
-
     })
 
 

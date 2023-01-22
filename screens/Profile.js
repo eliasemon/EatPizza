@@ -13,8 +13,7 @@ import { COLORS } from '../constants/theme';
 
 const Profile = ({ navigation }) => {
     const LoadingChanger = useStoreActions(action => action.LoadingChanger)
-    const [froce, setForce] =  useState(true)
-    console.log(JSON.stringify(auth.currentUser))
+    // console.log(JSON.stringify(auth.currentUser))
     // if(auth.currentUser.displayName == "") {
     //     return 
     // }
@@ -24,7 +23,6 @@ const Profile = ({ navigation }) => {
             if(!user){
                 LoadingChanger({status : true , type :  "LoginUI"})
             }
-            setForce(prv => !prv)
         })
         // if(!auth.currentUser){
         //     LoadingChanger({status : true , type :  "LoginUI"})

@@ -16,9 +16,8 @@ export default StyleSheet.create({
         fontSize: 16
     },
     tab: {
-        width: '50%',
+        width: '80%',
         height: 50,
-        backgroundColor: '#282828',
         marginVertical: 20,
         borderRadius: 15,
         paddingHorizontal: 15,

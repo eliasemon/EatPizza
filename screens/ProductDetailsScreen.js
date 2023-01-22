@@ -46,7 +46,7 @@ const CheckBox = ({ isSelected, product }) => {
 
 
 const ProductDetailsScreen = ({ navigation, route }) => {
-    const addTodo = useStoreActions((actions) => actions.addToCard);
+    const addToCard = useStoreActions((actions) => actions.addToCard);
     const { item } = route.params;
     const [itemCount, setItemCount] = useState(1)
 
@@ -100,7 +100,7 @@ const ProductDetailsScreen = ({ navigation, route }) => {
             specialInstructions: specialInstructions,
             itemCount: itemCount
         }
-        addTodo({ key: key, data: { ...data } })
+        addToCard({ key: key, data: { ...data } })
         navigation.goBack()
         setSelectedVariant("")
         setSelectedAddonsForCard({})
@@ -111,8 +111,10 @@ const ProductDetailsScreen = ({ navigation, route }) => {
     useEffect(() => {
         if (item?.selectedAddons?.length > 0) {
 
-            const data = item.selectedAddons.map((addonId) => {
-                return (getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("Addons", addonId))
+            const data = item.selectedAddons.map(async(addonId) => {
+                const data = await getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("Addons", addonId)
+                delete data.selectedCatagories
+                return data
             })
             Promise.all(data).then((v) => setAddons([...v]))
         }

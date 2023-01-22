@@ -2,9 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, ActivityIndicator } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Banner from '../assets/images/banner.png'
-import { itemList, categories as categoriesList } from '../constants/dummy'
 import ProductCard from '../components/ProductCard';
-import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../utils';
+import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll , getSingleDataWithOutRealTimeUpdates } from '../utils';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useStoreActions } from 'easy-peasy';
@@ -27,6 +26,7 @@ const Home = ({ navigation }) => {
     const [isActiveCategoriesId, setisActiveCategoriesId] = useState({})
     const [itemsSnapshot, setItemsSnapshot] = useState("")
     const [itemsDataForView, setItemsDataForView] = useState(dataHeadinforUi)
+    const [bannerData , setBannerData] = useState("")
     const flatListRef = useRef(null)
     const dataLoading = useRef(false)
 
@@ -58,6 +58,9 @@ const Home = ({ navigation }) => {
         getDataWithOutRealTimeUpdates(setCategories, "catagories").then(() => {
             LoadingChanger({ status: false, type: "BootLoaderUi" })
         });
+        getSingleDataWithOutRealTimeUpdates("banner" , "banner1").then((data)=>{
+            setBannerData(data);
+        })
     }, []);
 
 
@@ -144,13 +147,14 @@ const Home = ({ navigation }) => {
     const PageUi = (
         <View style={{ height: 270 }}>
             <View style={[styles.heading, GlobalStyle.sidePadding]}>
-                <Text style={styles.title}>Find Your Favorite Food</Text>
+                <Text style={styles.title}>{bannerData?.homePageTittle ? bannerData?.homePageTittle : "Find Your Favorite Food"   }</Text>
                 <TouchableOpacity style={styles.notification} onPress={() => navigation.navigate("Notification")}>
                     <FontAwesome name="bell-o" size={32} color="white" />
                 </TouchableOpacity>
             </View>
             <View>
-                <Image source={Banner} style={styles.banner} />
+                {console.log(bannerData?.image?.imageDownloadUrl)}
+                <Image source={ {uri : `${bannerData?.image?.imageDownloadUrl}` }} style={styles.banner} />
             </View>
 
         </View>
@@ -164,7 +168,7 @@ const Home = ({ navigation }) => {
                 ListHeaderComponent={PageUi}
                 data={itemsDataForView}
                 ref={flatListRef}
-                ListFooterComponent={<ActivityIndicator />}
+                ListFooterComponent={ itemsSnapshot[4] ? <ActivityIndicator /> : (<Text style={{color : "white"}}>Items List End </Text>)}
                 renderItem={({ item }) => {
                     if (item.type) {
                         return (
@@ -224,7 +228,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,255,255, .12)'
     },
     banner: {
-        width: '100%',
+        width: "100%",
+        height: 183,
+        // width: 85,
         marginVertical: 5,
         // display : "none",
     },

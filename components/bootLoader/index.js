@@ -2,7 +2,7 @@ import { View, Image, StyleSheet , Modal } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
-import { useStoreState } from "easy-peasy";
+import { useStoreState , useStoreActions } from "easy-peasy";
 import Ready from "./Ready";
 import Login from "../LogIn/Login";
 
@@ -11,9 +11,15 @@ import Login from "../LogIn/Login";
 const BootLoader = () => {
     const {bootloaderLoading , LoginUI} = useStoreState(state => state)
     const [firstAttemp , setFirstAttemp] = useState("")
+    const addDataFromLocalStorage = useStoreActions(action => action.addDataFromLocalStorage)
     useEffect(()=>{
         (async () => {
             try {
+              const shopingCardData = await AsyncStorage.getItem('shopingCardLocalStorage');
+              if(shopingCardData != null){
+                addDataFromLocalStorage(JSON.parse(shopingCardData))
+              }
+
               const value = await AsyncStorage.getItem('firstAttemp');
               if (value == null) {
                 setFirstAttemp(true)
