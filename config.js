@@ -18,14 +18,7 @@ export const firebaseConfig = {
 //  messagingSenderId: "1046079182430",
   //appId: "1:1046079182430:web:353d60443cfc4e7b5186cf",
 //  measurementId: "G-56XRY7LQHS"
-  
-    apiKey: "AIzaSyDv-e-HYg7o3wo5gJ5d12g4dXpleg_R-IE",
-    authDomain: "eliasemondevs.firebaseapp.com",
-    projectId: "eliasemondevs",
-    storageBucket: "eliasemondevs.appspot.com",
-    messagingSenderId: "327352270248",
-    appId: "1:327352270248:web:1b2f927660b3d61f0f719d",
-    measurementId: "G-EDQB4BS2XB"
+
   };
 
 export const firebaseApp = initializeApp(firebaseConfig);
