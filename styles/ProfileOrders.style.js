@@ -16,11 +16,13 @@ export default StyleSheet.create({
         fontSize: 16
     },
     tab: {
-        width: '80%',
-        height: 50,
+        width: '60%',
+        borderRadius: 10,
+        height: 65,
+        backgroundColor: '#282828',
         marginVertical: 20,
         borderRadius: 15,
-        paddingHorizontal: 15,
+        paddingHorizontal: 10,
         justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row',
@@ -29,11 +31,10 @@ export default StyleSheet.create({
     tabOption: {
         padding: 10,
         borderRadius: 10,
-        backgroundColor: 'rgba(0,255,0,0.1)'
+        // backgroundColor: 'rgba(0,255,0,0.1)'
     },
     tabOptionText: {
-        color: '#fff',
-        fontSize: 18
+        color: '#fff'
     },
     cardContainer: {
         marginBottom: '20%'

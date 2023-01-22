@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList } from 'react-native'
+import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
 import Heading from '../components/Heading'
 import profile from '../assets/images/profile.png'
 import { GlobalStyle, ProfileOrdersStyle as styles } from '../styles'
@@ -50,7 +50,7 @@ const ProfileOrders = ({ navigation }) => {
     const [itemsSnapshot, setItemsSnapshot] = useState("");
     const [itemsDataForView, setItemsDataForView] = useState([]);
     const [itemsDataForViewCurrentOrder, setItemsDataForViewCurrentOrder] = useState([]);
-    const [isCurrent , setIsCurrent] = useState(true);
+    const [isCurrent, setIsCurrent] = useState(true);
     useEffect(() => {
         if(!itemsSnapshot){
             getUsersOrderHistory(setItemsSnapshot, "ordersList", { queryField: "userID", targetItem : auth.currentUser.uid })
@@ -88,9 +88,21 @@ const ProfileOrders = ({ navigation }) => {
                     <Text style={styles.profileEmail}>anamsingho@gmail.com</Text>
                 </View>
             </View>
+            {/* <View style={styles.tab}>
+                <Button } >Current Order</Button>
+            <Button } >All Orders</Button>
+            </View > */}
             <View style={styles.tab}>
-                <Button onPress={() => setIsCurrent(true)} >Current Order</Button>
-                <Button onPress={() => setIsCurrent(false)} >All Orders</Button>
+                <TouchableOpacity onPress={() => setIsCurrent(true)} style={[styles.tabOption, {
+                    backgroundColor: isCurrent ? 'rgba(0,255,0,0.1)' : 'rgba(0,0,0,0)'
+                }]}>
+                    <Text style={styles.tabOptionText}>All Orders</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setIsCurrent(false)} style={[styles.tabOption, {
+                    backgroundColor: isCurrent ? 'rgba(0,0,0,0)' : 'rgba(0,255,0,0.1)'
+                }]}>
+                    <Text style={styles.tabOptionText}>Processing</Text>
+                </TouchableOpacity>
             </View>
 
             {
