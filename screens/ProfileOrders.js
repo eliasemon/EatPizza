@@ -50,7 +50,7 @@ const ProfileOrders = ({ navigation }) => {
     const [itemsSnapshot, setItemsSnapshot] = useState("");
     const [itemsDataForView, setItemsDataForView] = useState([]);
     const [itemsDataForViewCurrentOrder, setItemsDataForViewCurrentOrder] = useState([]);
-    const [isCurrent, setIsCurrent] = useState(true);
+    const [isCurrent, setIsCurrent] = useState(false);
     useEffect(() => {
         if(!itemsSnapshot){
             getUsersOrderHistory(setItemsSnapshot, "ordersList", { queryField: "userID", targetItem : auth.currentUser.uid })
@@ -93,15 +93,15 @@ const ProfileOrders = ({ navigation }) => {
             <Button } >All Orders</Button>
             </View > */}
             <View style={styles.tab}>
-                <TouchableOpacity onPress={() => setIsCurrent(true)} style={[styles.tabOption, {
-                    backgroundColor: isCurrent ? 'rgba(0,255,0,0.1)' : 'rgba(0,0,0,0)'
-                }]}>
-                    <Text style={styles.tabOptionText}>All Orders</Text>
-                </TouchableOpacity>
                 <TouchableOpacity onPress={() => setIsCurrent(false)} style={[styles.tabOption, {
                     backgroundColor: isCurrent ? 'rgba(0,0,0,0)' : 'rgba(0,255,0,0.1)'
                 }]}>
                     <Text style={styles.tabOptionText}>Processing</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setIsCurrent(true)} style={[styles.tabOption, {
+                    backgroundColor: isCurrent ? 'rgba(0,255,0,0.1)' : 'rgba(0,0,0,0)'
+                }]}>
+                    <Text style={styles.tabOptionText}>All Orders</Text>
                 </TouchableOpacity>
             </View>
 
