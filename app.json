@@ -21,13 +21,21 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.eliasemon.EatPizza",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
+      
     },
     "web": {
       "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7d412a0f-0202-4c18-8acd-bc25ee70f78b"
+      }
     }
   }
 }
