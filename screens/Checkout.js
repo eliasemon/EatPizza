@@ -122,8 +122,8 @@ const Checkout = ({ navigation }) => {
             disCheckRef.current = false;
             setPromoCode("")
             Alert.alert(
-                "PromoCode isn't Valid",
-                `Please Enter the Valid PromoCode`,
+                "Invalid Promo Code",
+                "Please enter a valid promo code",
                 [
                     { text: "OK" }
                 ],
@@ -262,7 +262,7 @@ const Checkout = ({ navigation }) => {
                         </View>
                         {auth.currentUser ? (
                             <TouchableOpacity onPress={storeTheOrderCaches} style={styles.placeOrderButton}>
-                                <Text style={styles.placeOrderButtonText}> {!openingStatus.status ? "Order For Latter" : "Place My Order"}</Text>
+                                <Text style={styles.placeOrderButtonText}> {!openingStatus.status ? "Order For Later" : "Place My Order"}</Text>
                             </TouchableOpacity>
                         ) : <TouchableOpacity onPress={() => LoadingChanger({ status: true, type: "LoginUI" })} style={styles.placeOrderButton}>
                             <Text style={styles.placeOrderButtonText}>Login Before Order</Text>
