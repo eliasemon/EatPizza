@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert , ActivityIndicator } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Heading from "../components/Heading";
 import { GlobalStyle, ShippingStyle as styles } from "../styles";
@@ -9,8 +9,10 @@ import { useStoreActions } from "easy-peasy";
 import { getFirestore , doc , updateDoc} from "firebase/firestore";
 import { Button } from "../components/Buttons";
 import { httpsCallable } from "firebase/functions";
+import { COLORS } from '../constants/theme';
 
 const Shipping = ({navigation}) => {
+    const [loading , setLoading] = useState(false)
     const { addDataToCachesForOrder } = useStoreActions(action => action)
     const [shipingAddress , setShipingAddress] = useState("");
     const [shipingRefforUi, setShipingRefforUi] = useState(false);
@@ -33,16 +35,18 @@ const Shipping = ({navigation}) => {
             );
             return
         }
+        setLoading(true)
         const setUsersShipingAddress = httpsCallable(functions , 'setUsersShipingAddress')
 
         try {
             setUsersShipingAddress({shipingAddress : shipingAddress }).then(()=>{
                 addDataToCachesForOrder({type : "spread" , data : {shipingAddress : shipingAddress}})
                 navigation.navigate("Payment")
+                setLoading(false)
             })
  
         } catch (error) {
-            console.log(error)
+            setLoading(false)
             Alert.alert(
                 "SomeThings Went Worng",
                 "Take The step Again",
@@ -70,9 +74,16 @@ const Shipping = ({navigation}) => {
                             <Ionicons name="location" size={36} color="yellow" />
                             <Text style={styles.locationCardValue}>{shipingRefforUi}</Text>
                         </View>
-                        <Button onPress={continueWithPrv} style={styles.setLocationButton}>
-                            Continue
-                        </Button>
+
+                        <Button style={{
+                        backgroundColor: COLORS.primary,
+                        paddingVertical: 15,
+                        paddingHorizontal: 80,
+                        alignSelf: 'center',
+                        borderRadius: 10
+                    }} disabled={loading} onPress={continueWithPrv}>
+                        {loading ? <ActivityIndicator /> : "Continue"}
+                </Button>
                     </View>
 
                 )}
@@ -83,7 +94,16 @@ const Shipping = ({navigation}) => {
                         <Ionicons name="location" size={36} color="yellow" />
                         <TextInput  onChangeText={setShipingAddress}  style={styles.locationTextBox} placeholder="Put your address here" />
                     </View>
-                    <Button onPress={setShipingAddressToOrder} style={styles.setLocationButton}>Set Location</Button>
+
+                    <Button style={{
+                        backgroundColor: COLORS.primary,
+                        paddingVertical: 15,
+                        paddingHorizontal: 80,
+                        alignSelf: 'center',
+                        borderRadius: 10
+                    }} disabled={loading} onPress={setShipingAddressToOrder}>
+                        {loading ? <ActivityIndicator /> : "Set Location"}
+                </Button>
                     {/* <TouchableOpacity  style={styles.setLocationButton}>
                         <Text style={styles.setLocationButtonText}>Set Location</Text>
                     </TouchableOpacity> */}

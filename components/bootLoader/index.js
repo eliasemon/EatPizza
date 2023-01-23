@@ -37,6 +37,7 @@ const BootLoader = () => {
     },[])
 
 
+
 if(bootloaderLoading || firstAttemp === "" ){
     return (
         <Modal
@@ -53,34 +54,30 @@ if(bootloaderLoading || firstAttemp === "" ){
     )
 }
 
-if(firstAttemp && bootloaderLoading){
-    return (
-        <Modal
-      animationType="fade"
-      transparent={true}
-      // onRequestClose={() => {
-      //   navigation.goBack()
-      // }}
-      visible={true}
-    >
-        <View style={styles.container}>
-            <Ready />
-        </View>
-        
-    </Modal>
-    )
+if(firstAttemp  ){
+  return (
+      <Modal
+    animationType="fade"
+    transparent={true}
+    // onRequestClose={() => {
+    //   navigation.goBack()
+    // }}
+    visible={true}
+  >
+      <View style={styles.container}>
+          <Ready setFirstAttemp={setFirstAttemp}  />
+      </View>
+      
+  </Modal>
+  )
 }
+
 
 if(LoginUI){
     return (
         <Login />
     )
 }
-//   return (
-//     <></>
-//     // <View style={{display : "none"}}>
-//     // </View>
-//   );
 };
 
 

@@ -1,9 +1,6 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ActivityIndicator } from "react-native"
-import { Ionicons } from '@expo/vector-icons';
+import { View, TouchableOpacity, Image, ActivityIndicator } from "react-native"
 import Heading from "../components/Heading";
-import nogodLogo from '../assets/images/nogodLogo.png'
 import codLogo from '../assets/images/codLogo.png'
-import bkashLogo from '../assets/images/bkashLogo.png'
 import { PaymentStyle as styles } from "../styles";
 import { useStoreState , useStoreActions } from "easy-peasy";
 import { auth , functions } from "../config";
@@ -32,6 +29,8 @@ const Payment = ({navigation}) => {
                 
             }) 
         } catch (error) {
+
+            setLoading(false)
             console.log(error)
         }
         
@@ -47,9 +46,8 @@ const Payment = ({navigation}) => {
                 <Image source={nogodLogo} />
             </TouchableOpacity> */}
 
-            { loading && <ActivityIndicator size="large" color="#fff" /> }
             <TouchableOpacity disabled = {loading} onPress={placeOrder} style={styles.card}>
-                <Image source={codLogo} />
+            { loading ? <ActivityIndicator size="large" color="#fff" /> : <Image source={codLogo} /> } 
             </TouchableOpacity>
         </View>
     )

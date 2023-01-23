@@ -7,6 +7,7 @@ import { Button, NextButton } from "../components/Buttons"
 import CheckoutCard from "../components/CheckoutCard"
 import Heading from "../components/Heading"
 import { auth } from "../config"
+
 import { CheckoutStyle as styles, GlobalStyle } from '../styles'
 import { showDataWithOutPagination, getSingleDataWithOutRealTimeUpdates } from "../utils"
 import { findTheResturentStatus } from "../utils/ResturentOpenCloseStatus"

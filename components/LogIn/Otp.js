@@ -1,26 +1,39 @@
-import { View, Text } from "react-native";
-import { NextButton } from "../Buttons";
+import { View, Text, ActivityIndicator , Alert } from "react-native";
+import { Button } from "../Buttons";
 import { OtpInput } from "../TextInput";
 import { OtpStyle as styles } from "../../styles";
 import Heading from "../Heading";
 import { GlobalStyle } from "../../styles";
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { COLORS } from "../../constants/theme";
 
-
-const Otp = ({ changeTheScreenHandle, phoneNumber, code, setCode, confirmCode }) => {
+const Otp = ({ loading, setInputView, changeTheScreenHandle, phoneNumber, code, setCode, confirmCode }) => {
   console.log('Calling');
   const [timer, setTimer] = useState(120)
-  // useEffect(() => {
-  //   const timoutFunction = setTimeout(() => {
-  //     if (timer > 0) {
-  //       setTimer(timer - 1)
-  //     } else {
-  //       clearTimeout(timoutFunction)
-  //       changeTheScreenHandle()
-  //     }
-  //   }, 1000)
-  // }, [timer])
+  const [stopTimer, setStopTimer] = useState(false)
+  const timerRef = useRef()
+  useEffect(() => {
+    if (stopTimer) return;
+
+    if (timer <= 0) {
+      Alert.alert(
+        "TimeOut",
+        "Inactive",
+        [
+          { text: "OK" }
+        ]
+      );
+      setInputView("phoneUi")
+    } else {
+      timerRef.current = setInterval(() => {
+        console.log('timer calling');
+
+        setTimer( prv => (prv - 1))
+      }, 1000)
+    }
+
+    return  () => clearInterval(timerRef.current)
+  }, [timer])
 
 
 
@@ -35,11 +48,19 @@ const Otp = ({ changeTheScreenHandle, phoneNumber, code, setCode, confirmCode })
           }**** . This code will expired in 0{Math.floor(timer / 60)}:{timer % 60}
         </Text>
       </View>
-      <OtpInput 
+      <OtpInput
         code={code}
         setCode={setCode}
       />
-      <NextButton onPress={confirmCode} title="Continue" />
+      <Button style={{
+        backgroundColor: COLORS.primary,
+        paddingVertical: 15,
+        paddingHorizontal: 80,
+        alignSelf: 'center',
+        borderRadius: 10
+      }} disabled={loading} onPress={() => confirmCode(setStopTimer)}>
+        {loading ? <ActivityIndicator /> : "Continue"}
+      </Button>
     </View>
   );
 };

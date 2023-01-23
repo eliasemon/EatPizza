@@ -13,30 +13,34 @@ import { COLORS } from '../constants/theme';
 
 const Profile = ({ navigation }) => {
     const LoadingChanger = useStoreActions(action => action.LoadingChanger)
-    // console.log(JSON.stringify(auth.currentUser))
-    // if(auth.currentUser.displayName == "") {
-    //     return 
-    // }
+    const [authenticated , setAuthenticated] = useState("")
     
     useEffect(()=>{
         onAuthStateChanged(auth ,(user)=>{
             if(!user){
                 LoadingChanger({status : true , type :  "LoginUI"})
+                setAuthenticated(false)
+                navigation.navigate("Home")
+            }else{
+                setAuthenticated(true)
             }
         })
-        // if(!auth.currentUser){
-        //     LoadingChanger({status : true , type :  "LoginUI"})
-        // }
     },[])
 
-    if(auth.currentUser){
+    if(authenticated){
 
         return (
             <View>
             <Heading navigation={navigation} title="Profile" />
             <View style={styles.profileSection}>
                 <View style={styles.profileImage}>
-                    <Image source={profile} />
+                    <Image style={{
+                                width: 120,
+                                height: 120,
+                                resizeMode: 'contain',
+                                borderRadius: 100
+                            }}
+                            source={ auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : profile} />
                 </View>
                 <View style={styles.profileInfo}>
                     <Text style={styles.profileName}>{auth.currentUser.displayName}</Text>
@@ -78,14 +82,6 @@ const Profile = ({ navigation }) => {
         </View>
     )
     }
-    return (
-        <TouchableOpacity onPress={() => LoadingChanger({status : true , type :  "LoginUI"})} style={styles.card}>
-                    <View style={styles.icon}>
-                        <AntDesign name="enter" size={24} color="green" />
-                    </View>
-                    <Text style={styles.title}>Press Here To Login</Text>
-        </TouchableOpacity>
-    )
 }
 
 

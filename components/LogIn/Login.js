@@ -1,20 +1,20 @@
 import { useState, useRef, useEffect } from "react";
-import { View, Image, TouchableOpacity, TextInput, Modal, Text, Alert } from "react-native";
+import { View, Image, TouchableOpacity, TextInput, Modal, Text, Alert, ActivityIndicator } from "react-native";
 import logo from "../../assets/images/logo.png";
-import { NextButton } from "../Buttons";
+import { Button } from "../Buttons";
 import { auth, firebaseApp, functions } from '../../config'
 import { FirebaseRecaptchaVerifierModal } from "../../expo-firebase-recaptcha/src/index"
 import Otp from "./Otp";
-import { useNavigation } from '@react-navigation/native';
 import { PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
 import { LoginStyle as styles } from '../../styles'
 import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise, setDataToCollection } from "../../utils/index"
 import { stylesForAlert } from "../../styles/ProductDetails.style"
 import { updateProfile } from "firebase/auth";
+import { COLORS } from "../../constants/theme";
 import { httpsCallable } from "firebase/functions";
 
 import Signup from "./Signup"
-import { action, useStoreActions } from "easy-peasy";
+import { useStoreActions } from "easy-peasy";
 import Background from "../Background";
 
 const inputValidate = (state, type) => {
@@ -25,16 +25,7 @@ const inputValidate = (state, type) => {
         "You haven to provide valid OTP",
         [
           { text: "OK" }
-        ],
-        {
-          cancelable: false,
-          overlayStyle: stylesForAlert.overlay,
-          alertContainerStyle: stylesForAlert.alertContainer,
-          titleStyle: stylesForAlert.text,
-          messageStyle: stylesForAlert.text,
-          buttonStyle: stylesForAlert.buttonContainer,
-          buttonTextStyle: stylesForAlert.buttonText,
-        }
+        ]
       );
     }
 
@@ -44,16 +35,7 @@ const inputValidate = (state, type) => {
         "The Field is Requiered",
         [
           { text: "OK" }
-        ],
-        {
-          cancelable: false,
-          overlayStyle: stylesForAlert.overlay,
-          alertContainerStyle: stylesForAlert.alertContainer,
-          titleStyle: stylesForAlert.text,
-          messageStyle: stylesForAlert.text,
-          buttonStyle: stylesForAlert.buttonContainer,
-          buttonTextStyle: stylesForAlert.buttonText,
-        }
+        ]
       );
     }
     return false;
@@ -79,16 +61,7 @@ const inputValidate = (state, type) => {
       "You haven to provide valid phonNumber",
       [
         { text: "OK" }
-      ],
-      {
-        cancelable: false,
-        overlayStyle: stylesForAlert.overlay,
-        alertContainerStyle: stylesForAlert.alertContainer,
-        titleStyle: stylesForAlert.text,
-        messageStyle: stylesForAlert.text,
-        buttonStyle: stylesForAlert.buttonContainer,
-        buttonTextStyle: stylesForAlert.buttonText,
-      }
+      ]
     );
     return false
   }
@@ -100,10 +73,10 @@ const inputValidate = (state, type) => {
 }
 
 const Login = () => {
-  const {LoadingChanger} = useStoreActions(action => action)
+  const { LoadingChanger } = useStoreActions(action => action)
 
   const changeTheScreenHandle = () => {
-    LoadingChanger({status : false , type : "LoginUI"})
+    LoadingChanger({ status: false, type: "LoginUI" })
   }
 
 
@@ -112,80 +85,82 @@ const Login = () => {
   const [code, setCode] = useState('')
   const [verificationId, setVerificationId] = useState(null)
   const recaptchaVerification = useRef(null);
+  const [loading, setLoading] = useState(false)
 
-
-  useEffect(()=>{
-    if(auth.currentUser && auth.currentUser.displayName)
+  useEffect(() => {
+    if (auth.currentUser && auth.currentUser.displayName)
       changeTheScreenHandle();
-    if(auth.currentUser && !auth.currentUser.displayName){
+    if (auth.currentUser && !auth.currentUser.displayName) {
       setInputView("placingNameUi")
     }
-  },[auth.currentUser])
+  }, [auth.currentUser])
 
   const sendVerfication = () => {
+    setLoading(true)
     const ValidatedPhoneNumber = inputValidate(phoneNumber, "phoneNumber")
     if (!ValidatedPhoneNumber) {
       setPhoneNumber("")
+      setLoading(false)
       return
     }
     (new PhoneAuthProvider(auth)).verifyPhoneNumber(ValidatedPhoneNumber, recaptchaVerification.current)
       .then(setVerificationId).then(() => {
         setInputView("optUi")
+        setLoading(false)
+      }).catch(() => {
+        setLoading(false)
       })
   }
 
   // this functionalies created for dummy screen change
   const nameSubmitions = (fullName) => {
-    console.log(auth.currentUser.user)
-    if (!inputValidate(fullName, "name")) return;
+    setLoading(true)
+    if (!inputValidate(fullName, "name")) {
+      setLoading(false)
+      return;
+    }
     const data = {
       id: auth.currentUser.uid,
-      uid : auth.currentUser.uid,
+      uid: auth.currentUser.uid,
       isRestricted: false,
-      phoneNumber:  auth.currentUser.phoneNumber,
-      fullName : fullName,
-      shipingAddress : "",
-      profileCreation : Date.now(),
+      phoneNumber: auth.currentUser.phoneNumber,
+      fullName: fullName,
+      shipingAddress: "",
+      profileCreation: Date.now(),
     }
 
-    const setUsersInfoInDatabase = httpsCallable(functions , 'setUsersInfoInDatabase')
+    const setUsersInfoInDatabase = httpsCallable(functions, 'setUsersInfoInDatabase')
 
 
 
 
-    setUsersInfoInDatabase(data).then(()=>{
+    setUsersInfoInDatabase(data).then(() => {
       updateProfile(auth.currentUser, {
-        displayName:`${fullName}`, photoURL: undefined
-      }).then(()=>{
+        displayName: `${fullName}`, photoURL: undefined
+      }).then(() => {
         changeTheScreenHandle()
+        setLoading(false)
       }).catch((error) => {
         Alert.alert(
           "SomeThings Went Worng",
           "Please Try Again latter",
           [
             { text: "OK" }
-          ],
-          {
-            cancelable: false,
-            overlayStyle: stylesForAlert.overlay,
-            alertContainerStyle: stylesForAlert.alertContainer,
-            titleStyle: stylesForAlert.text,
-            messageStyle: stylesForAlert.text,
-            buttonStyle: stylesForAlert.buttonContainer,
-            buttonTextStyle: stylesForAlert.buttonText,
-          }
+          ]
         );
+        setLoading(false)
         changeTheScreenHandle()
       });
     })
-    
-    
+
+
 
   }
 
 
-  const confirmCode = async () => {
+  const confirmCode = async (setStopTimer) => {
     if (!(inputValidate(code, "code"))) return;
+    setLoading(true)
     const credential = PhoneAuthProvider.credential(verificationId, code);
     await signInWithCredential(auth, credential).then((userInfo) => {
       if (userInfo._tokenResponse.isNewUser || !userInfo.user.displayName) {
@@ -194,6 +169,9 @@ const Login = () => {
         changeTheScreenHandle()
       }
       setCode('')
+    }).then(() => {
+      setStopTimer(true)
+      setLoading(false)
     })
       .catch((err) => {
         Alert.alert(
@@ -201,19 +179,11 @@ const Login = () => {
           "You haven to provide valid OTP",
           [
             { text: "OK" }
-          ],
-          {
-            cancelable: false,
-            overlayStyle: stylesForAlert.overlay,
-            alertContainerStyle: stylesForAlert.alertContainer,
-            titleStyle: stylesForAlert.text,
-            messageStyle: stylesForAlert.text,
-            buttonStyle: stylesForAlert.buttonContainer,
-            buttonTextStyle: stylesForAlert.buttonText,
-          }
+          ]
         );
-        console.log("Error" + err)
+        setLoading(false)
       })
+
   }
 
   const UiEnum = {
@@ -233,16 +203,27 @@ const Login = () => {
       </View>
 
       <View >
-        <NextButton onPress={sendVerfication} title="Login" />
+
+        <Button style={{
+          backgroundColor: COLORS.primary,
+          paddingVertical: 15,
+          paddingHorizontal: 80,
+          alignSelf: 'center',
+          borderRadius: 10
+        }} disabled={loading} onPress={sendVerfication}>
+          {loading ? <ActivityIndicator /> : "LOGIN"}
+        </Button>
+
         <View style={{ height: 20 }} />
-        <TouchableOpacity onPress={changeTheScreenHandle} style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: '#fff' }}>Skip for now</Text>
-        </TouchableOpacity>
-        {/* <NextButton onPress={changeTheScreenHandle} title="Skip For Now" /> */}
+        {!loading && (
+          <TouchableOpacity onPress={changeTheScreenHandle} style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: '#fff' }}>Skip for now</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>),
-    optUi: (<Otp changeTheScreenHandle={changeTheScreenHandle} phoneNumber={phoneNumber} code={code} setCode={setCode} confirmCode={confirmCode} />),
-    placingNameUi: (<Signup nameSubmitions={nameSubmitions} />)
+    optUi: (<Otp setInputView={setInputView} loading={loading} changeTheScreenHandle={changeTheScreenHandle} phoneNumber={phoneNumber} code={code} setCode={setCode} confirmCode={confirmCode} />),
+    placingNameUi: (<Signup loading={loading} nameSubmitions={nameSubmitions} />)
   }
 
 

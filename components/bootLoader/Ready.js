@@ -3,14 +3,16 @@ import { View, Image, Text, StyleSheet } from "react-native";
 import foods from "../../assets/images/foods.png";
 import { NextButton } from "../Buttons";
 import { ReadyStyle as styles } from "../../styles";
-import { action } from "easy-peasy";
+import { useStoreActions } from "easy-peasy";
+
 // NextButton
 
-const Ready = () => {
+const Ready = ({setFirstAttemp}) => {
   const LoadingChanger =   useStoreActions(action => action.LoadingChanger)
   // onClick this button change screen to Login screen
   const handlePress = () => {
     LoadingChanger({status : true , type : "LoginUI"})
+    setFirstAttemp(false)
   };
 
   return (

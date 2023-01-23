@@ -11,7 +11,7 @@ const dateStr = (ms) => {
 
 
 const defaultProps = {
-  contentHeight: 300,
+  contentHeight: "auto",
 };
 
 const CollapsibleCard = ({
@@ -107,9 +107,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   cardTop: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     padding: 8,
   },
   cardContent: {

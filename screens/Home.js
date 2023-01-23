@@ -143,12 +143,12 @@ const Home = ({ navigation }) => {
 
     const PageUi = (
         <View style={{ height: 270 }}>
-            {/* <View style={[styles.heading, GlobalStyle.sidePadding]}>
+            <View style={[styles.heading, GlobalStyle.sidePadding]}>
                 <Text style={styles.title}>{bannerData?.homePageTittle ? bannerData?.homePageTittle : "Find Your Favorite Food"   }</Text>
-                <TouchableOpacity style={styles.notification} onPress={() => navigation.navigate("Notification")}>
+                {/* <TouchableOpacity style={styles.notification} onPress={() => navigation.navigate("Notification")}>
                     <FontAwesome name="bell-o" size={32} color="white" />
-                </TouchableOpacity>
-            </View> */}
+                </TouchableOpacity> */}
+            </View>
             <View>
                 {console.log(bannerData?.image?.imageDownloadUrl)}
                 <Image source={ {uri : `${bannerData?.image?.imageDownloadUrl}` }} style={styles.banner} />

@@ -78,10 +78,16 @@ const ProfileOrders = ({ navigation }) => {
 
     return (
         <View>
-            <Heading navigation={navigation} title="Profile" />
+            <Heading navigation={navigation} title="User's Orders" />
             <View style={styles.profileSection}>
                 <View style={styles.profileImage}>
-                    <Image source={profile} />
+                <Image style={{
+                                width: 120,
+                                height: 120,
+                                resizeMode: 'contain',
+                                borderRadius: 100
+                            }}
+                            source={ auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : profile} />
                 </View>
                 <View style={styles.profileInfo}>
                     <Text style={styles.profileName}>{auth.currentUser.displayName}</Text>
@@ -109,7 +115,7 @@ const ProfileOrders = ({ navigation }) => {
                 (itemsDataForView || itemsDataForViewCurrentOrder) && (<FlatList
                     style={[GlobalStyle.sidePadding, styles.cardContainer]} data={isCurrent ? itemsDataForViewCurrentOrder : itemsDataForView} renderItem={
                         ({ item }) => (<OrdersItemsCom item={item} />)
-                    } keyExtractor={item => item.id} />)
+                    } keyExtractor={item => (itemsDataForView ? `itemsDataForView${item.id}` : item.id)} />)
 
             }
 
