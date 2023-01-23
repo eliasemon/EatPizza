@@ -1,11 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, ActivityIndicator } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Banner from '../assets/images/banner.png'
 import ProductCard from '../components/ProductCard';
 import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll , getSingleDataWithOutRealTimeUpdates } from '../utils';
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import { useStoreActions } from 'easy-peasy';
 import { GlobalStyle } from '../styles';
 
@@ -146,12 +144,12 @@ const Home = ({ navigation }) => {
 
     const PageUi = (
         <View style={{ height: 270 }}>
-            <View style={[styles.heading, GlobalStyle.sidePadding]}>
+            {/* <View style={[styles.heading, GlobalStyle.sidePadding]}>
                 <Text style={styles.title}>{bannerData?.homePageTittle ? bannerData?.homePageTittle : "Find Your Favorite Food"   }</Text>
                 <TouchableOpacity style={styles.notification} onPress={() => navigation.navigate("Notification")}>
                     <FontAwesome name="bell-o" size={32} color="white" />
                 </TouchableOpacity>
-            </View>
+            </View> */}
             <View>
                 {console.log(bannerData?.image?.imageDownloadUrl)}
                 <Image source={ {uri : `${bannerData?.image?.imageDownloadUrl}` }} style={styles.banner} />
@@ -168,7 +166,7 @@ const Home = ({ navigation }) => {
                 ListHeaderComponent={PageUi}
                 data={itemsDataForView}
                 ref={flatListRef}
-                ListFooterComponent={ itemsSnapshot[4] ? <ActivityIndicator /> : (<Text style={{color : "white"}}>Items List End </Text>)}
+                ListFooterComponent={itemsSnapshot[4] ? <ActivityIndicator /> : (<Text style={{ color: "white", textAlign: 'center' }}>No more items found ! </Text>)}
                 renderItem={({ item }) => {
                     if (item.type) {
                         return (

@@ -84,8 +84,8 @@ const ProfileOrders = ({ navigation }) => {
                     <Image source={profile} />
                 </View>
                 <View style={styles.profileInfo}>
-                    <Text style={styles.profileName}>John Doe</Text>
-                    <Text style={styles.profileEmail}>anamsingho@gmail.com</Text>
+                    <Text style={styles.profileName}>{auth.currentUser.displayName}</Text>
+                    <Text style={styles.profileEmail}>{auth.currentUser.phoneNumber}</Text>
                 </View>
             </View>
             {/* <View style={styles.tab}>
