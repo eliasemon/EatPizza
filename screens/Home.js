@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, ActivityIndicator } from "react-native";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, ActivityIndicator } from "react-native";
 import ProductCard from '../components/ProductCard';
 import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll , getSingleDataWithOutRealTimeUpdates } from '../utils';
 import { AntDesign } from '@expo/vector-icons';

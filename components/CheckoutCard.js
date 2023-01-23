@@ -19,15 +19,15 @@ const CheckoutCard = ({ UpdateCardItem, item, cardsType }) => {
                         {cardsType === "nonInteractive" ? (<Text style={styles.buttonNumber}>{item?.itemCount}</Text>) : (
                             <>
                                 <TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.increment)}>
-                                    <FontAwesome name="chevron-left" size={20} color="rgba(255,255,255,0.8)" />
+                                    <FontAwesome name="plus" size={20} color="rgba(255,255,255,0.8)" />
                                 </TouchableOpacity>
                                 <Text style={styles.buttonNumber}>{item?.itemCount}</Text>
                                 {item?.itemCount > 1 ?
                                     (<TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.decrement)}>
-                                        <FontAwesome name="chevron-right" size={20} color="rgba(255,255,255,0.8)" />
+                                        <FontAwesome name="minus" size={20} color="rgba(255,255,255,0.8)" />
                                     </TouchableOpacity>) :
                                     (<TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.delete)}>
-                                        <MaterialIcons name="delete-forever" size={20} color="rgba(255,255,255,0.8)" />
+                                        <FontAwesome name="trash-o" size={20} color="rgba(255,255,255,0.8)" />
                                     </TouchableOpacity>)
                                 }
                             </>
@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
         color: 'rgba(21,190,119,1)'
     },
     buttonSet: {
+        marginTop: 5,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

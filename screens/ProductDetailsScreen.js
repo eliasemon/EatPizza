@@ -20,7 +20,7 @@ const RadioButton = ({ product, selectedId }) => {
                     {product.name}
                 </Text>
             </View>
-            <Text style={styles.text}>{product.sellingPrice}</Text>
+            <Text style={styles.text}>৳ {product.sellingPrice}</Text>
         </View>
     )
 }
@@ -38,7 +38,7 @@ const CheckBox = ({ isSelected, product }) => {
                 </Text>
             </View>
             <Text style={styles.text}>
-                {product.price}
+                ৳ {product.price}
             </Text>
         </View >
     )
@@ -73,7 +73,7 @@ const ProductDetailsScreen = ({ navigation, route }) => {
         if (selectedVariant == "") {
             Alert.alert(
                 "Variant Selection Requiered",
-                "You haven't select a variant .Please select a variant",
+                "You have not selected any variant. Please select a variant",
                 [
                     { text: "OK" }
                 ],
