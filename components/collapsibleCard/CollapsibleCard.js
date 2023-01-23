@@ -1,10 +1,10 @@
 
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { useSpring, animated} from 'react-spring/native';
+import { useSpring, animated } from 'react-spring/native';
 
 
-const dateStr = (ms) =>{
+const dateStr = (ms) => {
   const newDate = new Date(ms)
   return newDate.toLocaleDateString()
 }
@@ -14,7 +14,7 @@ const defaultProps = {
   contentHeight: 300,
 };
 
-const  CollapsibleCard = ({
+const CollapsibleCard = ({
   children,
   contentHeight,
   defaultCollapsed,
@@ -45,12 +45,14 @@ const  CollapsibleCard = ({
         activeOpacity={1}
         onPress={() => setCollapsed(c => !c)}
         style={styles.cardTop}>
-        
-        <Text> OrderId : {item.id} </Text>
-        <Text> TotalAmmount : {item.TotalOrderAmmount} </Text>
-        <Text> CreationTime : {dateStr(item.creationTime)} </Text>
-        <Text> Status : {item.status} </Text>
-        
+        <View>
+          <Text style={styles.cardText}> OrderId : {item.id} </Text>
+          <Text style={styles.cardText}> TotalAmmount : {item.TotalOrderAmmount} </Text>
+        </View>
+        <View>
+          <Text style={styles.cardText}> CreationTime : {dateStr(item.creationTime)} </Text>
+          <Text style={styles.cardText}> Status : {item.status} </Text>
+        </View>
         <AnimatedView style={{ transform: [{ rotate: animation.rotation }] }}>
           {/* arrow button by condition  */}
         </AnimatedView>
@@ -93,7 +95,7 @@ const  CollapsibleCard = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 6,
     justifyContent: 'center',
     shadowColor: '#000',
@@ -114,6 +116,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#ddd',
   },
+  cardText: {
+    color: '#fff'
+  }
 });
 
 CollapsibleCard.defaultProps = defaultProps;

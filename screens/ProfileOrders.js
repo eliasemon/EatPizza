@@ -2,29 +2,29 @@ import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
 import Heading from '../components/Heading'
 import profile from '../assets/images/profile.png'
 import { GlobalStyle, ProfileOrdersStyle as styles } from '../styles'
-import { useState , useRef , useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { auth } from '../config'
-import { getUsersOrderHistory , getCurrentOrder } from '../utils'
+import { getUsersOrderHistory, getCurrentOrder } from '../utils'
 import { Button } from '../components/Buttons'
 import CheckoutCard from '../components/CheckoutCard'
 import CollapsibleCard from '../components/collapsibleCard/CollapsibleCard'
 
 
-const OrdersItemsCom = ({item}) =>{
- return(
-    <CollapsibleCard
-        item = {item}
-        style={{ marginBottom: 16 }}>
-            
-           <View> 
+const OrdersItemsCom = ({ item }) => {
+    return (
+        <CollapsibleCard
+            item={item}
+            style={[{ marginBottom: 16 }, GlobalStyle.sidePadding]}>
 
-            { item.items && Object.keys(item.items).map(key => (
-                <CheckoutCard
-                    key={key}
-                    cardsType="nonInteractive"
-                    item={item.items[key]}
-                />)
-            )}
+            <View>
+
+                {item.items && Object.keys(item.items).map(key => (
+                    <CheckoutCard
+                        key={key}
+                        cardsType="nonInteractive"
+                        item={item.items[key]}
+                    />)
+                )}
 
                 {/*
                 all the properties can accessable by item fragment , Like item.paymentType
@@ -37,9 +37,9 @@ const OrdersItemsCom = ({item}) =>{
                 "userID":"lfXGfoGOoXg6YoGeqVhBuSITIhB2",
                 "userName":"Elias ",
                 "userPhoneNumber":"+8801792269420" */}
-    
-    </View>
-    </CollapsibleCard>)
+
+            </View>
+        </CollapsibleCard>)
 }
 
 
@@ -52,27 +52,27 @@ const ProfileOrders = ({ navigation }) => {
     const [itemsDataForViewCurrentOrder, setItemsDataForViewCurrentOrder] = useState([]);
     const [isCurrent, setIsCurrent] = useState(false);
     useEffect(() => {
-        if(!itemsSnapshot){
-            getUsersOrderHistory(setItemsSnapshot, "ordersList", { queryField: "userID", targetItem : auth.currentUser.uid })
+        if (!itemsSnapshot) {
+            getUsersOrderHistory(setItemsSnapshot, "ordersList", { queryField: "userID", targetItem: auth.currentUser.uid })
         }
     }, [])
 
 
     useEffect(() => {
 
-        if(itemsSnapshot){ 
+        if (itemsSnapshot) {
 
             const currentOrderData = []
-            const data = itemsSnapshot.map((doc) =>{
+            const data = itemsSnapshot.map((doc) => {
                 item = doc.data()
                 item.id = doc.id
-                if(item.status !== "compleate" || item.status !== "cencel" ) currentOrderData.unshift(item)
+                if (item.status !== "compleate" || item.status !== "cencel") currentOrderData.unshift(item)
                 return item
             })
-            
+
             setItemsDataForView([...data])
             setItemsDataForViewCurrentOrder([...currentOrderData])
-            
+
         }
     }, [itemsSnapshot])
 
@@ -107,9 +107,9 @@ const ProfileOrders = ({ navigation }) => {
 
             {
                 (itemsDataForView || itemsDataForViewCurrentOrder) && (<FlatList
-                    style={[GlobalStyle.sidePadding, styles.cardContainer]} data={ isCurrent ? itemsDataForViewCurrentOrder  : itemsDataForView} renderItem={
-                    ({ item }) => (<OrdersItemsCom item={item} />)
-                } keyExtractor={item => item.id} />)
+                    style={[GlobalStyle.sidePadding, styles.cardContainer]} data={isCurrent ? itemsDataForViewCurrentOrder : itemsDataForView} renderItem={
+                        ({ item }) => (<OrdersItemsCom item={item} />)
+                    } keyExtractor={item => item.id} />)
 
             }
 
@@ -119,4 +119,4 @@ const ProfileOrders = ({ navigation }) => {
 
 export default ProfileOrders
 
-{/* <ProductCard cardsType="chip" item={item} /> */}
+{/* <ProductCard cardsType="chip" item={item} /> */ }
