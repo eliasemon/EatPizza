@@ -7,6 +7,12 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly'
     },
+    profileImage: {
+        marginRight: 20,
+        borderWidth: 4,
+        borderColor: "green",
+        borderRadius: 100
+    },
     profileName: {
         color: '#fff',
         fontSize: 28

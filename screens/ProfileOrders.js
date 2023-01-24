@@ -1,6 +1,8 @@
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
 import Heading from '../components/Heading'
 import profile from '../assets/images/profile.png'
+import avatar from '../assets/images/avatar.png'
+
 import { GlobalStyle, ProfileOrdersStyle as styles } from '../styles'
 import { useState, useRef, useEffect } from 'react'
 import { auth } from '../config'
@@ -81,13 +83,13 @@ const ProfileOrders = ({ navigation }) => {
             <Heading navigation={navigation} title="User's Orders" />
             <View style={styles.profileSection}>
                 <View style={styles.profileImage}>
-                <Image style={{
+                    <Image style={{
                                 width: 120,
                                 height: 120,
                                 resizeMode: 'contain',
                                 borderRadius: 100
                             }}
-                            source={ auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : profile} />
+                        source={auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : avatar} />
                 </View>
                 <View style={styles.profileInfo}>
                     <Text style={styles.profileName}>{auth.currentUser.displayName}</Text>

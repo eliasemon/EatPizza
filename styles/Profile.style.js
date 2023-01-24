@@ -9,7 +9,10 @@ export default StyleSheet.create({
         justifyContent: 'center',
     },
     profileImage: {
-        marginRight: 20
+        marginRight: 20,
+        borderWidth: 6,
+        borderColor: "green",
+        borderRadius: 100
     },
     profileInfo: {
     },
