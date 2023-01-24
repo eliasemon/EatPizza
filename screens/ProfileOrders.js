@@ -84,11 +84,11 @@ const ProfileOrders = ({ navigation }) => {
             <View style={styles.profileSection}>
                 <View style={styles.profileImage}>
                     <Image style={{
-                                width: 120,
-                                height: 120,
-                                resizeMode: 'contain',
-                                borderRadius: 100
-                            }}
+                        width: 120,
+                        height: 120,
+                        resizeMode: 'contain',
+                        borderRadius: 100
+                    }}
                         source={auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : avatar} />
                 </View>
                 <View style={styles.profileInfo}>

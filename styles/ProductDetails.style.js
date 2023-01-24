@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     checkoutContainer: {
         height: '100%',
-        backgroundColor: "#000"
+        backgroundColor: '#000'
         // justifyContent: 'space-between'
     },
     cardContainer: {
         paddingVertical: 20,
-        height: '60%'
+        height: '60%',
     },
     imageContainer: {
         width: '100%',
@@ -28,6 +28,11 @@ export const styles = StyleSheet.create({
     },
     description: {
         color: '#fff'
+    },
+    optionTitle: {
+        color: '#fff',
+        fontSize: 20,
+        marginVertical: 5
     },
     buttonSet: {
         flexDirection: 'row',

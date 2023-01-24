@@ -131,7 +131,9 @@ const ProductDetailsScreen = ({ navigation, route }) => {
         >
             <View style={styles.checkoutContainer}>
                 <Heading title="Product Details" />
-                <ScrollView >
+                <ScrollView style={{
+                    backgroundColor: 'rgba(255,255,255,0.08)'
+                }}>
                     <View style={styles.imageContainer}>
                         <Image style={styles.image} source={{ uri: `${item?.image?.imageDownloadUrl}` }} />
                     </View>
@@ -139,8 +141,10 @@ const ProductDetailsScreen = ({ navigation, route }) => {
                         <Text style={styles.title}>{item.name}</Text>
                         <Text style={styles.description}>{item.descriptions}</Text>
                     </View>
-                    <View style={GlobalStyle.sidePadding}>
-                        <Text style={styles.title}>Select variation</Text>
+                    <View style={[GlobalStyle.sidePadding, {
+                        marginVertical: 5
+                    }]}>
+                        <Text style={styles.optionTitle}>Select variation</Text>
                         <ScrollView>
                             {Object.keys(item.variants).map((key) => {
                                 const data = item.variants[key]
@@ -153,8 +157,10 @@ const ProductDetailsScreen = ({ navigation, route }) => {
                             })}
                         </ScrollView>
                     </View>
-                    <View style={GlobalStyle.sidePadding}>
-                        <Text style={styles.title}>Select Addons</Text>
+                    <View style={[GlobalStyle.sidePadding, {
+                        marginVertical: 5
+                    }]}>
+                        <Text style={styles.optionTitle}>Select Addons</Text>
                         <ScrollView>
                             {addons && addons.map(addon => {
                                 return (
@@ -176,18 +182,20 @@ const ProductDetailsScreen = ({ navigation, route }) => {
                             {/* // (<CheckBox setAddons={setAddons} id={item.id} product={item} addons={addons} key={item.id} />)) */}
                         </ScrollView>
                     </View>
-                    <View style={[styles.sidePadding, GlobalStyle.sidePadding]}>
-                        <Text style={styles.title}>Special instructions</Text>
+                    <View style={[GlobalStyle.sidePadding, {
+                        marginVertical: 5
+                    }]}>
+                        <Text style={styles.optionTitle}>Special instructions</Text>
                         <TextInput value={specialInstructions} onChangeText={setSpecialInstructions} style={styles.input} multilinef />
                     </View>
                     <View style={styles.cart}>
                         <View style={styles.buttonSet}>
-                            <TouchableOpacity style={{ marginHorizontal: 20 }} onPress={handleUpPress}>
-                                <FontAwesome name="plus" size={20} color="rgba(255,255,255,0.8)" />
-                            </TouchableOpacity>
-                            <Text style={styles.buttonNumber}>{itemCount}</Text>
                             <TouchableOpacity style={{ opacity: (itemCount > 1 ? 1 : 0.4), marginHorizontal: 20 }} disabled={itemCount <= 1} onPress={handleDownPress}>
                                 <FontAwesome name="minus" size={20} color="rgba(255,255,255,0.8)" />
+                            </TouchableOpacity>
+                            <Text style={styles.buttonNumber}>{itemCount}</Text>
+                            <TouchableOpacity style={{ marginHorizontal: 20 }} onPress={handleUpPress}>
+                                <FontAwesome name="plus" size={20} color="rgba(255,255,255,0.8)" />
                             </TouchableOpacity>
                         </View>
                         <Button onPress={addToCardLocalFn} style={{
