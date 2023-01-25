@@ -43,7 +43,7 @@ export default StyleSheet.create({
         color: '#fff'
     },
     cardContainer: {
-        marginBottom: '20%'
+        marginBottom: 30
     },
     card: {
         width: '100%',

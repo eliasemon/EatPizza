@@ -46,16 +46,16 @@ const CollapsibleCard = ({
         onPress={() => setCollapsed(c => !c)}
         style={styles.cardTop}>
         <View>
-          <Text style={styles.cardText}> OrderId : {item.id} </Text>
-          <Text style={styles.cardText}> TotalAmmount : {item.TotalOrderAmmount} </Text>
-        </View>
-        <View>
-          <Text style={styles.cardText}> CreationTime : {dateStr(item.creationTime)} </Text>
-          <Text style={styles.cardText}> Status : {item.status} </Text>
+          <Text style={styles.cardText}> ID :   {item.id} </Text>
+          <Text style={styles.cardText}> Amount :   {item.TotalOrderAmmount} </Text>
+          <Text style={styles.cardText}> Time :   {dateStr(item.creationTime)} </Text>
         </View>
         <AnimatedView style={{ transform: [{ rotate: animation.rotation }] }}>
           {/* arrow button by condition  */}
         </AnimatedView>
+        <View style={styles.chip}>
+          <Text style={styles.chipText}>{item.status}</Text>
+        </View>
       </TouchableOpacity>
 
       {/* Card Content */}
@@ -107,9 +107,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   cardTop: {
-    // flexDirection: 'row',
+    flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'space-between',
+    justifyContent: 'space-between',
     padding: 8,
   },
   cardContent: {
@@ -118,7 +118,16 @@ const styles = StyleSheet.create({
   },
   cardText: {
     color: '#fff'
-  }
+  },
+  chip: {
+    backgroundColor: 'rgba(0,255,0,.1)',
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 7.5,
+  },
+  chipText: {
+    color: "#fff"
+  },
 });
 
 CollapsibleCard.defaultProps = defaultProps;

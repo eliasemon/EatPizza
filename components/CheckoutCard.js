@@ -40,7 +40,7 @@ const CheckoutCard = ({ UpdateCardItem, item, cardsType }) => {
                     <Text style={styles.cardTextTitle}>{item?.name}</Text>
 
                     <View style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between" }}>
-                        <Text style={styles.cardTextTitle}>{item?.selectedVariant?.name}</Text>
+                        <Text style={styles.cardText}>{item?.selectedVariant?.name}</Text>
                         <Text style={styles.cardTextPrice}>{item?.selectedVariant?.sellingPrice}৳</Text>
                     </View>
                     <View >
@@ -48,7 +48,7 @@ const CheckoutCard = ({ UpdateCardItem, item, cardsType }) => {
                             const data = item?.selectedAddonsForCard[key]
                             return (
                                 <View key={key} style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between" }}>
-                                    <Text style={styles.cardTextTitle}>+ {data?.name}</Text>
+                                    <Text style={styles.cardText}>+ {data?.name}</Text>
                                     <Text style={styles.cardTextPrice}>{data?.price}৳</Text>
                                 </View>
                             )
@@ -57,7 +57,7 @@ const CheckoutCard = ({ UpdateCardItem, item, cardsType }) => {
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
-                        <Text style={styles.cardTextTitle}> {`${item?.itemCount} x ${item?.unitPrice} `}৳</Text>
+                        <Text style={styles.cardText}> {`${item?.itemCount} x ${item?.unitPrice} `}৳</Text>
                         <Text style={styles.cardTextPrice}>{Number(item?.unitPrice) * Number(item?.itemCount)} ৳</Text>
 
                     </View>
@@ -97,6 +97,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     cardTextTitle: {
+        fontSize: 20,
+        color: '#fff'
+    },
+    cardText: {
         fontSize: 16,
         color: '#fff'
     },
