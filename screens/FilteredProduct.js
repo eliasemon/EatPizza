@@ -151,7 +151,7 @@ const FilteredProduct = ({ navigation, route }) => {
             <View style={{ height: '77%' }}>
 
             {itemsDataForView && (<FlatList
-                 ListFooterComponent={ itemsSnapshot[4] ? <ActivityIndicator /> : (<Text style={{color : "white"}}>Items List End </Text>)}
+                    ListFooterComponent={itemsSnapshot[4] ? <ActivityIndicator color="#fff" /> : (<Text style={{ color: "white" }}>Items List End </Text>)}
                 onEndReached={infinityScrollHandle}
                 data={itemsDataForView}
                 renderItem={({ item }) => (

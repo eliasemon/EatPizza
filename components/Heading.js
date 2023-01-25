@@ -19,7 +19,7 @@ const Heading = ({ changeTheScreenHandle, title }) => {
     return (
         <View style={[styles.heading, GlobalStyle.sidePadding]}>
             <TouchableOpacity onPress={handleBackButton} style={styles.backButton}>
-                <FontAwesome name="angle-left" size={45} color="lightgreen" />
+                <FontAwesome name="angle-left" size={45} color="#fffdd0" />
             </TouchableOpacity>
             <Text style={styles.title}>{title}</Text>
         </View>
@@ -33,12 +33,14 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
+        textAlign: 'center',
         color: "white",
-        fontSize: 32,
-        width: "70%",
-        marginVertical: 10
+        fontSize: 24,
+        width: "100%",
+        marginLeft: -45,
     },
     backButton: {
+        zIndex: 10,
         height: 54,
         width: 54,
         borderRadius: 15,

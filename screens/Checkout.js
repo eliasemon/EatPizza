@@ -222,7 +222,7 @@ const Checkout = ({ navigation }) => {
                 <Heading title="Order Details" />
             </View>
             <View style={styles.checkoutContainer}>
-                <View style={styles.cardContainer}>
+                {/* <View style={styles.cardContainer}> */}
                     <ScrollView>
                         {shopingCard && Object.keys(shopingCard).map(key => (
                             <CheckoutCard
@@ -233,8 +233,8 @@ const Checkout = ({ navigation }) => {
                             />)
                         )}
                     </ScrollView>
-                </View>
-                <View>
+                {/* </View> */}
+                <View style={{ marginTop: 10 }}>
                     <View style={[GlobalStyle.sidePadding,
                     { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }
                     ]}>
@@ -248,7 +248,10 @@ const Checkout = ({ navigation }) => {
                                 placeholderTextColor="#fff"
                             />
                         }
-                        <Button onPress={isClickedPromo ? promocodeCheck : () => setIsClickedPromo(true)} style={{ borderColor: 'yellow', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, paddingVertical: 3 }} >{isClickedPromo ? 'apply' : 'use it'}</Button>
+                        {/* <View> */}
+
+                        <Button onPress={isClickedPromo ? promocodeCheck : () => setIsClickedPromo(true)} style={{ borderColor: 'yellow', borderWidth: 1, borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3 }} >{isClickedPromo ? 'apply' : 'use it'}</Button>
+                        {/* </View> */}
                         {/* <Button onPress={promocodeCheck} style={{ borderColor: 'red', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, paddingVertical: 3 }} >Use it</Button> */}
                         {/* <NextButton title="Apply PromoCode" /> */}
                     </View>

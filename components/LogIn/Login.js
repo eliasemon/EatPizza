@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { View, Image, TouchableOpacity, TextInput, Modal, Text, Alert, ActivityIndicator } from "react-native";
+import { View, Image, TouchableOpacity, TextInput, Modal, Text, Alert, ActivityIndicator, ToastAndroid } from "react-native";
 import logo from "../../assets/images/logo.png";
 import { Button } from "../Buttons";
 import { auth, firebaseApp, functions } from '../../config'
@@ -95,6 +95,14 @@ const Login = () => {
     }
   }, [auth.currentUser])
 
+  const showToastForLogin = () => {
+    ToastAndroid.show('OTP has been sent', ToastAndroid.SHORT);
+  };
+
+  const showToastForOTP = () => {
+    ToastAndroid.show('Logged Succesfully', ToastAndroid.SHORT);
+  };
+
   const sendVerfication = () => {
     setLoading(true)
     const ValidatedPhoneNumber = inputValidate(phoneNumber, "phoneNumber")
@@ -107,6 +115,7 @@ const Login = () => {
       .then(setVerificationId).then(() => {
         setInputView("optUi")
         setLoading(false)
+        showToastForLogin()
       }).catch(() => {
         setLoading(false)
       })
@@ -172,6 +181,7 @@ const Login = () => {
     }).then(() => {
       setStopTimer(true)
       setLoading(false)
+      showToastForOTP()
     })
       .catch((err) => {
         Alert.alert(
@@ -206,12 +216,13 @@ const Login = () => {
 
         <Button style={{
           backgroundColor: COLORS.primary,
+          width: 150,
           paddingVertical: 15,
-          paddingHorizontal: 80,
+          // paddingHorizontal: 80,
           alignSelf: 'center',
           borderRadius: 10
         }} disabled={loading} onPress={sendVerfication}>
-          {loading ? <ActivityIndicator /> : "LOGIN"}
+          {loading ? <ActivityIndicator color="#fff" /> : "LOGIN"}
         </Button>
 
         <View style={{ height: 20 }} />

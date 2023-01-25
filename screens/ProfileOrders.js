@@ -10,6 +10,7 @@ import { getUsersOrderHistory, getCurrentOrder } from '../utils'
 import { Button } from '../components/Buttons'
 import CheckoutCard from '../components/CheckoutCard'
 import CollapsibleCard from '../components/collapsibleCard/CollapsibleCard'
+import { COLORS } from '../constants/theme'
 
 
 const OrdersItemsCom = ({ item }) => {
@@ -27,6 +28,34 @@ const OrdersItemsCom = ({ item }) => {
                         item={item.items[key]}
                     />)
                 )}
+
+                <View style={{
+                    margin: 10,
+                    marginBottom: 15
+                }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={{ color: '#fff' }}>Sub total</Text>
+                        <Text style={{ color: COLORS.primary }}>{item.subTottal} ৳</Text>
+                    </View>
+                    {item.totalExtraCost ? (<View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={{ color: '#fff' }}>Extra cost</Text>
+                        <Text style={{ color: COLORS.primary }}>{item.totalExtraCost} ৳</Text>
+                    </View>) : ''}
+
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={{ fontSize: 18, color: '#fff' }}>Total amount</Text>
+                        <Text style={{ fontSize: 18, color: COLORS.primary }}>{item.TotalOrderAmmount} ৳</Text>
+                    </View>
+                </View>
 
                 {/*
                 all the properties can accessable by item fragment , Like item.paymentType

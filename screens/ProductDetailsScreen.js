@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, ScrollView, TextInput, Alert, Modal } from "react-native"
+import { View, Text, TouchableOpacity, Image, ScrollView, TextInput, Alert, Modal, ToastAndroid } from "react-native"
 import Heading from "../components/Heading"
 import { Button, NextButton } from "../components/Buttons"
 import { FontAwesome, Ionicons } from "@expo/vector-icons"
@@ -7,6 +7,7 @@ import { styles, stylesForAlert } from "../styles/ProductDetails.style"
 import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise } from "../utils"
 import { useStoreActions } from 'easy-peasy';
 import { GlobalStyle } from "../styles"
+import { COLORS } from "../constants/theme"
 
 const RadioButton = ({ product, selectedId }) => {
     return (
@@ -61,6 +62,10 @@ const ProductDetailsScreen = ({ navigation, route }) => {
         setItemCount(count => count - 1)
     }
 
+    const showToast = () => {
+        ToastAndroid.show('Item added to cart', ToastAndroid.SHORT);
+    }
+
     const [selectedVariant, setSelectedVariant] = useState("")
     const [selectedAddonsForCard, setSelectedAddonsForCard] = useState({})
     const [specialInstructions, setSpecialInstructions] = useState("")
@@ -102,6 +107,7 @@ const ProductDetailsScreen = ({ navigation, route }) => {
         }
         addToCard({ key: key, data: { ...data } })
         navigation.goBack()
+        showToast()
         setSelectedVariant("")
         setSelectedAddonsForCard({})
         setSpecialInstructions("")
@@ -186,7 +192,7 @@ const ProductDetailsScreen = ({ navigation, route }) => {
                         marginVertical: 5
                     }]}>
                         <Text style={styles.optionTitle}>Special instructions</Text>
-                        <TextInput value={specialInstructions} onChangeText={setSpecialInstructions} style={styles.input} multilinef />
+                        <TextInput multiline={true} numberOfLines={2} value={specialInstructions} onChangeText={setSpecialInstructions} style={styles.input} multilinef />
                     </View>
                     <View style={styles.cart}>
                         <View style={styles.buttonSet}>
@@ -201,7 +207,8 @@ const ProductDetailsScreen = ({ navigation, route }) => {
                         <Button onPress={addToCardLocalFn} style={{
                             paddingHorizontal: 20,
                             paddingVertical: 10,
-                            backgroundColor: 'rgba(0,255,0,0.35)',
+                            backgroundColor: COLORS.primary,
+                            // backgroundColor: 'rgba(0,255,0,0.35)',
                             borderRadius: 75
                         }}>Add to cart</Button>
                     </View>

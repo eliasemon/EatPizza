@@ -35,7 +35,6 @@ export const Button = (props) => {
       <Text style={{
         fontSize: 18,
         color: '#fff',
-        fontWeight: "bold",
         alignSelf: "center",
         textTransform: "uppercase",
       }}>{props.children}</Text>

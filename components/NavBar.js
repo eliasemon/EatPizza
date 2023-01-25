@@ -44,14 +44,14 @@ const NavBar = () => {
                     <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(0, 255, 0, 0.1)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 5 }}>
                         <View>
                             {item.children && item.children}
-                            < FontAwesome name={item.icon} size={28} color={COLORS.primary} />
+                            < FontAwesome name={item.icon} size={28} color={COLORS.white} />
                         </View>
                         <Text style={{ marginLeft: '10%', color: '#fff' }}>{item.link}</Text>
                     </View>
                     :
                     <>
                         {item.children && item.children}
-                        < FontAwesome name={item.icon} size={28} color={COLORS.primary} />
+                        < FontAwesome name={item.icon} size={28} color={COLORS.white} />
                     </>
                 }
             </TouchableOpacity>)}

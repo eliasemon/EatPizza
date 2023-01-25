@@ -165,7 +165,7 @@ const Home = ({ navigation }) => {
                 ListHeaderComponent={PageUi}
                 data={itemsDataForView}
                 ref={flatListRef}
-                ListFooterComponent={itemsSnapshot[4] ? <ActivityIndicator /> : (<Text style={{ color: "white", textAlign: 'center' }}>No more items found ! </Text>)}
+                ListFooterComponent={itemsSnapshot[4] ? <ActivityIndicator color="#fff" /> : (<Text style={{ color: "white", textAlign: 'center' }}>No more items found ! </Text>)}
                 renderItem={({ item }) => {
                     if (item.type) {
                         return (

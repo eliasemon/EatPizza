@@ -2,11 +2,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useSpring, animated } from 'react-spring/native';
+import { COLORS } from '../../constants/theme';
 
 
 const dateStr = (ms) => {
   const newDate = new Date(ms)
-  return newDate.toLocaleDateString()
+  return newDate.toLocaleString()
 }
 
 
@@ -38,6 +39,12 @@ const CollapsibleCard = ({
   const animation = useSpring(animationConfig);
   const AnimatedView = animated(View);
 
+  const chipColor = {
+    pending: 'rgba(254,222,0,.2)',
+    completed: 'rgba(0,255,0,0.1)',
+    inCoocked: 'rgba(255,255,0,0.1)',
+  }
+
   return (
     <View {...props} style={[styles.card, style]}>
       {/* Card Top */}
@@ -53,7 +60,9 @@ const CollapsibleCard = ({
         <AnimatedView style={{ transform: [{ rotate: animation.rotation }] }}>
           {/* arrow button by condition  */}
         </AnimatedView>
-        <View style={styles.chip}>
+        <View style={[styles.chip, {
+          backgroundColor: chipColor[item.status]
+        }]}>
           <Text style={styles.chipText}>{item.status}</Text>
         </View>
       </TouchableOpacity>
@@ -111,6 +120,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 8,
+    marginVertical: 10
   },
   cardContent: {
     borderTopWidth: 1,
@@ -120,10 +130,10 @@ const styles = StyleSheet.create({
     color: '#fff'
   },
   chip: {
-    backgroundColor: 'rgba(0,255,0,.1)',
+    backgroundColor: 'rgba(0, 118, 237,.2)',
     borderRadius: 20,
     paddingHorizontal: 15,
-    paddingVertical: 7.5,
+    paddingVertical: 9,
   },
   chipText: {
     color: "#fff"

@@ -41,7 +41,7 @@ const CheckoutCard = ({ UpdateCardItem, item, cardsType }) => {
 
                     <View style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between" }}>
                         <Text style={styles.cardText}>{item?.selectedVariant?.name}</Text>
-                        <Text style={styles.cardTextPrice}>{item?.selectedVariant?.sellingPrice}৳</Text>
+                        <Text style={styles.cardTextPrice}>{item?.selectedVariant?.sellingPrice} ৳</Text>
                     </View>
                     <View >
                         {Object.keys(item?.selectedAddonsForCard).map((key => {
@@ -49,7 +49,7 @@ const CheckoutCard = ({ UpdateCardItem, item, cardsType }) => {
                             return (
                                 <View key={key} style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between" }}>
                                     <Text style={styles.cardText}>+ {data?.name}</Text>
-                                    <Text style={styles.cardTextPrice}>{data?.price}৳</Text>
+                                    <Text style={styles.cardTextPrice}>{data?.price} ৳</Text>
                                 </View>
                             )
                         }))}
@@ -57,7 +57,7 @@ const CheckoutCard = ({ UpdateCardItem, item, cardsType }) => {
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
-                        <Text style={styles.cardText}> {`${item?.itemCount} x ${item?.unitPrice} `}৳</Text>
+                        <Text style={styles.cardText}> {`${item?.itemCount} x ${item?.unitPrice} `} ৳</Text>
                         <Text style={styles.cardTextPrice}>{Number(item?.unitPrice) * Number(item?.itemCount)} ৳</Text>
 
                     </View>
