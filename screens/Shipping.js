@@ -83,12 +83,13 @@ const Shipping = ({navigation}) => {
 
                         <Button style={{
                         backgroundColor: COLORS.primary,
-                        paddingVertical: 15,
-                        paddingHorizontal: 80,
+                            width: 150,
+                            paddingVertical: 12,
+                            // paddingHorizontal: 30,
                         alignSelf: 'center',
                         borderRadius: 10
                     }} disabled={loading} onPress={continueWithPrv}>
-                        {loading ? <ActivityIndicator /> : "Continue"}
+                            {loading ? <ActivityIndicator color="#fff" /> : "Continue"}
                 </Button>
                     </View>
 
@@ -102,13 +103,15 @@ const Shipping = ({navigation}) => {
                     </View>
 
                     <Button style={{
+                        marginTop: 10,
                         backgroundColor: COLORS.primary,
-                        paddingVertical: 15,
-                        paddingHorizontal: 80,
+                        width: 150,
+                        paddingVertical: 12,
+                        // paddingHorizontal: 30,
                         alignSelf: 'center',
                         borderRadius: 10
                     }} disabled={loading} onPress={setShipingAddressToOrder}>
-                        {loading ? <ActivityIndicator /> : "Set Location"}
+                        {loading ? <ActivityIndicator color="#fff" /> : "Set Location"}
                 </Button>
                     {/* <TouchableOpacity  style={styles.setLocationButton}>
                         <Text style={styles.setLocationButtonText}>Set Location</Text>

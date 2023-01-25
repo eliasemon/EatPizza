@@ -87,7 +87,7 @@ export const store = createStore({
         state.subTottal = Number(state.subTottal)  + TotalPrice
         data.unitPrice = unitPrice
         if(shopingCard[key]){ 
-            shopingCard[key].itemCount = Number(prv[key].itemCount) + data.itemCount
+            shopingCard[key].itemCount = Number(shopingCard[key].itemCount) + data.itemCount
           }else{
             shopingCard[key] = data
         }

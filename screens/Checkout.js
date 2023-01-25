@@ -6,6 +6,7 @@ import { ScrollView } from "react-native-gesture-handler"
 import { Button, NextButton } from "../components/Buttons"
 import CheckoutCard from "../components/CheckoutCard"
 import Heading from "../components/Heading"
+import { COLORS } from '../constants/theme'
 
 import { CheckoutStyle as styles, GlobalStyle } from '../styles'
 import { showDataWithOutPagination, getSingleDataWithOutRealTimeUpdates } from "../utils"
@@ -187,7 +188,14 @@ const Checkout = ({ navigation }) => {
                 <Text style={{ color: 'yellow', marginBottom: 20, marginHorizontal: 20, fontSize: 16, lineHeight: 22 }}>
                     {resturentOpenClosedData && `Restaurant Is Closed Now. For getting Delivery Please Wait Before ${amPmTimeFormat(resturentOpenClosedData[0].data().openingHR)} to open the restaurant`}
                 </Text>
-                <NextButton onPress={() => setSkitp(true)} title="Order Now" />
+                <Button style={{
+                    backgroundColor: COLORS.primary,
+                    paddingVertical: 15,
+                    paddingHorizontal: 80,
+                    alignSelf: 'center',
+                    borderRadius: 10
+                }} onPress={() => setSkitp(true)}>Order Now</Button>
+                {/* <NextButton onPress={() => setSkitp(true)} title="Order Now" /> */}
             </View>
         </Modal>)
     }
@@ -216,7 +224,7 @@ const Checkout = ({ navigation }) => {
                 <Heading title="Order Details" />
             </View>
             <View style={styles.checkoutContainer}>
-                <View style={styles.cardContainer}>
+                {/* <View style={styles.cardContainer}> */}
                     <ScrollView>
                         {shopingCard && Object.keys(shopingCard).map(key => (
                             <CheckoutCard
@@ -227,8 +235,8 @@ const Checkout = ({ navigation }) => {
                             />)
                         )}
                     </ScrollView>
-                </View>
-                <View>
+                {/* </View> */}
+                <View style={{ marginTop: 10 }}>
                     <View style={[GlobalStyle.sidePadding,
                     { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }
                     ]}>
@@ -242,7 +250,10 @@ const Checkout = ({ navigation }) => {
                                 placeholderTextColor="#fff"
                             />
                         }
-                        <Button onPress={isClickedPromo ? promocodeCheck : () => setIsClickedPromo(true)} style={{ borderColor: 'yellow', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, paddingVertical: 3 }} >{isClickedPromo ? 'apply' : 'use it'}</Button>
+                        {/* <View> */}
+
+                        <Button onPress={isClickedPromo ? promocodeCheck : () => setIsClickedPromo(true)} style={{ borderColor: 'yellow', borderWidth: 1, borderRadius: 5, paddingHorizontal: 5, paddingVertical: 3 }} >{isClickedPromo ? 'apply' : 'use it'}</Button>
+                        {/* </View> */}
                         {/* <Button onPress={promocodeCheck} style={{ borderColor: 'red', borderWidth: 1, borderRadius: 5, paddingHorizontal: 10, paddingVertical: 3 }} >Use it</Button> */}
                         {/* <NextButton title="Apply PromoCode" /> */}
                     </View>

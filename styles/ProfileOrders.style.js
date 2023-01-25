@@ -7,6 +7,12 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly'
     },
+    profileImage: {
+        marginRight: 20,
+        borderWidth: 4,
+        borderColor: "green",
+        borderRadius: 100
+    },
     profileName: {
         color: '#fff',
         fontSize: 28
@@ -37,7 +43,7 @@ export default StyleSheet.create({
         color: '#fff'
     },
     cardContainer: {
-        marginBottom: '20%'
+        marginBottom: 30
     },
     card: {
         width: '100%',

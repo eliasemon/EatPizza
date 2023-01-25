@@ -31,7 +31,7 @@ const Signup = ({nameSubmitions , loading}) => {
           alignSelf: 'center',
           borderRadius: 10
         }} disabled={loading} onPress={handlePress}>
-          {loading ? <ActivityIndicator /> : "Submit"}
+        {loading ? <ActivityIndicator color="#fff" /> : "Submit"}
       </Button>
     </View>
   );

@@ -1,5 +1,6 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import Heading from '../components/Heading'
+import avatar from '../assets/images/avatar.png'
 import profile from '../assets/images/profile.png'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
@@ -43,7 +44,7 @@ const Profile = ({ navigation }) => {
                                 resizeMode: 'contain',
                                 borderRadius: 100
                             }}
-                            source={ auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : profile} />
+                            source={auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : avatar} />
                 </View>
                 <View style={styles.profileInfo}>
                     <Text style={styles.profileName}>{auth.currentUser.displayName}</Text>

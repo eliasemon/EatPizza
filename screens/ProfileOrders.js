@@ -1,13 +1,17 @@
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
 import Heading from '../components/Heading'
 import profile from '../assets/images/profile.png'
+import avatar from '../assets/images/avatar.png'
+
 import { GlobalStyle, ProfileOrdersStyle as styles } from '../styles'
 import { useState, useRef, useEffect } from 'react'
 import { getUsersOrderHistory } from '../utils'
 import { Button } from '../components/Buttons'
 import CheckoutCard from '../components/CheckoutCard'
 import CollapsibleCard from '../components/collapsibleCard/CollapsibleCard'
+import { COLORS } from '../constants/theme'
 import { getAuth} from 'firebase/auth';
+
 
 
 const OrdersItemsCom = ({ item }) => {
@@ -26,6 +30,34 @@ const OrdersItemsCom = ({ item }) => {
                         item={item.items[key]}
                     />)
                 )}
+
+                <View style={{
+                    margin: 10,
+                    marginBottom: 15
+                }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={{ color: '#fff' }}>Sub total</Text>
+                        <Text style={{ color: COLORS.primary }}>{item.subTottal} ৳</Text>
+                    </View>
+                    {item.totalExtraCost ? (<View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={{ color: '#fff' }}>Extra cost</Text>
+                        <Text style={{ color: COLORS.primary }}>{item.totalExtraCost} ৳</Text>
+                    </View>) : ''}
+
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={{ fontSize: 18, color: '#fff' }}>Total amount</Text>
+                        <Text style={{ fontSize: 18, color: COLORS.primary }}>{item.TotalOrderAmmount} ৳</Text>
+                    </View>
+                </View>
 
                 {/*
                 all the properties can accessable by item fragment , Like item.paymentType
@@ -83,13 +115,13 @@ const ProfileOrders = ({ navigation }) => {
             <Heading navigation={navigation} title="User's Orders" />
             <View style={styles.profileSection}>
                 <View style={styles.profileImage}>
-                <Image style={{
-                                width: 120,
-                                height: 120,
-                                resizeMode: 'contain',
-                                borderRadius: 100
-                            }}
-                            source={ auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : profile} />
+                    <Image style={{
+                        width: 120,
+                        height: 120,
+                        resizeMode: 'contain',
+                        borderRadius: 100
+                    }}
+                        source={auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : avatar} />
                 </View>
                 <View style={styles.profileInfo}>
                     <Text style={styles.profileName}>{auth.currentUser.displayName}</Text>

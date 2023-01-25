@@ -1,4 +1,4 @@
-import { View, TextInput, TouchableOpacity, Image , ActivityIndicator} from "react-native"
+import { View, TextInput, TouchableOpacity, Image, ActivityIndicator, ToastAndroid } from "react-native"
 import { Button } from "../components/Buttons"
 import Heading from "../components/Heading"
 import { GlobalStyle, ProfileUpdateStyle as styles } from "../styles"
@@ -42,6 +42,10 @@ const ProfileUpdate = ({ navigation }) => {
         }
     };
 
+    const showToast = () => {
+        ToastAndroid.show('Profile information updated', ToastAndroid.SHORT);
+    };
+
     const handleOnPress = async () => {
         setLoading(true)
         const storage = getStorage(firebaseApp);
@@ -65,6 +69,7 @@ const ProfileUpdate = ({ navigation }) => {
                     ]
                 );
             }).finally(() => {
+                showToast()
                 setLoading(false)
                 navigation.navigate("Home");
                 navigation.navigate("Profile")
@@ -116,12 +121,13 @@ const ProfileUpdate = ({ navigation }) => {
                 
                 <Button style={{
                     backgroundColor: COLORS.primary,
+                    width: 150,
                     paddingVertical: 15,
-                    paddingHorizontal: 80,
+                    // paddingHorizontal: 80,
                     alignSelf: 'center',
                     borderRadius: 10
                 }} disabled={loading} onPress={handleOnPress}>
-                    {loading ? <ActivityIndicator /> : "Save"}
+                    {loading ? <ActivityIndicator color="#fff" /> : "Save"}
                 </Button>
 
             </View >

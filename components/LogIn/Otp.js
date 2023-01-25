@@ -9,16 +9,16 @@ import { COLORS } from "../../constants/theme";
 
 const Otp = ({ loading, setInputView, changeTheScreenHandle, phoneNumber, code, setCode, confirmCode }) => {
   console.log('Calling');
-  const [timer, setTimer] = useState(120)
+  const [timer, setTimer] = useState(300)
   const [stopTimer, setStopTimer] = useState(false)
   const timerRef = useRef()
   useEffect(() => {
-    if (stopTimer) return;
+    if (stopTimer) return () => clearInterval(timerRef.current);
 
     if (timer <= 0) {
       Alert.alert(
         "TimeOut",
-        "Inactive",
+        "You did not provide any OTP",
         [
           { text: "OK" }
         ]
@@ -54,12 +54,13 @@ const Otp = ({ loading, setInputView, changeTheScreenHandle, phoneNumber, code, 
       />
       <Button style={{
         backgroundColor: COLORS.primary,
+        width: 150,
         paddingVertical: 15,
-        paddingHorizontal: 80,
+        // paddingHorizontal: 80,
         alignSelf: 'center',
         borderRadius: 10
       }} disabled={loading} onPress={() => confirmCode(setStopTimer)}>
-        {loading ? <ActivityIndicator /> : "Continue"}
+        {loading ? <ActivityIndicator color="#fff" /> : "Continue"}
       </Button>
     </View>
   );
