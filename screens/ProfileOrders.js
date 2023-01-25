@@ -3,14 +3,15 @@ import Heading from '../components/Heading'
 import profile from '../assets/images/profile.png'
 import { GlobalStyle, ProfileOrdersStyle as styles } from '../styles'
 import { useState, useRef, useEffect } from 'react'
-import { auth } from '../config'
-import { getUsersOrderHistory, getCurrentOrder } from '../utils'
+import { getUsersOrderHistory } from '../utils'
 import { Button } from '../components/Buttons'
 import CheckoutCard from '../components/CheckoutCard'
 import CollapsibleCard from '../components/collapsibleCard/CollapsibleCard'
+import { getAuth} from 'firebase/auth';
 
 
 const OrdersItemsCom = ({ item }) => {
+
     return (
         <CollapsibleCard
             item={item}
@@ -47,6 +48,7 @@ const OrdersItemsCom = ({ item }) => {
 
 
 const ProfileOrders = ({ navigation }) => {
+    const auth = getAuth();
     const [itemsSnapshot, setItemsSnapshot] = useState("");
     const [itemsDataForView, setItemsDataForView] = useState([]);
     const [itemsDataForViewCurrentOrder, setItemsDataForViewCurrentOrder] = useState([]);
@@ -124,5 +126,3 @@ const ProfileOrders = ({ navigation }) => {
 }
 
 export default ProfileOrders
-
-{/* <ProductCard cardsType="chip" item={item} /> */ }

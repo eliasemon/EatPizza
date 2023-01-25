@@ -1,12 +1,11 @@
 import { useStoreActions, useStoreState } from "easy-peasy"
-import { onAuthStateChanged } from "firebase/auth"
+import { onAuthStateChanged , getAuth } from "firebase/auth"
 import { useEffect, useRef, useState } from "react"
 import { View, Text, TouchableOpacity, TextInput, Alert, Modal } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { Button, NextButton } from "../components/Buttons"
 import CheckoutCard from "../components/CheckoutCard"
 import Heading from "../components/Heading"
-import { auth } from "../config"
 
 import { CheckoutStyle as styles, GlobalStyle } from '../styles'
 import { showDataWithOutPagination, getSingleDataWithOutRealTimeUpdates } from "../utils"
@@ -23,6 +22,9 @@ import { findTheResturentStatus } from "../utils/ResturentOpenCloseStatus"
 //         }
 
 const Checkout = ({ navigation }) => {
+    const auth = getAuth();
+
+
     const [isClickedPromo, setIsClickedPromo] = useState(false)
     const { LoadingChanger, addDataToCachesForOrder, clearShopingCard, UpdateCardItem } = useStoreActions(action => action)
     const [resturentOpenClosedData, setResturentOpenClosedData] = useState("")

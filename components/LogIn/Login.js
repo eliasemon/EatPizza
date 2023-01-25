@@ -2,16 +2,17 @@ import { useState, useRef, useEffect } from "react";
 import { View, Image, TouchableOpacity, TextInput, Modal, Text, Alert, ActivityIndicator } from "react-native";
 import logo from "../../assets/images/logo.png";
 import { Button } from "../Buttons";
-import { auth, firebaseApp, functions } from '../../config'
 import { FirebaseRecaptchaVerifierModal } from "../../expo-firebase-recaptcha/src/index"
 import Otp from "./Otp";
-import { PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
 import { LoginStyle as styles } from '../../styles'
 import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise, setDataToCollection } from "../../utils/index"
 import { stylesForAlert } from "../../styles/ProductDetails.style"
-import { updateProfile } from "firebase/auth";
 import { COLORS } from "../../constants/theme";
-import { httpsCallable } from "firebase/functions";
+import {  getApp } from 'firebase/app';
+import { getAuth, PhoneAuthProvider, signInWithCredential , updateProfile } from 'firebase/auth';
+import { getFunctions , httpsCallable } from 'firebase/functions';
+
+
 
 import Signup from "./Signup"
 import { useStoreActions } from "easy-peasy";
@@ -73,6 +74,12 @@ const inputValidate = (state, type) => {
 }
 
 const Login = () => {
+  const firebaseApp = getApp();
+  const functions = getFunctions(firebaseApp);
+  const auth = getAuth();
+
+
+
   const { LoadingChanger } = useStoreActions(action => action)
 
   const changeTheScreenHandle = () => {
