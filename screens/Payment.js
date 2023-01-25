@@ -3,12 +3,17 @@ import Heading from "../components/Heading";
 import codLogo from '../assets/images/codLogo.png'
 import { PaymentStyle as styles } from "../styles";
 import { useStoreState , useStoreActions } from "easy-peasy";
-import { auth , functions } from "../config";
-import { httpsCallable } from "firebase/functions";
+import { httpsCallable , getFunctions } from "firebase/functions";
+import {  getApp } from 'firebase/app';
 import { useState } from "react";
+import { getAuth } from "firebase/auth"
 
 
 const Payment = ({navigation}) => {
+    const firebaseApp = getApp()
+    const auth = getAuth()
+    const functions = getFunctions(firebaseApp)
+    
     const {cachesForOrder} = useStoreState(state => state)
     const [loading , setLoading] = useState(false)
     const placeOrder = async() =>{

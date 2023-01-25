@@ -5,22 +5,19 @@ import { GlobalStyle, ProfileUpdateStyle as styles } from "../styles"
 import uploadIcon from '../assets/images/uploadIcon.png'
 import * as ImagePicker from 'expo-image-picker'
 import { useEffect, useState } from 'react';
-import { auth, firebaseApp, functions } from "../config"
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { updateProfile } from "firebase/auth";
-import { httpsCallable } from "firebase/functions";
-import { decode, encode } from "base-64";
 import { COLORS } from '../constants/theme';
+import {  getApp } from 'firebase/app';
+import { getAuth, updateProfile } from 'firebase/auth';
+import { getFunctions , httpsCallable } from 'firebase/functions';
 
-if (!global.btoa) {
-    global.btoa = encode;
-}
 
-if (!global.atob) {
-    global.atob = decode;
-}
 
 const ProfileUpdate = ({ navigation }) => {
+    const firebaseApp = getApp();
+    const functions = getFunctions(firebaseApp);
+    const auth = getAuth();
+
 
     const [selectedImage, setSelectedImage] = useState(auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : "")
 

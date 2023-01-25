@@ -6,13 +6,16 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { GlobalStyle, ProfileStyle as styles } from '../styles';
-import { auth } from '../config';
+
 import {  useStoreActions} from 'easy-peasy';
 import { useEffect , useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
 import { COLORS } from '../constants/theme';
+import { onAuthStateChanged   , getAuth} from 'firebase/auth';
+
 
 const Profile = ({ navigation }) => {
+    const auth = getAuth();
+
     const LoadingChanger = useStoreActions(action => action.LoadingChanger)
     const [authenticated , setAuthenticated] = useState("")
     

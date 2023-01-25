@@ -2,16 +2,22 @@ import { View, Text, TextInput, TouchableOpacity, Alert , ActivityIndicator } fr
 import { Ionicons } from '@expo/vector-icons';
 import Heading from "../components/Heading";
 import { GlobalStyle, ShippingStyle as styles } from "../styles";
-import { auth, functions } from "../config";
 import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise } from "../utils";
 import { useEffect, useRef, useState } from "react";
 import { useStoreActions } from "easy-peasy";
-import { getFirestore , doc , updateDoc} from "firebase/firestore";
 import { Button } from "../components/Buttons";
-import { httpsCallable } from "firebase/functions";
+
 import { COLORS } from '../constants/theme';
 
+import {  getApp } from 'firebase/app';
+import { getAuth} from 'firebase/auth';
+import { getFunctions , httpsCallable } from 'firebase/functions';
+
 const Shipping = ({navigation}) => {
+    const firebaseApp = getApp();
+    const functions = getFunctions(firebaseApp);
+    const auth = getAuth();
+
     const [loading , setLoading] = useState(false)
     const { addDataToCachesForOrder } = useStoreActions(action => action)
     const [shipingAddress , setShipingAddress] = useState("");
