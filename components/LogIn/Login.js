@@ -1,12 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { View, Image, TouchableOpacity, TextInput, Modal, Text, Alert, ActivityIndicator, ToastAndroid } from "react-native";
+import { BackHandler , Alert  ,View, Image, TouchableOpacity, TextInput, Modal, Text, ActivityIndicator, ToastAndroid } from "react-native";
 import logo from "../../assets/images/logo.png";
 import { Button } from "../Buttons";
 import { FirebaseRecaptchaVerifierModal } from "../../expo-firebase-recaptcha/src/index"
 import Otp from "./Otp";
 import { LoginStyle as styles } from '../../styles'
-import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise, setDataToCollection } from "../../utils/index"
-import { stylesForAlert } from "../../styles/ProductDetails.style"
 import { COLORS } from "../../constants/theme";
 import {  getApp } from 'firebase/app';
 import { getAuth, PhoneAuthProvider, signInWithCredential , updateProfile } from 'firebase/auth';
@@ -17,6 +15,7 @@ import { getFunctions , httpsCallable } from 'firebase/functions';
 import Signup from "./Signup"
 import { useStoreActions } from "easy-peasy";
 import Background from "../Background";
+import { useNavigation } from "@react-navigation/native";
 
 const inputValidate = (state, type) => {
   if (state === "") {
@@ -74,6 +73,7 @@ const inputValidate = (state, type) => {
 }
 
 const Login = () => {
+  const navigation = useNavigation()
   const firebaseApp = getApp();
   const functions = getFunctions(firebaseApp);
   const auth = getAuth();
@@ -93,6 +93,28 @@ const Login = () => {
   const [verificationId, setVerificationId] = useState(null)
   const recaptchaVerification = useRef(null);
   const [loading, setLoading] = useState(false)
+
+
+
+
+  useEffect(()=>{
+    BackHandler.addEventListener('hardwareBackPress',() =>{
+        if(loading){
+            Alert.alert(
+                "In Data Processing State",
+                "Please Don't Terminate the app",
+                [
+                  { text: "OK" }
+                ]
+              );
+            return true
+        }else{
+            return false
+        }
+    });
+   return () => BackHandler.removeEventListener('hardwareBackPress');
+},[loading])
+
 
   useEffect(() => {
     if (auth.currentUser && auth.currentUser.displayName)
@@ -234,7 +256,7 @@ const Login = () => {
 
         <View style={{ height: 20 }} />
         {!loading && (
-          <TouchableOpacity onPress={changeTheScreenHandle} style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity onPress={ () => { navigation.navigate("Home"); changeTheScreenHandle() ; }} style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: '#fff' }}>Skip for now</Text>
           </TouchableOpacity>
         )}

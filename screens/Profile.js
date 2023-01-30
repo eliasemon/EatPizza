@@ -24,7 +24,6 @@ const Profile = ({ navigation }) => {
             if(!user){
                 LoadingChanger({status : true , type :  "LoginUI"})
                 setAuthenticated(false)
-                navigation.navigate("Home")
             }else{
                 setAuthenticated(true)
             }

@@ -13,7 +13,16 @@ export const store = createStore({
     bootloaderLoading : true,
     LoginUI : false,
 
+
+    unexpectedBackHandle : false,
+
     // actions 
+    
+    unexpectedBackHandleAction : action((state , payload) => {
+        state.unexpectedBackHandle = payload;
+        return
+
+    }),
 
     LoadingChanger : action((state, payload) => {
         const {status , type} = payload

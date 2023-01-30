@@ -1,16 +1,47 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { useState } from "react";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useState , useEffect } from "react";
+import { StyleSheet, View, TouchableOpacity, Text , Alert } from "react-native";
+import { useNavigation , getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { useStoreState } from 'easy-peasy';
-import { COLORS } from '../constants/theme'
-// import { COLORS } from "../constants/colors";
+import { COLORS } from '../constants/theme';
+import { BackHandler } from 'react-native';
+
+const uiActiveState = {
+    Checkout : 2,
+    ConfirmUploadPhoto : 1,
+    ContactUs : 1,
+    FilteredProduct : 0,
+    Home : 0,
+    Payment : 2,
+    ProductDetailsScreen : 0,
+    Profile : 1,
+    ProfileOrders : 1,
+    ProfileUpdate : 1,
+    Shipping : 2 ,
+    ThankYou : 0,
+    UploadPhoto : 1,
+}
+
+
 
 const NavBar = () => {
-    const totalItemCount = useStoreState((state) => state.totalItemCount)
+    const {totalItemCount , unexpectedBackHandle } = useStoreState((state) => state)
     const navigation = useNavigation();
-
     const [activeButton, setActiveButton] = useState(0)
+
+
+
+
+    useEffect(() => {
+        navigation.addListener('state', ({data}) => {
+            console.log(data)
+            const {state} = data;
+            if(state){
+                const currentRoute = state.routes[state.index]
+                setActiveButton(uiActiveState[`${currentRoute.name}`])
+            }
+        });
+      }, [navigation]);
 
     const navButtonList = [
         {
@@ -61,6 +92,7 @@ const NavBar = () => {
 
 const styles = StyleSheet.create({
     navigation: {
+        // display : "none",
         backgroundColor: '#333333',
         height: '8%',
         alignSelf: 'center',

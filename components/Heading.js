@@ -2,8 +2,9 @@ import { View, TouchableOpacity, StyleSheet, Text } from "react-native"
 import { FontAwesome } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native"
 import { GlobalStyle } from "../styles"
+import { StackActions } from '@react-navigation/native';
 
-const Heading = ({ changeTheScreenHandle, title }) => {
+const Heading = ({isHide = true, loading  ,changeTheScreenHandle, title }) => {
 
     const navigation = useNavigation()
 
@@ -13,14 +14,16 @@ const Heading = ({ changeTheScreenHandle, title }) => {
         } else {
             navigation.goBack()
         }
-
     }
 
     return (
         <View style={[styles.heading, GlobalStyle.sidePadding]}>
-            <TouchableOpacity onPress={handleBackButton} style={styles.backButton}>
-                <FontAwesome name="angle-left" size={45} color="#fffdd0" />
-            </TouchableOpacity>
+            {(isHide && !loading) && (
+                <TouchableOpacity onPress={handleBackButton} style={styles.backButton}>
+                    <FontAwesome name="angle-left" size={45} color="#fffdd0" />
+                </TouchableOpacity>
+            ) }
+            
             <Text style={styles.title}>{title}</Text>
         </View>
     )

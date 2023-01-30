@@ -1,12 +1,10 @@
-import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, Image, FlatList, TouchableOpacity , ActivityIndicator } from 'react-native'
 import Heading from '../components/Heading'
-import profile from '../assets/images/profile.png'
 import avatar from '../assets/images/avatar.png'
 
 import { GlobalStyle, ProfileOrdersStyle as styles } from '../styles'
 import { useState, useRef, useEffect } from 'react'
 import { getUsersOrderHistory } from '../utils'
-import { Button } from '../components/Buttons'
 import CheckoutCard from '../components/CheckoutCard'
 import CollapsibleCard from '../components/collapsibleCard/CollapsibleCard'
 import { COLORS } from '../constants/theme'
@@ -84,7 +82,7 @@ const ProfileOrders = ({ navigation }) => {
     const [itemsSnapshot, setItemsSnapshot] = useState("");
     const [itemsDataForView, setItemsDataForView] = useState([]);
     const [itemsDataForViewCurrentOrder, setItemsDataForViewCurrentOrder] = useState([]);
-    const [isCurrent, setIsCurrent] = useState(false);
+    const [isCurrent, setIsCurrent] = useState(true);
     useEffect(() => {
         if (!itemsSnapshot) {
             getUsersOrderHistory(setItemsSnapshot, "ordersList", { queryField: "userID", targetItem: auth.currentUser.uid })
@@ -95,18 +93,18 @@ const ProfileOrders = ({ navigation }) => {
     useEffect(() => {
 
         if (itemsSnapshot) {
-
             const currentOrderData = []
             const data = itemsSnapshot.map((doc) => {
                 item = doc.data()
                 item.id = doc.id
-                if (item.status !== "compleate" || item.status !== "cencel") currentOrderData.unshift(item)
+                if (item.status !== "compleate" && item.status !== "cancel") currentOrderData.unshift(item);
                 return item
             })
+            currentOrderData.sort((a ,b) => b.creationTime - a.creationTime)
+            data.sort((a ,b) => b.creationTime - a.creationTime)
 
             setItemsDataForView([...data])
             setItemsDataForViewCurrentOrder([...currentOrderData])
-
         }
     }, [itemsSnapshot])
 
@@ -133,25 +131,36 @@ const ProfileOrders = ({ navigation }) => {
             <Button } >All Orders</Button>
             </View > */}
             <View style={styles.tab}>
-                <TouchableOpacity onPress={() => setIsCurrent(false)} style={[styles.tabOption, {
-                    backgroundColor: isCurrent ? 'rgba(0,0,0,0)' : 'rgba(0,255,0,0.1)'
+                <TouchableOpacity onPress={() => setIsCurrent(true)} style={[styles.tabOption, {
+                    backgroundColor: isCurrent ? 'rgba(0,255,0,0.1)' : 'rgba(0,0,0,0)' 
                 }]}>
                     <Text style={styles.tabOptionText}>Processing</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setIsCurrent(true)} style={[styles.tabOption, {
-                    backgroundColor: isCurrent ? 'rgba(0,255,0,0.1)' : 'rgba(0,0,0,0)'
+                <TouchableOpacity onPress={() => setIsCurrent(false)} style={[styles.tabOption, {
+                    backgroundColor: isCurrent ?  'rgba(0,0,0,0)' :  'rgba(0,255,0,0.1)'
                 }]}>
                     <Text style={styles.tabOptionText}>All Orders</Text>
                 </TouchableOpacity>
             </View>
 
+            <View style={{marginBottom : 615.5}}>
+
             {
-                (itemsDataForView || itemsDataForViewCurrentOrder) && (<FlatList
-                    style={[GlobalStyle.sidePadding, styles.cardContainer]} data={isCurrent ? itemsDataForViewCurrentOrder : itemsDataForView} renderItem={
+                (itemsDataForViewCurrentOrder && isCurrent) && (<FlatList
+                    ListFooterComponent={(<ActivityIndicator color="#fff" />)}
+                    style={[GlobalStyle.sidePadding]} data={itemsDataForViewCurrentOrder} renderItem={
                         ({ item }) => (<OrdersItemsCom item={item} />)
-                    } keyExtractor={item => (itemsDataForView ? `itemsDataForView${item.id}` : item.id)} />)
+                    } keyExtractor={item => (item.id)} />)
 
             }
+            {
+                (itemsDataForView && !isCurrent) && (<FlatList
+                    ListFooterComponent={(<ActivityIndicator color="#fff" />)}
+                    style={[GlobalStyle.sidePadding]} data={itemsDataForView} renderItem={
+                        ({ item }) => (<OrdersItemsCom item={item} />)
+                    } keyExtractor={item => (`itemsDataForView${item.id}`)} />)
+            }
+        </View>
 
         </View>
     )

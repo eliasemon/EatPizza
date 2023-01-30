@@ -26,6 +26,15 @@ import {
 
 
 
+// export const getUsersOrderHistory = async ( setItems , collectionRef , queryObj  ) =>{
+//   const db = getFirestore()
+//   const q = query(collection(db, `${collectionRef}`) , where(`${queryObj.queryField}` ,  '==' , queryObj.targetItem ));
+
+//   const data = await getDocs(q)
+//   // const reverseData = (data.docs).reverse()
+//   setItems(data.docs)
+// }
+
 export const getUsersOrderHistory = async ( setItems , collectionRef , queryObj  ) =>{
   const db = getFirestore()
   const q = query(collection(db, `${collectionRef}`) , where(`${queryObj.queryField}` ,  '==' , queryObj.targetItem ));
@@ -60,6 +69,9 @@ export const getDataWithInfinityScroll = async ( setItems , collectionRef , limi
   // console.log(data.docs.length)
   setItems(data.docs)
 }
+
+
+
 
 export const getDataWithOutRealTimeUpdates = async (setState, collectionRef) => {
   const db = getFirestore()

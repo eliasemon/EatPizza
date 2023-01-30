@@ -1,11 +1,11 @@
-import { View, TouchableOpacity, Image, ActivityIndicator } from "react-native"
+import { View, TouchableOpacity, Image, ActivityIndicator , BackHandler , Alert } from "react-native"
 import Heading from "../components/Heading";
 import codLogo from '../assets/images/codLogo.png'
 import { PaymentStyle as styles } from "../styles";
 import { useStoreState , useStoreActions } from "easy-peasy";
 import { httpsCallable , getFunctions } from "firebase/functions";
 import {  getApp } from 'firebase/app';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth"
 
 
@@ -13,9 +13,29 @@ const Payment = ({navigation}) => {
     const firebaseApp = getApp()
     const auth = getAuth()
     const functions = getFunctions(firebaseApp)
+
     
     const {cachesForOrder} = useStoreState(state => state)
     const [loading , setLoading] = useState(false)
+    
+    useEffect(()=>{
+        BackHandler.addEventListener('hardwareBackPress',() =>{
+            if(loading){
+                Alert.alert(
+                    "In Data Processing State",
+                    "Please Don't Terminate the app",
+                    [
+                      { text: "OK" }
+                    ]
+                  );
+                return true
+            }else{
+                return false
+            }
+        });
+       return () => BackHandler.removeEventListener('hardwareBackPress');
+    },[loading])
+    
     const placeOrder = async() =>{
         setLoading(true)
         const data = {...cachesForOrder}
@@ -25,7 +45,7 @@ const Payment = ({navigation}) => {
         data.paymentType = "cashon"
         const createOrder = httpsCallable(functions , 'createOrder')
         try {
-
+            console.log(JSON.stringify(data))
              await createOrder(data)
             .then(()=>{
                 setLoading(false)
@@ -43,7 +63,7 @@ const Payment = ({navigation}) => {
     }
     return (
         <View>
-            <Heading navigation={navigation} title="Payment" />
+            <Heading loading ={loading} isHide ={true} navigation={navigation} title="Payment" />
             {/* <TouchableOpacity style={styles.card}>
                 <Image source={bkashLogo} />
             </TouchableOpacity>
