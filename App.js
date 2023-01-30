@@ -21,7 +21,6 @@ import {
   UploadPhoto
 } from './screens'
 import BootLoader from "./components/bootLoader";
-import Otp from "./components/LogIn/Otp";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +33,6 @@ const MyTheme = {
 const App = () => {
 
   // state for checking Login Status
-
   return (
     <SafeAreaView>
       <StatusBar backgroundColor="#0D0D0D" barStyle="light-content" />

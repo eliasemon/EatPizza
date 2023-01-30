@@ -9,7 +9,6 @@ export default StyleSheet.create({
     },
     cardContainer: {
         paddingVertical: 20,
-        height: '60%'
     },
     card: {
         width: '100%',

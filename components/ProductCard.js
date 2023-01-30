@@ -43,7 +43,7 @@ const ProductCard = ({ UpdateCardItem, item, cardsType, pdUIAddToCardHandle }) =
                         <>
                             <View style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between" }}>
                                 <Text style={styles.cardTextTitle}>{(item?.selectedVariant?.name)}</Text>
-                                <Text style={styles.cardTextTitle}>{item?.selectedVariant?.sellingPrice}৳</Text>
+                                <Text style={styles.cardTextTitle}>{item?.selectedVariant?.sellingPrice} ৳</Text>
                             </View>
                             <View >
                                 {Object.keys(item?.selectedAddonsForCard).map((key => {
@@ -51,17 +51,29 @@ const ProductCard = ({ UpdateCardItem, item, cardsType, pdUIAddToCardHandle }) =
                                     return (
                                         <View key={key} style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between" }}>
                                             <Text style={styles.cardTextTitle}>{data?.name}</Text>
-                                            <Text style={styles.cardTextTitle}>{data?.price}৳</Text>
+                                            <Text style={styles.cardTextTitle}>{data?.price} ৳</Text>
                                         </View>
                                     )
                                 }))}
                                 {/* <Text style={styles.cardTextTitle}>{item?.selectedVariant?.sellingPrice}৳</Text> */}
                             </View>
-                            <Text style={styles.cardTextPrice}> {`${item?.itemCount} x ${item?.unitPrice} = ${Number(item?.unitPrice) * Number(item?.itemCount)}`}৳</Text>
+                            <Text style={styles.cardTextPrice}> {`${item?.itemCount} x ${item?.unitPrice} = ${Number(item?.unitPrice) * Number(item?.itemCount)}`} ৳</Text>
                         </>
                     )}
                     {/* <Text style={styles.cardTextCategory}>{category}</Text> */}
-                    <Text style={styles.cardTextPrice}>৳ {item?.defualtVariant?.sellingPrice}</Text>
+                    <View style={{
+                        flexDirection: 'row',
+                    }}>
+                        {item.defualtVariant.regularPrice === item.defualtVariant.sellingPrice ? '' :
+                            (<Text style={{
+                                fontSize: 18,
+                                color: '#fff',
+                                marginHorizontal: 5,
+                                textDecorationLine: "line-through"
+                            }} >{item?.defualtVariant?.regularPrice} ৳</Text>)
+                        }
+                        <Text style={styles.cardTextPrice}>{item?.defualtVariant?.sellingPrice} ৳</Text>
+                    </View>
                 </View>
             </View>
             {cardType[cardsType]}
@@ -108,7 +120,8 @@ const styles = StyleSheet.create({
     },
     cardTextPrice: {
         fontSize: 18,
-        color: 'rgba(21,190,119,1)'
+        color: 'rgba(21,190,119,1)',
+        marginHorizontal: 5
     },
     buttonSet: {
         alignItems: 'center',

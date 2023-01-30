@@ -2,14 +2,18 @@
   "expo": {
     "name": "EatPizza",
     "slug": "EatPizza",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000"
+    },
+    "developer": {
+      "name": "Elias Emon",
+      "email": "019eliashossain@gmail.com"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,13 +25,21 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.eliasemon.EatPizza",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#0000"
       }
+      
     },
     "web": {
       "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7d412a0f-0202-4c18-8acd-bc25ee70f78b"
+      }
     }
   }
 }

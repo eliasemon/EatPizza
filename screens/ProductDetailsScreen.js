@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, ScrollView, TextInput, Alert, Modal } from "react-native"
+import { View, Text, TouchableOpacity, Image, ScrollView, TextInput, Alert, Modal, ToastAndroid } from "react-native"
 import Heading from "../components/Heading"
 import { Button, NextButton } from "../components/Buttons"
 import { FontAwesome, Ionicons } from "@expo/vector-icons"
@@ -7,6 +7,7 @@ import { styles, stylesForAlert } from "../styles/ProductDetails.style"
 import { getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise } from "../utils"
 import { useStoreActions } from 'easy-peasy';
 import { GlobalStyle } from "../styles"
+import { COLORS } from "../constants/theme"
 
 const RadioButton = ({ product, selectedId }) => {
     return (
@@ -20,7 +21,7 @@ const RadioButton = ({ product, selectedId }) => {
                     {product.name}
                 </Text>
             </View>
-            <Text style={styles.text}>{product.sellingPrice}</Text>
+            <Text style={styles.text}>৳ {product.sellingPrice}</Text>
         </View>
     )
 }
@@ -38,7 +39,7 @@ const CheckBox = ({ isSelected, product }) => {
                 </Text>
             </View>
             <Text style={styles.text}>
-                {product.price}
+                ৳ {product.price}
             </Text>
         </View >
     )
@@ -46,7 +47,7 @@ const CheckBox = ({ isSelected, product }) => {
 
 
 const ProductDetailsScreen = ({ navigation, route }) => {
-    const addTodo = useStoreActions((actions) => actions.addToCard);
+    const addToCard = useStoreActions((actions) => actions.addToCard);
     const { item } = route.params;
     const [itemCount, setItemCount] = useState(1)
 
@@ -61,6 +62,10 @@ const ProductDetailsScreen = ({ navigation, route }) => {
         setItemCount(count => count - 1)
     }
 
+    const showToast = () => {
+        ToastAndroid.show('Item added to cart', ToastAndroid.SHORT);
+    }
+
     const [selectedVariant, setSelectedVariant] = useState("")
     const [selectedAddonsForCard, setSelectedAddonsForCard] = useState({})
     const [specialInstructions, setSpecialInstructions] = useState("")
@@ -73,7 +78,7 @@ const ProductDetailsScreen = ({ navigation, route }) => {
         if (selectedVariant == "") {
             Alert.alert(
                 "Variant Selection Requiered",
-                "You haven't select a variant .Please select a variant",
+                "You have not selected any variant. Please select a variant",
                 [
                     { text: "OK" }
                 ],
@@ -100,8 +105,9 @@ const ProductDetailsScreen = ({ navigation, route }) => {
             specialInstructions: specialInstructions,
             itemCount: itemCount
         }
-        addTodo({ key: key, data: { ...data } })
+        addToCard({ key: key, data: { ...data } })
         navigation.goBack()
+        showToast()
         setSelectedVariant("")
         setSelectedAddonsForCard({})
         setSpecialInstructions("")
@@ -111,8 +117,10 @@ const ProductDetailsScreen = ({ navigation, route }) => {
     useEffect(() => {
         if (item?.selectedAddons?.length > 0) {
 
-            const data = item.selectedAddons.map((addonId) => {
-                return (getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("Addons", addonId))
+            const data = item.selectedAddons.map(async(addonId) => {
+                const data = await getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise("Addons", addonId)
+                delete data.selectedCatagories
+                return data
             })
             Promise.all(data).then((v) => setAddons([...v]))
         }
@@ -129,7 +137,9 @@ const ProductDetailsScreen = ({ navigation, route }) => {
         >
             <View style={styles.checkoutContainer}>
                 <Heading title="Product Details" />
-                <ScrollView >
+                <ScrollView style={{
+                    backgroundColor: 'rgba(255,255,255,0.08)'
+                }}>
                     <View style={styles.imageContainer}>
                         <Image style={styles.image} source={{ uri: `${item?.image?.imageDownloadUrl}` }} />
                     </View>
@@ -137,8 +147,10 @@ const ProductDetailsScreen = ({ navigation, route }) => {
                         <Text style={styles.title}>{item.name}</Text>
                         <Text style={styles.description}>{item.descriptions}</Text>
                     </View>
-                    <View style={GlobalStyle.sidePadding}>
-                        <Text style={styles.title}>Select variation</Text>
+                    <View style={[GlobalStyle.sidePadding, {
+                        marginVertical: 5
+                    }]}>
+                        <Text style={styles.optionTitle}>Select variation</Text>
                         <ScrollView>
                             {Object.keys(item.variants).map((key) => {
                                 const data = item.variants[key]
@@ -151,8 +163,10 @@ const ProductDetailsScreen = ({ navigation, route }) => {
                             })}
                         </ScrollView>
                     </View>
-                    <View style={GlobalStyle.sidePadding}>
-                        <Text style={styles.title}>Select Addons</Text>
+                    <View style={[GlobalStyle.sidePadding, {
+                        marginVertical: 5
+                    }]}>
+                        <Text style={styles.optionTitle}>Select Addons</Text>
                         <ScrollView>
                             {addons && addons.map(addon => {
                                 return (
@@ -174,24 +188,27 @@ const ProductDetailsScreen = ({ navigation, route }) => {
                             {/* // (<CheckBox setAddons={setAddons} id={item.id} product={item} addons={addons} key={item.id} />)) */}
                         </ScrollView>
                     </View>
-                    <View style={[styles.sidePadding, GlobalStyle.sidePadding]}>
-                        <Text style={styles.title}>Special instructions</Text>
-                        <TextInput value={specialInstructions} onChangeText={setSpecialInstructions} style={styles.input} multilinef />
+                    <View style={[GlobalStyle.sidePadding, {
+                        marginVertical: 5
+                    }]}>
+                        <Text style={styles.optionTitle}>Special instructions</Text>
+                        <TextInput multiline={true} numberOfLines={2} value={specialInstructions} onChangeText={setSpecialInstructions} style={styles.input} multilinef />
                     </View>
                     <View style={styles.cart}>
                         <View style={styles.buttonSet}>
-                            <TouchableOpacity style={{ marginHorizontal: 20 }} onPress={handleUpPress}>
-                                <FontAwesome name="plus" size={20} color="rgba(255,255,255,0.8)" />
-                            </TouchableOpacity>
-                            <Text style={styles.buttonNumber}>{itemCount}</Text>
                             <TouchableOpacity style={{ opacity: (itemCount > 1 ? 1 : 0.4), marginHorizontal: 20 }} disabled={itemCount <= 1} onPress={handleDownPress}>
                                 <FontAwesome name="minus" size={20} color="rgba(255,255,255,0.8)" />
+                            </TouchableOpacity>
+                            <Text style={styles.buttonNumber}>{itemCount}</Text>
+                            <TouchableOpacity style={{ marginHorizontal: 20 }} onPress={handleUpPress}>
+                                <FontAwesome name="plus" size={20} color="rgba(255,255,255,0.8)" />
                             </TouchableOpacity>
                         </View>
                         <Button onPress={addToCardLocalFn} style={{
                             paddingHorizontal: 20,
                             paddingVertical: 10,
-                            backgroundColor: 'rgba(0,255,0,0.35)',
+                            backgroundColor: COLORS.primary,
+                            // backgroundColor: 'rgba(0,255,0,0.35)',
                             borderRadius: 75
                         }}>Add to cart</Button>
                     </View>

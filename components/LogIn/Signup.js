@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { View, Image, StyleSheet } from "react-native";
-import { NextButton } from "../Buttons";
+import { View, Image, StyleSheet , ActivityIndicator } from "react-native";
+import { Button} from "../Buttons";
 import InputText from "../TextInput";
 import logo from "../../assets/images/logo.png";
 import { SignupStyle as styles } from "../../styles";
+import { COLORS  } from "../../constants/theme";
 
 
 
-const Signup = ({nameSubmitions}) => {
+
+const Signup = ({nameSubmitions , loading}) => {
   const [fullName , setFullName] = useState ("")
 
 
@@ -21,7 +23,16 @@ const Signup = ({nameSubmitions}) => {
         fullName ={fullName}
         setFullName= {setFullName}
       />
-      <NextButton onPress={handlePress} title="Submit" />
+
+      <Button style={{
+          backgroundColor: COLORS.primary,
+          paddingVertical: 15,
+          paddingHorizontal: 80,
+          alignSelf: 'center',
+          borderRadius: 10
+        }} disabled={loading} onPress={handlePress}>
+        {loading ? <ActivityIndicator color="#fff" /> : "Submit"}
+      </Button>
     </View>
   );
 };

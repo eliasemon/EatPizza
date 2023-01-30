@@ -1,16 +1,19 @@
 import { View, Image, Text, StyleSheet } from "react-native";
 // import { NextButton } from "./../components/Buttons";
 import foods from "../../assets/images/foods.png";
-import { NextButton } from "../Buttons";
+import { Button, NextButton } from "../Buttons";
 import { ReadyStyle as styles } from "../../styles";
-import { action } from "easy-peasy";
+import { useStoreActions } from "easy-peasy";
+import { COLORS } from "../../constants/theme";
+
 // NextButton
 
-const Ready = () => {
+const Ready = ({setFirstAttemp}) => {
   const LoadingChanger =   useStoreActions(action => action.LoadingChanger)
   // onClick this button change screen to Login screen
   const handlePress = () => {
     LoadingChanger({status : true , type : "LoginUI"})
+    setFirstAttemp(false)
   };
 
   return (
@@ -22,7 +25,16 @@ const Ready = () => {
       <Text style={styles.smallText}>
         Enjoy a fast and smooth food delivery at your doorstep
       </Text>
-      <NextButton onPress={handlePress} title="Next" />
+      <Button style={
+        {
+          backgroundColor: COLORS.primary,
+          paddingVertical: 15,
+          paddingHorizontal: 80,
+          alignSelf: 'center',
+          borderRadius: 10
+        }
+      } onPress={handlePress}>Next</Button>
+      {/* <NextButton onPress={handlePress} title="Next" /> */}
     </View>
   );
 };

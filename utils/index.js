@@ -2,6 +2,8 @@
 
 // import { async } from "@firebase/util";
 // import { async } from "@firebase/util";
+
+import { getFirestore } from "firebase/firestore";
 import {  
    where ,
    deleteDoc ,
@@ -18,13 +20,45 @@ import {
   startAfter,
   endAt,
   limit } from "firebase/firestore";
-import { db } from "../config";
 // import { closeLoading, showLoading } from '../src/components/loading/loading';
 
 
 
-export const getDataWithInfinityScroll = async ( setItems , collectionRef , limitation , lastDoc , queryObj ) =>{
+
+
+// export const getUsersOrderHistory = async ( setItems , collectionRef , queryObj  ) =>{
+//   const db = getFirestore()
+//   const q = query(collection(db, `${collectionRef}`) , where(`${queryObj.queryField}` ,  '==' , queryObj.targetItem ));
+
+//   const data = await getDocs(q)
+//   // const reverseData = (data.docs).reverse()
+//   setItems(data.docs)
+// }
+
+export const getUsersOrderHistory = async ( setItems , collectionRef , queryObj  ) =>{
+  const db = getFirestore()
+  const q = query(collection(db, `${collectionRef}`) , where(`${queryObj.queryField}` ,  '==' , queryObj.targetItem ));
+
+  const data = await getDocs(q)
+  // const reverseData = (data.docs).reverse()
+  setItems(data.docs)
+}
+
+// export const getCurrentOrder = async ( setItems , collectionRef , queryObj  ) =>{
   
+//   const q = query(collection(db, `${collectionRef}`) , where(`${queryObj.queryField}` ,  '==' , queryObj.targetItem ));
+
+//   const data = await getDocs(q)
+//   // const reverseData = (data.docs).reverse()
+//   setItems(data.docs)
+// }
+
+
+
+
+
+export const getDataWithInfinityScroll = async ( setItems , collectionRef , limitation , lastDoc , queryObj ) =>{
+  const db = getFirestore()
   let q;
   if(queryObj){
     q = query(collection(db, `${collectionRef}`),where(`${queryObj.queryField}` ,  'array-contains-any' , queryObj.queryArray ) ,orderBy("name"), startAfter(lastDoc || 0), limit(limitation));
@@ -36,8 +70,11 @@ export const getDataWithInfinityScroll = async ( setItems , collectionRef , limi
   setItems(data.docs)
 }
 
-export const getDataWithOutRealTimeUpdates = async (setState, collectionRef) => {
 
+
+
+export const getDataWithOutRealTimeUpdates = async (setState, collectionRef) => {
+  const db = getFirestore()
   const q = query(collection(db, `${collectionRef}`));
       const data = await getDocs(q)
       setState(data.docs)
@@ -57,6 +94,7 @@ export const getDataWithOutRealTimeUpdates = async (setState, collectionRef) => 
 
 
 export const showDataWithPagination = (setState, collectionRef, startingPoint, limitation, fristAttemp) => {
+  const db = getFirestore()
   const q = query(collection(db, `${collectionRef}`), orderBy("name"), startAt(startingPoint), limit(limitation));
   if (fristAttemp) {
     // getDocs(collection(db, `${collectionRef}`) , (snapshot) => {
@@ -69,7 +107,7 @@ export const showDataWithPagination = (setState, collectionRef, startingPoint, l
 }
 
 export const showDataWithOutPagination = (setState, collectionRef) => {
-
+  const db = getFirestore()
   const q = query(collection(db, `${collectionRef}`));
   const returnPromise = new Promise((resolve , reject)=>{
       onSnapshot(q, (snapshot) => {
@@ -83,6 +121,7 @@ export const showDataWithOutPagination = (setState, collectionRef) => {
 }
 
 export const getSingleDataWithOutRealTimeUpdates = async (collectionRef , idRef) => {
+  const db = getFirestore()
   const docRef = doc(db, `${collectionRef}`, `${idRef}`);
   const docSnap = await getDoc(docRef);
   return new Promise((resolve , reject)=>{
@@ -100,6 +139,7 @@ export const getSingleDataWithOutRealTimeUpdates = async (collectionRef , idRef)
 
 
 export const getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise = async (collectionRef , idRef) => {
+  const db = getFirestore()
   const docRef = doc(db, `${collectionRef}`, `${idRef}`);
   const docSnap = await getDoc(docRef);
   const data = docSnap.data();
@@ -112,6 +152,7 @@ export const getSingleDataWithOutRealTimeUpdatesWithoutCustomPromise = async (co
 
 
 export const showDataByArrayQuers = (setState , collectionRef , queryArray , queryField ) => {
+  const db = getFirestore()
   const q = query(collection(db, `${collectionRef}`), where(`${queryField}`, 'array-contains-any', queryArray));
   
   onSnapshot(q, (snapshot) => {
@@ -121,7 +162,7 @@ export const showDataByArrayQuers = (setState , collectionRef , queryArray , que
 }
 
 export const addDataToCollection = async (items, collectionRef) => {
-
+  const db = getFirestore()
   try {
 
     const colRef = collection(db, `${collectionRef}`)
@@ -139,6 +180,7 @@ export const addDataToCollection = async (items, collectionRef) => {
 
 
 export const setDataToCollection = async (items , collectionRef , isSingle = true) => {
+  const db = getFirestore()
   try {
   
     if(isSingle && await isExist(collection(db, `${collectionRef}`) , items.name)){
@@ -207,10 +249,3 @@ const isExist = async (colRef , itemsName) =>{
 //   return uuid;
 // }
 
-
-
-
-
-
-export const getCloser = (value, checkOne, checkTwo) =>
-  Math.abs(value - checkOne) < Math.abs(value - checkTwo) ? checkOne : checkTwo;
