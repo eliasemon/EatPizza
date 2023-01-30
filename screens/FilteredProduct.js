@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, 
 import { AntDesign } from '@expo/vector-icons';
 
 import ProductCard from '../components/ProductCard';
-import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll } from '../utils';
+import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll , getSingleDataWithRealTimeUpdates } from '../utils';
 import { FilterProductStyle as styles } from '../styles'
 
 
@@ -17,8 +17,7 @@ const FilteredProduct = ({ navigation, route }) => {
     const [itemsSnapshot, setItemsSnapshot] = useState("")
     const [itemsDataForView, setItemsDataForView] = useState("")
     const dataLoading = useRef(false)
-
-
+    const [forceRender , setForceRender] = useState("");
 
     const infinityScrollHandle = () => {
         if (dataLoading.current) return;
@@ -36,21 +35,27 @@ const FilteredProduct = ({ navigation, route }) => {
 
 
     useEffect(() => {
-        // getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5)
         getDataWithOutRealTimeUpdates(setCategories, "catagories");
+        getSingleDataWithRealTimeUpdates(setForceRender , "totalSummery" , "updateByAdmin")
     }, []);
 
 
     useEffect(() => {
+        
+        if(dataLoading.current) return
+
         const isActiveCatArr = Object.keys(isActiveCategoriesId)
         if (isActiveCatArr.length > 0) {
+            dataLoading.current = true;
             getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, false, { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(v => console.log(v))
             return;
         }
-        else {
+        else { 
+
+            dataLoading.current = true;
             getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(v => console.log(v))
         }
-    }, [isActiveCategoriesId])
+    }, [isActiveCategoriesId , forceRender])
 
 
     useEffect(() => {
@@ -62,15 +67,6 @@ const FilteredProduct = ({ navigation, route }) => {
             })
             setItemsDataForView(prv => ([...prv, ...data]))
             dataLoading.current = false;
-            //    if(Object.keys(isActiveCategoriesId).length > 0){
-            //         // (async()=>{
-            //         //    await flatListRef.current.scrollToOffset({offset : 70 , animated : true})
-            //         //     setHomeHeader(false)
-            //         // })()
-            //         // await flatListRef.current.scrollToOffset({offset : 276 , animated : true})
-            //         setHomeHeader(false)
-
-            //    }
         }
 
     }, [itemsSnapshot])
@@ -151,7 +147,7 @@ const FilteredProduct = ({ navigation, route }) => {
             <View style={{ height: '77%' }}>
 
             {itemsDataForView && (<FlatList
-                    ListFooterComponent={itemsSnapshot[4] ? <ActivityIndicator color="#fff" /> : (<Text style={{ color: "white" }}>Items List End </Text>)}
+                    ListFooterComponent={itemsSnapshot[4] ? <ActivityIndicator color="#fff" /> : (<Text style={{ color: "white", textAlign: 'center' }}>No more items found ! </Text>)}
                 onEndReached={infinityScrollHandle}
                 data={itemsDataForView}
                 renderItem={({ item }) => (

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, ActivityIndicator } from "react-native";
 import ProductCard from '../components/ProductCard';
-import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll , getSingleDataWithOutRealTimeUpdates } from '../utils';
+import { getSingleDataWithRealTimeUpdates , getDataWithOutRealTimeUpdates, getDataWithInfinityScroll , getSingleDataWithOutRealTimeUpdates } from '../utils';
 import { AntDesign } from '@expo/vector-icons';
 import { useStoreActions } from 'easy-peasy';
 import { GlobalStyle } from '../styles';
@@ -20,44 +20,36 @@ const Home = ({ navigation }) => {
 
     const [categories, setCategories] = useState("")
     const [isCollapse, setIsCollapse] = useState(true)
-    const [isActiveCategoriesId, setisActiveCategoriesId] = useState({})
     const [itemsSnapshot, setItemsSnapshot] = useState("")
     const [itemsDataForView, setItemsDataForView] = useState(dataHeadinforUi)
     const [bannerData , setBannerData] = useState("")
     const flatListRef = useRef(null)
     const dataLoading = useRef(false)
-
+    const [forceRender , setForceRender] = useState("");
 
     const infinityScrollHandle = () => {
         if (dataLoading.current) return;
-        const isActiveCatArr = Object.keys(isActiveCategoriesId)
         if (!itemsSnapshot[4]) {
             console.log("Items List End")
         }
         if (itemsSnapshot && !!itemsSnapshot[4]) {
             dataLoading.current = true;
-            if (isActiveCatArr.length > 0) {
-                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4], { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(v => console.log(v))
-                // return;
-            } else {
-                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4]).catch(v => console.log(v))
-            }
+            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4]).catch(v => console.log(v))
+
         }
     }
 
 
-    // if (itemsSnapshot.length > 0) {
-    //     console.log(itemsSnapshot[0].data())
-    // }
+
 
     useEffect(() => {
-        // getDataWithInfinityScroll(setItemsSnapshot , "productlist" , 5)
         getDataWithOutRealTimeUpdates(setCategories, "catagories").then(() => {
             LoadingChanger({ status: false, type: "BootLoaderUi" })
         });
         getSingleDataWithOutRealTimeUpdates("banner" , "banner1").then((data)=>{
             setBannerData(data);
-        })
+        });
+        getSingleDataWithRealTimeUpdates(setForceRender , "totalSummery" , "updateByAdmin")
     }, []);
 
 
@@ -70,29 +62,17 @@ const Home = ({ navigation }) => {
             })
             setItemsDataForView(prv => ([...prv, ...data]))
             dataLoading.current = false;
-            //    if(Object.keys(isActiveCategoriesId).length > 0){
-            //         // (async()=>{
-            //         //    await flatListRef.current.scrollToOffset({offset : 70 , animated : true})
-            //         //     setHomeHeader(false)
-            //         // })()
-            //         // await flatListRef.current.scrollToOffset({offset : 276 , animated : true})
-            //         setHomeHeader(false)
-
-            //    }
         }
 
     }, [itemsSnapshot])
 
     useEffect(() => {
-        const isActiveCatArr = Object.keys(isActiveCategoriesId)
-        if (isActiveCatArr.length > 0) {
-            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, false, { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(v => console.log(v))
-            return;
-        }
-        else {
-            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(v => console.log(v))
-        }
-    }, [isActiveCategoriesId])
+            if(!dataLoading.current){
+                dataLoading.current = true;
+                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(v => console.log(v)) 
+            }
+            
+    }, [forceRender])
 
     const handleChipPress = (id) => {
         const activeID = {}
@@ -111,9 +91,7 @@ const Home = ({ navigation }) => {
                 const item = doc.data()
                 item.id = doc.id
                 return (
-                    <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={isActiveCategoriesId[`${item.id}`] ?
-                        styles.activeChip
-                        : styles.chip} key={item.id}>
+                    <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={styles.chip} key={item.id}>
                         <Text style={styles.chipText}>{item.name}</Text>
                     </TouchableOpacity>
                 )
@@ -129,9 +107,7 @@ const Home = ({ navigation }) => {
                 const item = doc.data()
                 item.id = doc.id
                 return (
-                    <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={isActiveCategoriesId[`${item.id}`] ?
-                        styles.activeChip
-                        : styles.chip} key={item.id}>
+                    <TouchableOpacity onPress={() => { handleChipPress(item.id) }} style={styles.chip} key={item.id}>
                         <Text style={styles.chipText}>{item.name}</Text>
                     </TouchableOpacity>
                 )

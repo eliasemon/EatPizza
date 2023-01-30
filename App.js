@@ -18,9 +18,11 @@ import {
   ProfileUpdate,
   Shipping,
   ThankYou,
-  UploadPhoto
+  UploadPhoto,
+  UserRestrictions
 } from './screens'
 import BootLoader from "./components/bootLoader";
+import { useEffect } from "react";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +33,7 @@ const MyTheme = {
 };
 
 const App = () => {
+
 
   // state for checking Login Status
   return (
@@ -54,6 +57,7 @@ const App = () => {
             <Stack.Screen name="Shipping" component={Shipping} />
             <Stack.Screen name="Payment" component={Payment} />
             <Stack.Screen name="ThankYou" component={ThankYou} />
+            <Stack.Screen name="UserRestrictions" component={UserRestrictions} />
             <Stack.Screen name="Checkout" component={Checkout} />
             <Stack.Screen name="FilteredProduct" component={FilteredProduct} />
             <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />

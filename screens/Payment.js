@@ -10,6 +10,7 @@ import { getAuth } from "firebase/auth"
 
 
 const Payment = ({navigation}) => {
+    const {clearShopingCard } = useStoreActions(action => action)
     const firebaseApp = getApp()
     const auth = getAuth()
     const functions = getFunctions(firebaseApp)
@@ -51,10 +52,11 @@ const Payment = ({navigation}) => {
                 setLoading(false)
                 navigation.navigate("ThankYou")
             }).finally(()=>{
-                
+                clearShopingCard()
+                setLoading(false)
             }) 
         } catch (error) {
-
+            //here have do somethings for order creation failed ***************
             setLoading(false)
             console.log(error)
         }

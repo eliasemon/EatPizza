@@ -20,6 +20,7 @@ const uiActiveState = {
     Shipping : 2 ,
     ThankYou : 0,
     UploadPhoto : 1,
+    UserRestrictions: 1,
 }
 
 

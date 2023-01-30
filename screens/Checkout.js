@@ -9,7 +9,7 @@ import Heading from "../components/Heading"
 import { COLORS } from '../constants/theme'
 
 import { CheckoutStyle as styles, GlobalStyle } from '../styles'
-import { showDataWithOutPagination, getSingleDataWithOutRealTimeUpdates } from "../utils"
+import { showDataWithOutPagination, getSingleDataWithOutRealTimeUpdates, getSingleDataWithRealTimeUpdates } from "../utils"
 import { findTheResturentStatus } from "../utils/ResturentOpenCloseStatus"
 
 // key: key,
@@ -39,7 +39,7 @@ const Checkout = ({ navigation }) => {
     const [extraCostUI, setExtraCostUI] = useState("");
     const [discountAmmount, setDiscountAmmount] = useState(false)
     const [totalExtraCost, setTotalExtraCost] = useState(0)
-
+    const [userInformation , setUsersInformation] = useState("")
     const disCheckRef = useRef(false)
     const TotalOrderAmmount = Number(subTottal) + Number(totalExtraCost) - Number(discountAmmount)
 
@@ -58,13 +58,19 @@ const Checkout = ({ navigation }) => {
         setDiscountAmmount(false)
         setPromoCode("")
         disCheckRef.current = false;
-        clearShopingCard()
-        navigation.navigate("Shipping")
+
+        if(userInformation?.isRestricted){
+             navigation.navigate("UserRestrictions")
+        }else{
+            navigation.navigate("Shipping")
+        }
+
     }
 
 
     useEffect(() => {
-        showDataWithOutPagination(setExtraCostFirebaseData, "extraCost")
+        showDataWithOutPagination(setExtraCostFirebaseData, "extraCost"),
+        getSingleDataWithRealTimeUpdates(setUsersInformation , "usersList" , auth.currentUser.uid);
         showDataWithOutPagination(setResturentOpenClosedData, "ResturentOpeningHr")
         onAuthStateChanged(auth, (user) => {
             if (!user) {
@@ -183,6 +189,7 @@ const Checkout = ({ navigation }) => {
             animationType="fade"
             // transparent={true}
             visible={true}
+            onRequestClose={() => {navigation.navigate("Home") ; setSkitp(true) ;} }
         >
             <View style={[GlobalStyle.sidePadding, { height: '100%', backgroundColor: '#121212', justifyContent: 'center' }]}>
                 <Text style={{ color: 'yellow', marginBottom: 20, marginHorizontal: 20, fontSize: 16, lineHeight: 22 }}>
@@ -276,7 +283,7 @@ const Checkout = ({ navigation }) => {
                         </View>
                         {auth.currentUser ? (
                             <TouchableOpacity onPress={storeTheOrderCaches} style={styles.placeOrderButton}>
-                                <Text style={styles.placeOrderButtonText}> {!openingStatus.status ? "Order For Later" : "Place My Order"}</Text>
+                                <Text style={styles.placeOrderButtonText}> {!openingStatus.status ? "Please Order Later" : "Place The Order"}</Text>
                             </TouchableOpacity>
                         ) : <TouchableOpacity onPress={() => LoadingChanger({ status: true, type: "LoginUI" })} style={styles.placeOrderButton}>
                             <Text style={styles.placeOrderButtonText}>Login Before Order</Text>

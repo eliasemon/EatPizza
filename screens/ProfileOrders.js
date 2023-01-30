@@ -4,7 +4,7 @@ import avatar from '../assets/images/avatar.png'
 
 import { GlobalStyle, ProfileOrdersStyle as styles } from '../styles'
 import { useState, useRef, useEffect } from 'react'
-import { getUsersOrderHistory } from '../utils'
+import { getUsersOrderHistory , getCurrentOrder } from '../utils'
 import CheckoutCard from '../components/CheckoutCard'
 import CollapsibleCard from '../components/collapsibleCard/CollapsibleCard'
 import { COLORS } from '../constants/theme'
@@ -80,31 +80,34 @@ const OrdersItemsCom = ({ item }) => {
 const ProfileOrders = ({ navigation }) => {
     const auth = getAuth();
     const [itemsSnapshot, setItemsSnapshot] = useState("");
-    const [itemsDataForView, setItemsDataForView] = useState([]);
+    const [itemsDataForView, setItemsDataForView] = useState("");
     const [itemsDataForViewCurrentOrder, setItemsDataForViewCurrentOrder] = useState([]);
     const [isCurrent, setIsCurrent] = useState(true);
-    useEffect(() => {
-        if (!itemsSnapshot) {
-            getUsersOrderHistory(setItemsSnapshot, "ordersList", { queryField: "userID", targetItem: auth.currentUser.uid })
+    const allOrders =  async () =>{
+        if(!itemsDataForView){
+            getUsersOrderHistory(setItemsDataForView, "ordersList", { queryField: "userID", targetItem: auth.currentUser.uid })
         }
+    }
+
+    useEffect(() => {
+        
+        if (!itemsSnapshot) {
+            getCurrentOrder(setItemsSnapshot, "ordersList", { queryField: "userID", targetItem: auth.currentUser.uid })
+        }
+
+
     }, [])
 
 
     useEffect(() => {
-
         if (itemsSnapshot) {
-            const currentOrderData = []
-            const data = itemsSnapshot.map((doc) => {
+            const data = itemsSnapshot.docs.map((doc) => {
                 item = doc.data()
                 item.id = doc.id
-                if (item.status !== "compleate" && item.status !== "cancel") currentOrderData.unshift(item);
                 return item
             })
-            currentOrderData.sort((a ,b) => b.creationTime - a.creationTime)
             data.sort((a ,b) => b.creationTime - a.creationTime)
-
-            setItemsDataForView([...data])
-            setItemsDataForViewCurrentOrder([...currentOrderData])
+            setItemsDataForViewCurrentOrder([...data])
         }
     }, [itemsSnapshot])
 
@@ -136,7 +139,7 @@ const ProfileOrders = ({ navigation }) => {
                 }]}>
                     <Text style={styles.tabOptionText}>Processing</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setIsCurrent(false)} style={[styles.tabOption, {
+                <TouchableOpacity onPress={() => { setIsCurrent(false); allOrders();}} style={[styles.tabOption, {
                     backgroundColor: isCurrent ?  'rgba(0,0,0,0)' :  'rgba(0,255,0,0.1)'
                 }]}>
                     <Text style={styles.tabOptionText}>All Orders</Text>
@@ -157,7 +160,7 @@ const ProfileOrders = ({ navigation }) => {
                 (itemsDataForView && !isCurrent) && (<FlatList
                     ListFooterComponent={(<ActivityIndicator color="#fff" />)}
                     style={[GlobalStyle.sidePadding]} data={itemsDataForView} renderItem={
-                        ({ item }) => (<OrdersItemsCom item={item} />)
+                        ({ item }) => (<OrdersItemsCom item={item.data()} />)
                     } keyExtractor={item => (`itemsDataForView${item.id}`)} />)
             }
         </View>
