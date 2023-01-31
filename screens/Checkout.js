@@ -1,7 +1,7 @@
 import { useStoreActions, useStoreState } from "easy-peasy"
 import { onAuthStateChanged , getAuth } from "firebase/auth"
 import { useEffect, useRef, useState } from "react"
-import { View, Text, TouchableOpacity, TextInput, Alert, Modal } from "react-native"
+import { View, Text, TouchableOpacity, TextInput, Alert, Modal, ToastAndroid } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { Button, NextButton } from "../components/Buttons"
 import CheckoutCard from "../components/CheckoutCard"
@@ -43,6 +43,9 @@ const Checkout = ({ navigation }) => {
     const disCheckRef = useRef(false)
     const TotalOrderAmmount = Number(subTottal) + Number(totalExtraCost) - Number(discountAmmount)
 
+    const showAppliedToast = () => {
+        ToastAndroid.show('Discount Applied !', ToastAndroid.SHORT);
+    }
 
     const storeTheOrderCaches = () => {
         const data = {
@@ -126,6 +129,8 @@ const Checkout = ({ navigation }) => {
                 setDiscountAmmount(ammount)
                 return
             }
+            showAppliedToast()
+            setPromoCode("")
             setDiscountAmmount(Number(data.discountValue))
         }).catch((error) => {
             setDiscountAmmount(false)
