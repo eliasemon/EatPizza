@@ -22,7 +22,6 @@ import {
   UserRestrictions
 } from './screens'
 import BootLoader from "./components/bootLoader";
-import { useEffect } from "react";
 
 const Stack = createNativeStackNavigator();
 

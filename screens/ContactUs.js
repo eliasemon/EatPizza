@@ -50,21 +50,20 @@ const ContactUs = ({ navigation }) => {
                     <Text style={{
                         color: '#fff',
                         fontSize: 16,
-                    }}> 69, 71 New Elephant Rd, Dhaka 1205</Text>
+                    }}>{brandData?.ShopAddress}</Text>
                 </View>
 
-                <Text style={{
-                    color: '#fff',
-                    fontSize: 20,
-                }}>{brandData?.ShopAddress}</Text>
-
-
-                <TouchableOpacity onPress={handlePress}>
+                <TouchableOpacity onPress={handlePress} style={{ marginTop: 200 }}>
                     <Text style={{
                         color: '#fff',
-                        fontSize: 16,
+                        fontSize: 14,
+                        textAlign: 'center'
+                    }}>App design & develop by</Text>
+                    <Text style={{
+                        color: '#fff',
+                        fontSize: 14,
                         color: 'skyblue'
-                    }}>App develop by Elias Emon</Text>
+                    }}>Elias Emon, Tapu Mojumder & MH Murshed</Text>
                 </TouchableOpacity>
 
             </View>

@@ -9,7 +9,7 @@ import Heading from "../components/Heading"
 import { COLORS } from '../constants/theme'
 
 import { CheckoutStyle as styles, GlobalStyle } from '../styles'
-import { showDataWithOutPagination, getSingleDataWithOutRealTimeUpdates, getSingleDataWithRealTimeUpdates } from "../utils"
+import { showDataWithOutPagination, getSingleDataWithOutRealTimeUpdates } from "../utils"
 import { findTheResturentStatus } from "../utils/ResturentOpenCloseStatus"
 
 // key: key,
@@ -61,19 +61,24 @@ const Checkout = ({ navigation }) => {
         setDiscountAmmount(false)
         setPromoCode("")
         disCheckRef.current = false;
+        getSingleDataWithOutRealTimeUpdates("usersList", auth.currentUser.uid).then(
+            (userInformation) => {
+                if (userInformation?.isRestricted) {
+                    console.log("I am here")
+                    navigation.navigate("UserRestrictions")
+                } else {
+                    navigation.navigate("Shipping")
+                }
+            }
+        );
 
-        if(userInformation?.isRestricted){
-             navigation.navigate("UserRestrictions")
-        }else{
-            navigation.navigate("Shipping")
-        }
+
 
     }
 
 
     useEffect(() => {
         showDataWithOutPagination(setExtraCostFirebaseData, "extraCost"),
-        getSingleDataWithRealTimeUpdates(setUsersInformation , "usersList" , auth.currentUser.uid);
         showDataWithOutPagination(setResturentOpenClosedData, "ResturentOpeningHr")
         onAuthStateChanged(auth, (user) => {
             if (!user) {
