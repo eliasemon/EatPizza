@@ -196,11 +196,11 @@ const ProductDetailsScreen = ({ navigation, route }) => {
                     </View>
                     <View style={styles.cart}>
                         <View style={styles.buttonSet}>
-                            <TouchableOpacity style={{ opacity: (itemCount > 1 ? 1 : 0.4), marginHorizontal: 20 }} disabled={itemCount <= 1} onPress={handleDownPress}>
+                            <TouchableOpacity style={{ opacity: (itemCount > 1 ? 1 : 0.4), paddingHorizontal: 20, paddingVertical: 10 }} disabled={itemCount <= 1} onPress={handleDownPress}>
                                 <FontAwesome name="minus" size={20} color="rgba(255,255,255,0.8)" />
                             </TouchableOpacity>
                             <Text style={styles.buttonNumber}>{itemCount}</Text>
-                            <TouchableOpacity style={{ marginHorizontal: 20 }} onPress={handleUpPress}>
+                            <TouchableOpacity style={{ paddingHorizontal: 20, paddingVertical: 10 }} onPress={handleUpPress}>
                                 <FontAwesome name="plus" size={20} color="rgba(255,255,255,0.8)" />
                             </TouchableOpacity>
                         </View>
