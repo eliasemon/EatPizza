@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { View, Text , Button, Linking  } from 'react-native'
+import { View, Text, Linking, Image, TouchableOpacity } from 'react-native'
 import Heading from '../components/Heading'
 import { GlobalStyle, ProfileStyle as styles } from '../styles';
 import { getSingleDataWithOutRealTimeUpdates } from '../utils';
+import logo from '../assets/images/logo.png'
 
 const ContactUs = ({ navigation }) => {
     const [brandData, setBrandData] = useState("")
@@ -13,6 +14,7 @@ const ContactUs = ({ navigation }) => {
     useEffect(()=>{
         getSingleDataWithOutRealTimeUpdates("banner" , "banner1").then((data)=>{
             setBrandData(data);
+            console.log(data);
         });
     },[])
     return (
@@ -33,10 +35,23 @@ const ContactUs = ({ navigation }) => {
                 alignItems: 'center',
                 justifyContent: 'center'
             }]}>
-                <Text style={{
-                    color: '#fff',
-                    fontSize: 20,
-                }}></Text>
+                <Image source={logo} style={{ width: 120, height: 150, marginVertical: 50 }} />
+                <View style={{ gap: 10, alignItems: 'center' }}>
+
+                    <Text style={{
+                        color: '#fff',
+                        fontSize: 18,
+                    }}>Helpline : 0167898765</Text>
+
+                    <Text style={{
+                        color: '#fff',
+                        fontSize: 18,
+                    }}>Helpline : 0167898766</Text>
+                    <Text style={{
+                        color: '#fff',
+                        fontSize: 16,
+                    }}> 69, 71 New Elephant Rd, Dhaka 1205</Text>
+                </View>
 
                 <Text style={{
                     color: '#fff',
@@ -44,12 +59,13 @@ const ContactUs = ({ navigation }) => {
                 }}>{brandData?.ShopAddress}</Text>
 
 
-
-
-                <Button
-                    title="Get in Touch"
-                    onPress={handlePress}
-                />
+                <TouchableOpacity onPress={handlePress}>
+                    <Text style={{
+                        color: '#fff',
+                        fontSize: 16,
+                        color: 'skyblue'
+                    }}>App develop by Elias Emon</Text>
+                </TouchableOpacity>
 
             </View>
         </View>
