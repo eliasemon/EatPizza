@@ -11,6 +11,7 @@ import { COLORS } from '../constants/theme'
 import { CheckoutStyle as styles, GlobalStyle } from '../styles'
 import { showDataWithOutPagination, getSingleDataWithOutRealTimeUpdates } from "../utils"
 import { findTheResturentStatus } from "../utils/ResturentOpenCloseStatus"
+import { AntDesign } from '@expo/vector-icons';
 
 // key: key,
 //             id: item.id,
@@ -202,7 +203,11 @@ const Checkout = ({ navigation }) => {
             onRequestClose={() => {navigation.navigate("Home") ; setSkitp(true) ;} }
         >
             <View style={[GlobalStyle.sidePadding, { height: '100%', backgroundColor: '#121212', justifyContent: 'center' }]}>
-                <Text style={{ color: 'yellow', marginBottom: 20, marginHorizontal: 20, fontSize: 16, lineHeight: 22 }}>
+                <TouchableOpacity style={{ position: 'absolute', top: 20, right: 20 }}>
+                    <AntDesign name="closesquareo" size={32} color="red" />
+                </TouchableOpacity>
+                <Text style={{ color: 'yellow', textAlign: 'center', fontSize: 32, marginBottom: 30 }}>Closed For Now</Text>
+                <Text style={{ color: 'white', marginBottom: 30, marginHorizontal: 20, fontSize: 16, lineHeight: 22, textAlign: 'justify' }}>
                     {resturentOpenClosedData && `Restaurant Is Closed Now. For getting Delivery Please Wait Before ${amPmTimeFormat(resturentOpenClosedData[0].data().openingHR)} to open the restaurant`}
                 </Text>
                 <Button style={{
@@ -211,7 +216,7 @@ const Checkout = ({ navigation }) => {
                     paddingHorizontal: 80,
                     alignSelf: 'center',
                     borderRadius: 10
-                }} onPress={() => setSkitp(true)}>Order Now</Button>
+                }} onPress={() => setSkitp(true)}>order for later</Button>
                 {/* <NextButton onPress={() => setSkitp(true)} title="Order Now" /> */}
             </View>
         </Modal>)
