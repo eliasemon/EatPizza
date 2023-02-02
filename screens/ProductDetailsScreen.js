@@ -15,13 +15,17 @@ const RadioButton = ({ product, selectedId }) => {
             <View style={{ flexDirection: 'row' }}>
                 <View>
                     {/* <Ionicons name={variation[id].isSelected ? "radio-button-on" : "radio-button-off"} size={24} color="white" /> */}
-                    <Ionicons name={product.id == selectedId ? "radio-button-on" : "radio-button-off"} size={24} color="white" />
+                    <Ionicons name={product.id == selectedId ? "radio-button-on" : "radio-button-off"} size={24} color={product.id == selectedId ? 'yellow' : 'white'} />
                 </View>
-                <Text style={styles.text}>
+                <Text style={[styles.text, {
+                    color: product.id == selectedId ? 'yellow' : 'white'
+                }]}>
                     {product.name}
                 </Text>
             </View>
-            <Text style={styles.text}>৳ {product.sellingPrice}</Text>
+            <Text style={[styles.text, {
+                color: product.id == selectedId ? 'yellow' : 'white'
+            }]}>৳ {product.sellingPrice}</Text>
         </View>
     )
 }
@@ -32,13 +36,17 @@ const CheckBox = ({ isSelected, product }) => {
             <View style={{ flexDirection: 'row' }}>
 
                 <View>
-                    <FontAwesome name={isSelected ? "check-circle-o" : "circle-o"} size={24} color="#fff" />
+                    <FontAwesome name={isSelected ? "check-circle-o" : "circle-o"} size={24} color={isSelected ? 'yellow' : 'white'} />
                 </View>
-                <Text style={styles.text}>
+                <Text style={[styles.text, {
+                    color: isSelected ? 'yellow' : 'white'
+                }]}>
                     {product.name}
                 </Text>
             </View>
-            <Text style={styles.text}>
+            <Text style={[styles.text, {
+                color: isSelected ? 'yellow' : 'white'
+            }]}>
                 ৳ {product.price}
             </Text>
         </View >

@@ -41,12 +41,7 @@ const ContactUs = ({ navigation }) => {
                     <Text style={{
                         color: '#fff',
                         fontSize: 18,
-                    }}>Helpline : 0167898765</Text>
-
-                    <Text style={{
-                        color: '#fff',
-                        fontSize: 18,
-                    }}>Helpline : 0167898766</Text>
+                    }}>Helpline : {brandData?.hotline}</Text>
                     <Text style={{
                         color: '#fff',
                         fontSize: 16,

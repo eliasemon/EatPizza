@@ -99,6 +99,11 @@ const Checkout = ({ navigation }) => {
 
     // },[])
 
+    const handleCloseButton = () => {
+        setSkitp(true)
+        navigation.navigate("Home")
+    }
+
     const promocodeCheck = () => {
         getSingleDataWithOutRealTimeUpdates("promoCode", promoCode).then((data) => {
             const timeStampInMsForPromo = Date.parse(data.validity)
@@ -203,8 +208,8 @@ const Checkout = ({ navigation }) => {
             onRequestClose={() => {navigation.navigate("Home") ; setSkitp(true) ;} }
         >
             <View style={[GlobalStyle.sidePadding, { height: '100%', backgroundColor: '#121212', justifyContent: 'center' }]}>
-                <TouchableOpacity style={{ position: 'absolute', top: 20, right: 20 }}>
-                    <AntDesign name="closesquareo" size={32} color="red" />
+                <TouchableOpacity onPress={handleCloseButton} style={{ position: 'absolute', top: 20, right: 30 }}>
+                    <AntDesign name="close" size={36} color="white" />
                 </TouchableOpacity>
                 <Text style={{ color: 'yellow', textAlign: 'center', fontSize: 32, marginBottom: 30 }}>Closed For Now</Text>
                 <Text style={{ color: 'white', marginBottom: 30, marginHorizontal: 20, fontSize: 16, lineHeight: 22, textAlign: 'justify' }}>

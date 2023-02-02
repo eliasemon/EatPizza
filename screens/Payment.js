@@ -51,12 +51,27 @@ const Payment = ({navigation}) => {
             .then(()=>{
                 setLoading(false)
                 navigation.navigate("ThankYou")
+            }).catch(() => {
+                Alert.alert(
+                    "Order Failed !",
+                    "The order has been failed. Please try again",
+                    [
+                        { text: "OK" }
+                    ],
+                );
             }).finally(()=>{
                 clearShopingCard()
                 setLoading(false)
-            }) 
+            })
         } catch (error) {
             //here have do somethings for order creation failed ***************
+            Alert.alert(
+                "Order Failed !",
+                "The order has been failed. Please try again",
+                [
+                    { text: "OK" }
+                ],
+            );
             setLoading(false)
             console.log(error)
         }
