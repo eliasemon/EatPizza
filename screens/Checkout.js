@@ -65,7 +65,6 @@ const Checkout = ({ navigation }) => {
         getSingleDataWithOutRealTimeUpdates("usersList", auth.currentUser.uid).then(
             (userInformation) => {
                 if (userInformation?.isRestricted) {
-                    console.log("I am here")
                     navigation.navigate("UserRestrictions")
                 } else {
                     navigation.navigate("Shipping")

@@ -25,10 +25,26 @@ const FilteredProduct = ({ navigation, route }) => {
         if (itemsSnapshot && !!itemsSnapshot[4]) {
             dataLoading.current = true;
             if (isActiveCatArr.length > 0) {
-                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4], { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(v => console.log(v))
+                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4], { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(() => {
+                    Alert.alert(
+                        "Connection Failed !",
+                        "Server connection failed after trying",
+                        [
+                            { text: "OK" }
+                        ],
+                    );
+                })
                 // return;
             } else {
-                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4]).catch(v => console.log(v))
+                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4]).catch(() => {
+                    Alert.alert(
+                        "Connection Failed !",
+                        "Server connection failed after trying",
+                        [
+                            { text: "OK" }
+                        ],
+                    );
+                })
             }
         }
     }
@@ -47,13 +63,29 @@ const FilteredProduct = ({ navigation, route }) => {
         const isActiveCatArr = Object.keys(isActiveCategoriesId)
         if (isActiveCatArr.length > 0) {
             dataLoading.current = true;
-            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, false, { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(v => console.log(v))
+            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, false, { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(() => {
+                Alert.alert(
+                    "Connection Failed !",
+                    "Server connection failed after trying",
+                    [
+                        { text: "OK" }
+                    ],
+                );
+            })
             return;
         }
         else { 
 
             dataLoading.current = true;
-            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(v => console.log(v))
+            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(() => {
+                Alert.alert(
+                    "Connection Failed !",
+                    "Server connection failed after trying",
+                    [
+                        { text: "OK" }
+                    ],
+                );
+            })
         }
     }, [isActiveCategoriesId , forceRender])
 

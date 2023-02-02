@@ -29,12 +29,17 @@ const Home = ({ navigation }) => {
 
     const infinityScrollHandle = () => {
         if (dataLoading.current) return;
-        if (!itemsSnapshot[4]) {
-            console.log("Items List End")
-        }
         if (itemsSnapshot && !!itemsSnapshot[4]) {
             dataLoading.current = true;
-            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4]).catch(v => console.log(v))
+            getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, itemsSnapshot[4]).catch(() => {
+                Alert.alert(
+                    "Connection Failed !",
+                    "Server connection failed after trying",
+                    [
+                        { text: "OK" }
+                    ],
+                );
+            })
 
         }
     }
@@ -69,7 +74,15 @@ const Home = ({ navigation }) => {
     useEffect(() => {
             if(!dataLoading.current){
                 dataLoading.current = true;
-                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(v => console.log(v)) 
+                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(() => {
+                    Alert.alert(
+                        "Connection Failed !",
+                        "Server connection failed after trying",
+                        [
+                            { text: "OK" }
+                        ],
+                    );
+                }) 
             }
             
     }, [forceRender])
@@ -126,7 +139,6 @@ const Home = ({ navigation }) => {
                 </TouchableOpacity> */}
             </View>
             <View>
-                {console.log(bannerData?.image?.imageDownloadUrl)}
                 <Image source={ {uri : `${bannerData?.image?.imageDownloadUrl}` }} style={styles.banner} />
             </View>
 

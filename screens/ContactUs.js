@@ -14,7 +14,6 @@ const ContactUs = ({ navigation }) => {
     useEffect(()=>{
         getSingleDataWithOutRealTimeUpdates("banner" , "banner1").then((data)=>{
             setBrandData(data);
-            console.log(data);
         });
     },[])
     return (

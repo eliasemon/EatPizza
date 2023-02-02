@@ -46,7 +46,6 @@ const Payment = ({navigation}) => {
         data.paymentType = "cashon"
         const createOrder = httpsCallable(functions , 'createOrder')
         try {
-            console.log(JSON.stringify(data))
              await createOrder(data)
             .then(()=>{
                 setLoading(false)
@@ -73,7 +72,6 @@ const Payment = ({navigation}) => {
                 ],
             );
             setLoading(false)
-            console.log(error)
         }
         
         
