@@ -149,7 +149,7 @@ const Home = ({ navigation }) => {
                                 <View style={styles.section}>
                                     <View style={styles.categoriesHeader}>
                                         <Text style={styles.sectionTitle}>Categories</Text>
-                                        <TouchableOpacity onPress={handleCollapseButton} style={styles.collapseButton}>
+                                        <TouchableOpacity hidden={categories.length <= 5} onPress={handleCollapseButton} style={styles.collapseButton}>
                                             <AntDesign name={isCollapse ? 'down' : 'up'} size={22} color="white" />
                                         </TouchableOpacity>
                                     </View>

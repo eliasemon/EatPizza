@@ -18,14 +18,21 @@ const Heading = ({isHide = true, loading  ,changeTheScreenHandle, title }) => {
 
     return (
         <View style={[styles.heading, GlobalStyle.sidePadding]}>
-            {(isHide && !loading) && (
-                <TouchableOpacity onPress={handleBackButton} style={styles.backButton}>
+                <TouchableOpacity onPress={handleBackButton} style={styles.backButton} disabled={isHide && !loading}>
                     <FontAwesome name="angle-left" size={45} color="#fffdd0" />
                 </TouchableOpacity>
-            ) }
             
             <Text style={styles.title}>{title}</Text>
         </View>
+        // <View style={[styles.heading, GlobalStyle.sidePadding]}>
+        //     {(isHide && !loading) && (
+        //         <TouchableOpacity onPress={handleBackButton} style={styles.backButton}>
+        //             <FontAwesome name="angle-left" size={45} color="#fffdd0" />
+        //         </TouchableOpacity>
+        //     ) }
+            
+        //     <Text style={styles.title}>{title}</Text>
+        // </View>
     )
 }
 

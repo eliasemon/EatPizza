@@ -31,12 +31,12 @@ const ContactUs = ({ navigation }) => {
             </View> */}
 
             <View style={[GlobalStyle.sidePadding, {
-                height: '80%',
+                height: '90%',
                 alignItems: 'center',
                 justifyContent: 'center'
             }]}>
                 <Image source={logo} style={{ width: 120, height: 150, marginVertical: 50 }} />
-                <View style={{ gap: 10, alignItems: 'center' }}>
+                <View style={{ width: '100%', alignItems: 'center', borderWidth: 1, borderColor: '#fff', padding: 20 }}>
 
                     <Text style={{
                         color: '#fff',
