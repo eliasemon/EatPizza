@@ -44,14 +44,13 @@ export const getUsersOrderHistory = async ( setItems , collectionRef , queryObj 
   setItems(data.docs)
 }
 
-// export const getCurrentOrder = async ( setItems , collectionRef , queryObj  ) =>{
-  
-//   const q = query(collection(db, `${collectionRef}`) , where(`${queryObj.queryField}` ,  '==' , queryObj.targetItem ));
-
-//   const data = await getDocs(q)
-//   // const reverseData = (data.docs).reverse()
-//   setItems(data.docs)
-// }
+export const getCurrentOrder = async ( setItems , collectionRef , queryObj  ) =>{
+  const db = getFirestore()
+  const q = query(collection(db, `${collectionRef}`) , where(`${queryObj.queryField}` ,  '==' , queryObj.targetItem ) , where("status" ,  "not-in" , [ "cancel" , "compleate"]));
+  onSnapshot(q ,(snapshot) =>{
+    setItems(snapshot)
+  })
+}
 
 
 
@@ -93,18 +92,6 @@ export const getDataWithOutRealTimeUpdates = async (setState, collectionRef) => 
 
 
 
-export const showDataWithPagination = (setState, collectionRef, startingPoint, limitation, fristAttemp) => {
-  const db = getFirestore()
-  const q = query(collection(db, `${collectionRef}`), orderBy("name"), startAt(startingPoint), limit(limitation));
-  if (fristAttemp) {
-    // getDocs(collection(db, `${collectionRef}`) , (snapshot) => {
-    // })
-  }
-  onSnapshot(q, (snapshot) => {
-    setState(prv => ({ ...prv, snapshot: snapshot }))
-    //   .forEach(doc => console.log(doc.data()))  
-  })
-}
 
 export const showDataWithOutPagination = (setState, collectionRef) => {
   const db = getFirestore()
@@ -133,7 +120,14 @@ export const getSingleDataWithOutRealTimeUpdates = async (collectionRef , idRef)
 
 
   })
-   
+}
+
+export const getSingleDataWithRealTimeUpdates = async ( setState ,collectionRef , idRef) => {
+  const db = getFirestore()
+  const docRef = doc(db, `${collectionRef}`, `${idRef}`);
+  onSnapshot(docRef , (snapshot)=>{
+    setState(snapshot.data())
+  })
 }
 
 

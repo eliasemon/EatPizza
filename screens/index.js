@@ -12,6 +12,9 @@ import Shipping from './Shipping'
 import ThankYou from './ThankYou'
 import UploadPhoto from './UploadPhoto'
 import FilteredProduct from './FilteredProduct';
+import UserRestrictions from './UserRestrictions'
+
+
 
 export {
     Checkout,
@@ -27,5 +30,6 @@ export {
     ProfileUpdate,
     Shipping,
     ThankYou,
-    UploadPhoto
+    UploadPhoto,
+    UserRestrictions
 }

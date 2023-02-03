@@ -11,7 +11,7 @@ export default StyleSheet.create({
     profileImage: {
         marginRight: 20,
         borderWidth: 6,
-        borderColor: "green",
+        borderColor: '#FFFFFF4C',
         borderRadius: 100
     },
     profileInfo: {

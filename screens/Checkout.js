@@ -1,7 +1,7 @@
 import { useStoreActions, useStoreState } from "easy-peasy"
 import { onAuthStateChanged , getAuth } from "firebase/auth"
 import { useEffect, useRef, useState } from "react"
-import { View, Text, TouchableOpacity, TextInput, Alert, Modal } from "react-native"
+import { View, Text, TouchableOpacity, TextInput, Alert, Modal, ToastAndroid } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { Button, NextButton } from "../components/Buttons"
 import CheckoutCard from "../components/CheckoutCard"
@@ -11,6 +11,7 @@ import { COLORS } from '../constants/theme'
 import { CheckoutStyle as styles, GlobalStyle } from '../styles'
 import { showDataWithOutPagination, getSingleDataWithOutRealTimeUpdates } from "../utils"
 import { findTheResturentStatus } from "../utils/ResturentOpenCloseStatus"
+import { AntDesign } from '@expo/vector-icons';
 
 // key: key,
 //             id: item.id,
@@ -39,10 +40,13 @@ const Checkout = ({ navigation }) => {
     const [extraCostUI, setExtraCostUI] = useState("");
     const [discountAmmount, setDiscountAmmount] = useState(false)
     const [totalExtraCost, setTotalExtraCost] = useState(0)
-
+    const [userInformation , setUsersInformation] = useState("")
     const disCheckRef = useRef(false)
     const TotalOrderAmmount = Number(subTottal) + Number(totalExtraCost) - Number(discountAmmount)
 
+    const showAppliedToast = () => {
+        ToastAndroid.show('Discount Applied !', ToastAndroid.SHORT);
+    }
 
     const storeTheOrderCaches = () => {
         const data = {
@@ -58,13 +62,23 @@ const Checkout = ({ navigation }) => {
         setDiscountAmmount(false)
         setPromoCode("")
         disCheckRef.current = false;
-        clearShopingCard()
-        navigation.navigate("Shipping")
+        getSingleDataWithOutRealTimeUpdates("usersList", auth.currentUser.uid).then(
+            (userInformation) => {
+                if (userInformation?.isRestricted) {
+                    navigation.navigate("UserRestrictions")
+                } else {
+                    navigation.navigate("Shipping")
+                }
+            }
+        );
+
+
+
     }
 
 
     useEffect(() => {
-        showDataWithOutPagination(setExtraCostFirebaseData, "extraCost")
+        showDataWithOutPagination(setExtraCostFirebaseData, "extraCost"),
         showDataWithOutPagination(setResturentOpenClosedData, "ResturentOpeningHr")
         onAuthStateChanged(auth, (user) => {
             if (!user) {
@@ -83,6 +97,11 @@ const Checkout = ({ navigation }) => {
     // useEffect(()=>{
 
     // },[])
+
+    const handleCloseButton = () => {
+        setSkitp(true)
+        navigation.navigate("Home")
+    }
 
     const promocodeCheck = () => {
         getSingleDataWithOutRealTimeUpdates("promoCode", promoCode).then((data) => {
@@ -120,6 +139,8 @@ const Checkout = ({ navigation }) => {
                 setDiscountAmmount(ammount)
                 return
             }
+            showAppliedToast()
+            setPromoCode("")
             setDiscountAmmount(Number(data.discountValue))
         }).catch((error) => {
             setDiscountAmmount(false)
@@ -153,7 +174,7 @@ const Checkout = ({ navigation }) => {
                 return (
                     <View key={doc.id} style={styles.placeOrderLine}>
                         <Text style={styles.text}>{`${data.name}- ${(data.costType === "%") ? `${data.costValue}%` : ""}`}</Text>
-                        <Text style={styles.text}>{(data.costType === "%") ? (subTottal / 100) * Number(data.costValue) : data.costValue}৳</Text>
+                        <Text style={styles.text}>{(data.costType === "%") ? ((subTottal / 100) * Number(data.costValue)).toFixed(2) : data.costValue.toFixed(2)} ৳</Text>
                     </View>
                 )
             }))
@@ -183,9 +204,14 @@ const Checkout = ({ navigation }) => {
             animationType="fade"
             // transparent={true}
             visible={true}
+            onRequestClose={() => {navigation.navigate("Home") ; setSkitp(true) ;} }
         >
             <View style={[GlobalStyle.sidePadding, { height: '100%', backgroundColor: '#121212', justifyContent: 'center' }]}>
-                <Text style={{ color: 'yellow', marginBottom: 20, marginHorizontal: 20, fontSize: 16, lineHeight: 22 }}>
+                <TouchableOpacity onPress={handleCloseButton} style={{ position: 'absolute', top: 20, right: 30 }}>
+                    <AntDesign name="close" size={36} color="white" />
+                </TouchableOpacity>
+                <Text style={{ color: 'yellow', textAlign: 'center', fontSize: 32, marginBottom: 30 }}>Closed For Now</Text>
+                <Text style={{ color: 'white', marginBottom: 30, marginHorizontal: 20, fontSize: 16, lineHeight: 22, textAlign: 'justify' }}>
                     {resturentOpenClosedData && `Restaurant Is Closed Now. For getting Delivery Please Wait Before ${amPmTimeFormat(resturentOpenClosedData[0].data().openingHR)} to open the restaurant`}
                 </Text>
                 <Button style={{
@@ -194,7 +220,7 @@ const Checkout = ({ navigation }) => {
                     paddingHorizontal: 80,
                     alignSelf: 'center',
                     borderRadius: 10
-                }} onPress={() => setSkitp(true)}>Order Now</Button>
+                }} onPress={() => setSkitp(true)}>order for later</Button>
                 {/* <NextButton onPress={() => setSkitp(true)} title="Order Now" /> */}
             </View>
         </Modal>)
@@ -260,23 +286,23 @@ const Checkout = ({ navigation }) => {
                     <View style={styles.placeOrder}>
                         <View style={styles.placeOrderLine}>
                             <Text style={styles.text}>Sub Total</Text>
-                            <Text style={styles.text}>{subTottal} ৳</Text>
+                            <Text style={styles.text}>{subTottal.toFixed(2)} ৳</Text>
                         </View>
                         {extraCostUI}
                         {discountAmmount && (
                             <View style={styles.placeOrderLine}>
                                 <Text style={styles.text}>Discount</Text>
-                                <Text style={styles.text}> -{discountAmmount}৳</Text>
+                                <Text style={styles.text}> -{discountAmmount.toFixed(2)} ৳</Text>
                             </View>
                         )}
                         <View style={{ height: 1, width: '100%', backgroundColor: 'grey', marginVertical: 5 }} />
                         <View style={styles.placeOrderLine}>
                             <Text style={[styles.text, { fontSize: 20 }]}>Total</Text>
-                            <Text style={[styles.text, { fontSize: 20 }]}>{TotalOrderAmmount}৳</Text>
+                            <Text style={[styles.text, { fontSize: 20 }]}>{TotalOrderAmmount.toFixed(2)} ৳</Text>
                         </View>
                         {auth.currentUser ? (
                             <TouchableOpacity onPress={storeTheOrderCaches} style={styles.placeOrderButton}>
-                                <Text style={styles.placeOrderButtonText}> {!openingStatus.status ? "Order For Later" : "Place My Order"}</Text>
+                                <Text style={styles.placeOrderButtonText}> {!openingStatus.status ? "Please Order Later" : "Place The Order"}</Text>
                             </TouchableOpacity>
                         ) : <TouchableOpacity onPress={() => LoadingChanger({ status: true, type: "LoginUI" })} style={styles.placeOrderButton}>
                             <Text style={styles.placeOrderButtonText}>Login Before Order</Text>

@@ -53,31 +53,31 @@ const Profile = ({ navigation }) => {
                 <View style={GlobalStyle.sidePadding}>
                 <TouchableOpacity onPress={()=> navigation.navigate("ProfileUpdate")} style={styles.card}>
                     <View style={styles.icon}>
-                            <FontAwesome5 name="pen" size={24} color={COLORS.primary} />
+                            <FontAwesome5 name="pen" size={24} color='rgba(255,255,255,0.7)' />
                     </View>
                     <Text style={styles.title}>Update your Profile</Text>
                 </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("ProfileOrders")} style={styles.card}>
                     <View style={styles.icon}>
-                            <FontAwesome5 name="list" size={24} color={COLORS.primary} />
+                            <FontAwesome5 name="list" size={24} color='rgba(255,255,255,0.7)' />
                     </View>
                     <Text style={styles.title}>My Orders</Text>
                 </TouchableOpacity>
                     {/* <TouchableOpacity style={styles.card}>
                     <View style={styles.icon}>
-                            <FontAwesome5 name="adjust" size={24} color={COLORS.primary} />
+                            <FontAwesome5 name="adjust" size={24} color='rgba(255,255,255,0.7)' />
                     </View>
                     <Text style={styles.title}>Appearence</Text>
                 </TouchableOpacity> */}
                     <TouchableOpacity onPress={() => navigation.navigate("ContactUs")} style={styles.card}>
                     <View style={styles.icon}>
-                            <FontAwesome5 name="home" size={24} color={COLORS.primary} />
+                            <FontAwesome5 name="home" size={24} color='rgba(255,255,255,0.7)' />
                     </View>
                     <Text style={styles.title}>Contact Us</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => auth.signOut()} style={styles.card}>
                     <View style={styles.icon}>
-                            <MaterialCommunityIcons name="logout" size={24} color={COLORS.primary} />
+                            <MaterialCommunityIcons name="logout" size={24} color='rgba(255,255,255,0.7)' />
                     </View>
                     <Text style={styles.title}>SignOut</Text>
                 </TouchableOpacity>

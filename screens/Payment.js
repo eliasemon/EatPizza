@@ -10,6 +10,7 @@ import { getAuth } from "firebase/auth"
 
 
 const Payment = ({navigation}) => {
+    const {clearShopingCard } = useStoreActions(action => action)
     const firebaseApp = getApp()
     const auth = getAuth()
     const functions = getFunctions(firebaseApp)
@@ -45,18 +46,32 @@ const Payment = ({navigation}) => {
         data.paymentType = "cashon"
         const createOrder = httpsCallable(functions , 'createOrder')
         try {
-            console.log(JSON.stringify(data))
              await createOrder(data)
             .then(()=>{
                 setLoading(false)
                 navigation.navigate("ThankYou")
+            }).catch(() => {
+                Alert.alert(
+                    "Order Failed !",
+                    "The order has been failed. Please try again",
+                    [
+                        { text: "OK" }
+                    ],
+                );
             }).finally(()=>{
-                
-            }) 
+                clearShopingCard()
+                setLoading(false)
+            })
         } catch (error) {
-
+            //here have do somethings for order creation failed ***************
+            Alert.alert(
+                "Order Failed !",
+                "The order has been failed. Please try again",
+                [
+                    { text: "OK" }
+                ],
+            );
             setLoading(false)
-            console.log(error)
         }
         
         

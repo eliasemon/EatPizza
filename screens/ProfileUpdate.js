@@ -1,4 +1,4 @@
-import { View, TextInput, TouchableOpacity, Image, ActivityIndicator, ToastAndroid } from "react-native"
+import { View, TextInput, TouchableOpacity, Image, ActivityIndicator, ToastAndroid , BackHandler , Alert } from "react-native"
 import { Button } from "../components/Buttons"
 import Heading from "../components/Heading"
 import { GlobalStyle, ProfileUpdateStyle as styles } from "../styles"
@@ -41,6 +41,27 @@ const ProfileUpdate = ({ navigation }) => {
             alert('You did not select any image.');
         }
     };
+
+    
+    useEffect(()=>{
+        BackHandler.addEventListener('hardwareBackPress',() =>{
+            if(loading){
+                Alert.alert(
+                    "In Data Processing State",
+                    "Please Don't Terminate the app",
+                    [
+                      { text: "OK" }
+                    ]
+                  );
+                return true
+            }else{
+                return false
+            }
+        });
+       return () => BackHandler.removeEventListener('hardwareBackPress');
+    },[loading])
+
+
 
     const showToast = () => {
         ToastAndroid.show('Profile information updated', ToastAndroid.SHORT);

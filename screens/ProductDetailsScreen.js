@@ -15,13 +15,17 @@ const RadioButton = ({ product, selectedId }) => {
             <View style={{ flexDirection: 'row' }}>
                 <View>
                     {/* <Ionicons name={variation[id].isSelected ? "radio-button-on" : "radio-button-off"} size={24} color="white" /> */}
-                    <Ionicons name={product.id == selectedId ? "radio-button-on" : "radio-button-off"} size={24} color="white" />
+                    <Ionicons name={product.id == selectedId ? "radio-button-on" : "radio-button-off"} size={24} color={product.id == selectedId ? 'yellow' : 'white'} />
                 </View>
-                <Text style={styles.text}>
+                <Text style={[styles.text, {
+                    color: product.id == selectedId ? 'yellow' : 'white'
+                }]}>
                     {product.name}
                 </Text>
             </View>
-            <Text style={styles.text}>৳ {product.sellingPrice}</Text>
+            <Text style={[styles.text, {
+                color: product.id == selectedId ? 'yellow' : 'white'
+            }]}>৳ {product.sellingPrice}</Text>
         </View>
     )
 }
@@ -32,13 +36,17 @@ const CheckBox = ({ isSelected, product }) => {
             <View style={{ flexDirection: 'row' }}>
 
                 <View>
-                    <FontAwesome name={isSelected ? "check-circle-o" : "circle-o"} size={24} color="#fff" />
+                    <FontAwesome name={isSelected ? "check-circle-o" : "circle-o"} size={24} color={isSelected ? 'yellow' : 'white'} />
                 </View>
-                <Text style={styles.text}>
+                <Text style={[styles.text, {
+                    color: isSelected ? 'yellow' : 'white'
+                }]}>
                     {product.name}
                 </Text>
             </View>
-            <Text style={styles.text}>
+            <Text style={[styles.text, {
+                color: isSelected ? 'yellow' : 'white'
+            }]}>
                 ৳ {product.price}
             </Text>
         </View >
@@ -196,11 +204,11 @@ const ProductDetailsScreen = ({ navigation, route }) => {
                     </View>
                     <View style={styles.cart}>
                         <View style={styles.buttonSet}>
-                            <TouchableOpacity style={{ opacity: (itemCount > 1 ? 1 : 0.4), marginHorizontal: 20 }} disabled={itemCount <= 1} onPress={handleDownPress}>
+                            <TouchableOpacity style={{ opacity: (itemCount > 1 ? 1 : 0.4), paddingHorizontal: 20, paddingVertical: 10 }} disabled={itemCount <= 1} onPress={handleDownPress}>
                                 <FontAwesome name="minus" size={20} color="rgba(255,255,255,0.8)" />
                             </TouchableOpacity>
                             <Text style={styles.buttonNumber}>{itemCount}</Text>
-                            <TouchableOpacity style={{ marginHorizontal: 20 }} onPress={handleUpPress}>
+                            <TouchableOpacity style={{ paddingHorizontal: 20, paddingVertical: 10 }} onPress={handleUpPress}>
                                 <FontAwesome name="plus" size={20} color="rgba(255,255,255,0.8)" />
                             </TouchableOpacity>
                         </View>

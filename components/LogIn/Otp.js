@@ -8,7 +8,6 @@ import { useEffect, useRef, useState } from 'react';
 import { COLORS } from "../../constants/theme";
 
 const Otp = ({ loading, setInputView, changeTheScreenHandle, phoneNumber, code, setCode, confirmCode }) => {
-  console.log('Calling');
   const [timer, setTimer] = useState(300)
   const [stopTimer, setStopTimer] = useState(false)
   const timerRef = useRef()
@@ -26,8 +25,6 @@ const Otp = ({ loading, setInputView, changeTheScreenHandle, phoneNumber, code, 
       setInputView("phoneUi")
     } else {
       timerRef.current = setInterval(() => {
-        console.log('timer calling');
-
         setTimer( prv => (prv - 1))
       }, 1000)
     }
