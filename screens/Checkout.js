@@ -174,7 +174,7 @@ const Checkout = ({ navigation }) => {
                 return (
                     <View key={doc.id} style={styles.placeOrderLine}>
                         <Text style={styles.text}>{`${data.name}- ${(data.costType === "%") ? `${data.costValue}%` : ""}`}</Text>
-                        <Text style={styles.text}>{(data.costType === "%") ? (subTottal / 100) * Number(data.costValue) : data.costValue}৳</Text>
+                        <Text style={styles.text}>{(data.costType === "%") ? ((subTottal / 100) * Number(data.costValue)).toFixed(2) : data.costValue.toFixed(2)} ৳</Text>
                     </View>
                 )
             }))
@@ -286,19 +286,19 @@ const Checkout = ({ navigation }) => {
                     <View style={styles.placeOrder}>
                         <View style={styles.placeOrderLine}>
                             <Text style={styles.text}>Sub Total</Text>
-                            <Text style={styles.text}>{subTottal} ৳</Text>
+                            <Text style={styles.text}>{subTottal.toFixed(2)} ৳</Text>
                         </View>
                         {extraCostUI}
                         {discountAmmount && (
                             <View style={styles.placeOrderLine}>
                                 <Text style={styles.text}>Discount</Text>
-                                <Text style={styles.text}> -{discountAmmount}৳</Text>
+                                <Text style={styles.text}> -{discountAmmount.toFixed(2)} ৳</Text>
                             </View>
                         )}
                         <View style={{ height: 1, width: '100%', backgroundColor: 'grey', marginVertical: 5 }} />
                         <View style={styles.placeOrderLine}>
                             <Text style={[styles.text, { fontSize: 20 }]}>Total</Text>
-                            <Text style={[styles.text, { fontSize: 20 }]}>{TotalOrderAmmount}৳</Text>
+                            <Text style={[styles.text, { fontSize: 20 }]}>{TotalOrderAmmount.toFixed(2)} ৳</Text>
                         </View>
                         {auth.currentUser ? (
                             <TouchableOpacity onPress={storeTheOrderCaches} style={styles.placeOrderButton}>
