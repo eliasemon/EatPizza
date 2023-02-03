@@ -34,8 +34,7 @@ const NavBar = () => {
 
 
     useEffect(() => {
-        navigation.addListener('state', ({data}) => {
-            console.log(data)
+        navigation.addListener('state', ({ data }) => {
             const {state} = data;
             if(state){
                 const currentRoute = state.routes[state.index]

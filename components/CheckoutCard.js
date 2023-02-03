@@ -19,16 +19,16 @@ const CheckoutCard = ({ UpdateCardItem, item, cardsType }) => {
                         {cardsType === "nonInteractive" ? (<Text style={styles.buttonNumber}>{item?.itemCount}</Text>) : (
                             <>
                                 {item?.itemCount > 1 ?
-                                    (<TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.decrement)}>
+                                    (<TouchableOpacity style={{ paddingVertical: 7, paddingHorizontal: 13 }} onPress={() => cardLocalAction(CheckoutCardActions.decrement)}>
                                         <FontAwesome name="minus" size={20} color="rgba(255,255,255,0.8)" />
                                     </TouchableOpacity>) :
-                                    (<TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.delete)}>
+                                    (<TouchableOpacity style={{ paddingVertical: 7, paddingHorizontal: 13 }} onPress={() => cardLocalAction(CheckoutCardActions.delete)}>
                                         <FontAwesome name="trash-o" size={20} color="rgba(255,255,255,0.8)" />
                                     </TouchableOpacity>)
                                 }
                                 <Text style={styles.buttonNumber}>{item?.itemCount}</Text>
 
-                                <TouchableOpacity onPress={() => cardLocalAction(CheckoutCardActions.increment)}>
+                                <TouchableOpacity style={{ paddingVertical: 7, paddingHorizontal: 13 }} onPress={() => cardLocalAction(CheckoutCardActions.increment)}>
                                     <FontAwesome name="plus" size={20} color="rgba(255,255,255,0.8)" />
                                 </TouchableOpacity>
                             </>
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
         color: 'rgba(21,190,119,1)'
     },
     buttonSet: {
+        width: 100,
         marginTop: 5,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -121,8 +122,8 @@ const styles = StyleSheet.create({
     },
     buttonNumber: {
         color: '#ffff',
-        fontSize: 25,
-        marginHorizontal: 15
+        fontSize: 18,
+        // marginHorizontal: 15
     },
     chip: {
         backgroundColor: 'rgba(255,255,255,.1)',
