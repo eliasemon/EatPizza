@@ -1,44 +1,31 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native"
+import { useEffect } from "react"
+import { View, Text, Image, StyleSheet, TouchableOpacity , BackHandler} from "react-native"
 import thanksImage from '../assets/images/thanks.png'
+import { Button } from "../components/Buttons"
+import { ThankYouStyle as styles } from "../styles"
 
-const ThankYou = () => {
+const ThankYou = ({navigation}) => {
+    useEffect(()=>{
+        BackHandler.addEventListener('hardwareBackPress',() =>{
+            navigation.navigate('Home');
+            return true
+        });
+       return () => BackHandler.removeEventListener('hardwareBackPress');
+    },[])
+
+
     return (
         <View style={styles.container}>
             <Image source={thanksImage} />
             <Text style={styles.primaryText}>Thank you!</Text>
-            <Text style={styles.secondaryText}>Enjoy Your Meal</Text>
-            <TouchableOpacity style={styles.continueButton}>
-                <Text style={styles.continueButtonText}>Continue Order</Text>
-            </TouchableOpacity>
+            <Text style={styles.secondaryText}>Wating For Your Meal</Text>
+            <Button onPress={() => navigation.navigate("Home", { activeID: {} })} style={styles.continueButton}>Go Home</Button>
+            {/* <TouchableOpacity style={styles.continueButton}>
+                <Text style={styles.continueButtonText}></Text>
+            </TouchableOpacity> */}
         </View>
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        marginVertical: '30%',
-        alignItems: 'center'
-    },
-    primaryText: {
-        marginVertical: 15,
-        color: 'green',
-        fontSize: 36
-    },
-    secondaryText: {
-        color: '#fff',
-        fontSize: 28
-    },
-    continueButton: {
-        backgroundColor: 'green',
-        marginTop: '30%',
-        paddingVertical: 10,
-        paddingHorizontal: 25,
-        borderRadius: 10
-    },
-    continueButtonText: {
-        fontSize: 18,
-        color: '#fff'
-    }
-})
 
 export default ThankYou

@@ -1,169 +1,172 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, Image, FlatList, TouchableOpacity , ActivityIndicator } from 'react-native'
 import Heading from '../components/Heading'
-import profile from '../assets/images/profile.png'
-import ProductCard from '../components/ProductCard'
+import avatar from '../assets/images/avatar.png'
 
-const itemList = [
-    {
-        id: 0,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'pending'
-    },
-    {
-        id: 1,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'done'
-    },
-    {
-        id: 2,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'failed'
-    },
-    {
-        id: 3,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'pending'
-    },
-    {
-        id: 4,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'done'
-    },
-    {
-        id: 5,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'failed'
-    },
-    {
-        id: 6,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'pending'
-    },
-    {
-        id: 7,
-        title: 'Spacy fresh crab',
-        category: 'Wareonk kita',
-        price: '35',
-        status: 'done'
-    },
-]
+import { GlobalStyle, ProfileOrdersStyle as styles } from '../styles'
+import { useState, useRef, useEffect } from 'react'
+import { getUsersOrderHistory , getCurrentOrder } from '../utils'
+import CheckoutCard from '../components/CheckoutCard'
+import CollapsibleCard from '../components/collapsibleCard/CollapsibleCard'
+import { COLORS } from '../constants/theme'
+import { getAuth} from 'firebase/auth';
+
+
+
+const OrdersItemsCom = ({ item }) => {
+
+    return (
+        <CollapsibleCard
+            item={item}
+            style={[{ marginBottom: 16 }, GlobalStyle.sidePadding]}>
+
+            <View>
+
+                {item.items && Object.keys(item.items).map(key => (
+                    <CheckoutCard
+                        key={key}
+                        cardsType="nonInteractive"
+                        item={item.items[key]}
+                    />)
+                )}
+
+                <View style={{
+                    margin: 10,
+                    marginBottom: 15
+                }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={{ color: '#fff' }}>Sub total</Text>
+                        <Text style={{ color: COLORS.primary }}>{item.subTottal} ৳</Text>
+                    </View>
+                    {item.totalExtraCost ? (<View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={{ color: '#fff' }}>Extra cost</Text>
+                        <Text style={{ color: COLORS.primary }}>{item.totalExtraCost} ৳</Text>
+                    </View>) : ''}
+
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text style={{ fontSize: 18, color: '#fff' }}>Total amount</Text>
+                        <Text style={{ fontSize: 18, color: COLORS.primary }}>{item.TotalOrderAmmount} ৳</Text>
+                    </View>
+                </View>
+
+                {/*
+                all the properties can accessable by item fragment , Like item.paymentType
+                "paymentType":"cashon",
+                "promoCode":"",
+                "shipingAddress":"Dhaka",
+                "status":"pending",
+                "subTottal":730,
+                "totalExtraCost":0,
+                "userID":"lfXGfoGOoXg6YoGeqVhBuSITIhB2",
+                "userName":"Elias ",
+                "userPhoneNumber":"+8801792269420" */}
+
+            </View>
+        </CollapsibleCard>)
+}
+
+
+
+
 
 const ProfileOrders = ({ navigation }) => {
+    const auth = getAuth();
+    const [itemsSnapshot, setItemsSnapshot] = useState("");
+    const [itemsDataForView, setItemsDataForView] = useState("");
+    const [itemsDataForViewCurrentOrder, setItemsDataForViewCurrentOrder] = useState([]);
+    const [isCurrent, setIsCurrent] = useState(true);
+    const allOrders =  async () =>{
+        if(!itemsDataForView){
+            getUsersOrderHistory(setItemsDataForView, "ordersList", { queryField: "userID", targetItem: auth.currentUser.uid })
+        }
+    }
+
+    useEffect(() => {
+        
+        if (!itemsSnapshot) {
+            getCurrentOrder(setItemsSnapshot, "ordersList", { queryField: "userID", targetItem: auth.currentUser.uid })
+        }
+
+
+    }, [])
+
+
+    useEffect(() => {
+        if (itemsSnapshot) {
+            const data = itemsSnapshot.docs.map((doc) => {
+                item = doc.data()
+                item.id = doc.id
+                return item
+            })
+            data.sort((a ,b) => b.creationTime - a.creationTime)
+            setItemsDataForViewCurrentOrder([...data])
+        }
+    }, [itemsSnapshot])
+
     return (
         <View>
-            <Heading navigation={navigation} title="Profile" />
+            <Heading navigation={navigation} title="User's Orders" />
             <View style={styles.profileSection}>
                 <View style={styles.profileImage}>
-                    <Image source={profile} />
+                    <Image style={{
+                        width: 120,
+                        height: 120,
+                        resizeMode: 'contain',
+                        borderRadius: 100
+                    }}
+                        source={auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : avatar} />
                 </View>
                 <View style={styles.profileInfo}>
-                    <Text style={styles.profileName}>John Doe</Text>
-                    <Text style={styles.profileEmail}>anamsingho@gmail.com</Text>
+                    <Text style={styles.profileName}>{auth.currentUser.displayName}</Text>
+                    <Text style={styles.profileEmail}>{auth.currentUser.phoneNumber}</Text>
                 </View>
             </View>
+            {/* <View style={styles.tab}>
+                <Button } >Current Order</Button>
+            <Button } >All Orders</Button>
+            </View > */}
             <View style={styles.tab}>
-                <TouchableOpacity style={styles.tabOption}>
-                    <Text style={styles.tabOptionText}>All Orders</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.tabOption}>
+                <TouchableOpacity onPress={() => setIsCurrent(true)} style={[styles.tabOption, {
+                    backgroundColor: isCurrent ? 'rgba(0,255,0,0.1)' : 'rgba(0,0,0,0)' 
+                }]}>
                     <Text style={styles.tabOptionText}>Processing</Text>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => { setIsCurrent(false); allOrders();}} style={[styles.tabOption, {
+                    backgroundColor: isCurrent ?  'rgba(0,0,0,0)' :  'rgba(0,255,0,0.1)'
+                }]}>
+                    <Text style={styles.tabOptionText}>All Orders</Text>
+                </TouchableOpacity>
             </View>
-            <FlatList style={styles.cardContainer} data={itemList} renderItem={
-                ({ item }) => (<ProductCard cardsType="chip" title={item.title} category={item.category} price={item.price} />)
-            } keyExtractor={item => item.id} />
+
+            <View style={{marginBottom : 615.5}}>
+
+            {
+                (itemsDataForViewCurrentOrder && isCurrent) && (<FlatList
+                    ListFooterComponent={(<ActivityIndicator color="#fff" />)}
+                    style={[GlobalStyle.sidePadding]} data={itemsDataForViewCurrentOrder} renderItem={
+                        ({ item }) => (<OrdersItemsCom item={item} />)
+                    } keyExtractor={item => (item.id)} />)
+
+            }
+            {
+                (itemsDataForView && !isCurrent) && (<FlatList
+                    ListFooterComponent={(<ActivityIndicator color="#fff" />)}
+                    style={[GlobalStyle.sidePadding]} data={itemsDataForView} renderItem={
+                        ({ item }) => (<OrdersItemsCom item={item.data()} />)
+                    } keyExtractor={item => (`itemsDataForView${item.id}`)} />)
+            }
+        </View>
 
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    profileSection: {
-        marginVertical: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly'
-    },
-    profileName: {
-        color: '#fff',
-        fontSize: 28
-    },
-    profileEmail: {
-        color: 'rgba(255,255,255,0.5)',
-        fontSize: 16
-    },
-    tab: {
-        width: '65%',
-        height: 65,
-        backgroundColor: '#282828',
-        marginVertical: 20,
-        borderRadius: 15,
-        paddingHorizontal: 15,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        flexDirection: 'row',
-        alignSelf: 'center'
-    },
-    tabOption: {
-        padding: 10,
-        borderRadius: 10,
-        backgroundColor: 'rgba(0,255,0,0.1)'
-    },
-    tabOptionText: {
-        color: '#fff'
-    },
-    cardContainer: {
-        marginBottom: '20%'
-    },
-    card: {
-        width: '100%',
-        height: 120,
-        backgroundColor: '#252525',
-        borderRadius: 20,
-        paddingHorizontal: 15,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 10
-    },
-    cardProduct: {
-        flexDirection: 'row'
-    },
-    cardImage: {
-        width: "30%",
-        height: 80,
-    },
-    cardTextBox: {
-        marginLeft: 20,
-        justifyContent: 'space-between'
-    },
-    cardTextTitle: {
-        fontSize: 20,
-        color: '#fff'
-    },
-    cardTextCategory: {
-        fontSize: 16,
-        color: '#808080'
-    },
-    cardTextPrice: {
-        fontSize: 18,
-        color: 'rgba(21,190,119,1)'
-    },
-
-})
 
 export default ProfileOrders

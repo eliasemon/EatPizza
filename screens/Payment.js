@@ -1,37 +1,96 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native"
-import { Ionicons } from '@expo/vector-icons';
+import { View, TouchableOpacity, Image, ActivityIndicator , BackHandler , Alert } from "react-native"
 import Heading from "../components/Heading";
-import nogodLogo from '../assets/images/nogodLogo.png'
 import codLogo from '../assets/images/codLogo.png'
-import bkashLogo from '../assets/images/bkashLogo.png'
+import { PaymentStyle as styles } from "../styles";
+import { useStoreState , useStoreActions } from "easy-peasy";
+import { httpsCallable , getFunctions } from "firebase/functions";
+import {  getApp } from 'firebase/app';
+import { useEffect, useState } from "react";
+import { getAuth } from "firebase/auth"
 
-const Shipping = (navigation) => {
+
+const Payment = ({navigation}) => {
+    const {clearShopingCard } = useStoreActions(action => action)
+    const firebaseApp = getApp()
+    const auth = getAuth()
+    const functions = getFunctions(firebaseApp)
+
+    
+    const {cachesForOrder} = useStoreState(state => state)
+    const [loading , setLoading] = useState(false)
+    
+    useEffect(()=>{
+        BackHandler.addEventListener('hardwareBackPress',() =>{
+            if(loading){
+                Alert.alert(
+                    "In Data Processing State",
+                    "Please Don't Terminate the app",
+                    [
+                      { text: "OK" }
+                    ]
+                  );
+                return true
+            }else{
+                return false
+            }
+        });
+       return () => BackHandler.removeEventListener('hardwareBackPress');
+    },[loading])
+    
+    const placeOrder = async() =>{
+        setLoading(true)
+        const data = {...cachesForOrder}
+        data.userID = auth.currentUser.uid
+        data.userPhoneNumber = auth.currentUser.phoneNumber
+        data.userName = auth.currentUser.displayName
+        data.paymentType = "cashon"
+        const createOrder = httpsCallable(functions , 'createOrder')
+        try {
+             await createOrder(data)
+            .then(()=>{
+                setLoading(false)
+                navigation.navigate("ThankYou")
+            }).catch(() => {
+                Alert.alert(
+                    "Order Failed !",
+                    "The order has been failed. Please try again",
+                    [
+                        { text: "OK" }
+                    ],
+                );
+            }).finally(()=>{
+                clearShopingCard()
+                setLoading(false)
+            })
+        } catch (error) {
+            //here have do somethings for order creation failed ***************
+            Alert.alert(
+                "Order Failed !",
+                "The order has been failed. Please try again",
+                [
+                    { text: "OK" }
+                ],
+            );
+            setLoading(false)
+        }
+        
+        
+    }
     return (
         <View>
-            <Heading navigation={navigation} title="Shipping" />
-            <TouchableOpacity style={styles.card}>
+            <Heading loading ={loading} isHide ={true} navigation={navigation} title="Payment" />
+            {/* <TouchableOpacity style={styles.card}>
                 <Image source={bkashLogo} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.card}>
                 <Image source={nogodLogo} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.card}>
-                <Image source={codLogo} />
+            </TouchableOpacity> */}
+
+            <TouchableOpacity disabled = {loading} onPress={placeOrder} style={styles.card}>
+            { loading ? <ActivityIndicator size="large" color="#fff" /> : <Image source={codLogo} /> } 
             </TouchableOpacity>
         </View>
     )
 }
 
-const styles = StyleSheet.create({
-    card: {
-        width: '100%',
-        height: 100,
-        backgroundColor: '#282828',
-        marginVertical: 10,
-        borderRadius: 15,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-})
-
-export default Shipping;
+export default Payment;

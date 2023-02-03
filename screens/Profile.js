@@ -1,89 +1,91 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import Heading from '../components/Heading'
+import avatar from '../assets/images/avatar.png'
 import profile from '../assets/images/profile.png'
 import { FontAwesome5 } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { GlobalStyle, ProfileStyle as styles } from '../styles';
+
+import {  useStoreActions} from 'easy-peasy';
+import { useEffect , useState } from 'react';
+import { COLORS } from '../constants/theme';
+import { onAuthStateChanged   , getAuth} from 'firebase/auth';
+
 
 const Profile = ({ navigation }) => {
-    return (
-        <View>
+    const auth = getAuth();
+
+    const LoadingChanger = useStoreActions(action => action.LoadingChanger)
+    const [authenticated , setAuthenticated] = useState("")
+    
+    useEffect(()=>{
+        onAuthStateChanged(auth ,(user)=>{
+            if(!user){
+                LoadingChanger({status : true , type :  "LoginUI"})
+                setAuthenticated(false)
+            }else{
+                setAuthenticated(true)
+            }
+        })
+    },[])
+
+    if(authenticated){
+
+        return (
+            <View>
             <Heading navigation={navigation} title="Profile" />
             <View style={styles.profileSection}>
                 <View style={styles.profileImage}>
-                    <Image source={profile} />
+                    <Image style={{
+                                width: 120,
+                                height: 120,
+                                resizeMode: 'contain',
+                                borderRadius: 100
+                            }}
+                            source={auth.currentUser.photoURL ? { uri: auth.currentUser.photoURL } : avatar} />
                 </View>
                 <View style={styles.profileInfo}>
-                    <Text style={styles.profileName}>John Doe</Text>
-                    <Text style={styles.profileEmail}>anamsingho@gmail.com</Text>
+                    <Text style={styles.profileName}>{auth.currentUser.displayName}</Text>
+                    <Text style={styles.profileEmail}>{auth.currentUser.phoneNumber}</Text>
                 </View>
             </View>
-            <View>
-                <TouchableOpacity style={styles.card}>
+                <View style={GlobalStyle.sidePadding}>
+                <TouchableOpacity onPress={()=> navigation.navigate("ProfileUpdate")} style={styles.card}>
                     <View style={styles.icon}>
-                        <FontAwesome5 name="pen" size={24} color="green" />
+                            <FontAwesome5 name="pen" size={24} color='rgba(255,255,255,0.7)' />
                     </View>
                     <Text style={styles.title}>Update your Profile</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.card}>
+                    <TouchableOpacity onPress={() => navigation.navigate("ProfileOrders")} style={styles.card}>
                     <View style={styles.icon}>
-                        <FontAwesome5 name="list" size={24} color="green" />
+                            <FontAwesome5 name="list" size={24} color='rgba(255,255,255,0.7)' />
                     </View>
                     <Text style={styles.title}>My Orders</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.card}>
+                    {/* <TouchableOpacity style={styles.card}>
                     <View style={styles.icon}>
-                        <FontAwesome5 name="adjust" size={24} color="green" />
+                            <FontAwesome5 name="adjust" size={24} color='rgba(255,255,255,0.7)' />
                     </View>
                     <Text style={styles.title}>Appearence</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.card}>
+                </TouchableOpacity> */}
+                    <TouchableOpacity onPress={() => navigation.navigate("ContactUs")} style={styles.card}>
                     <View style={styles.icon}>
-                        <FontAwesome5 name="home" size={24} color="green" />
+                            <FontAwesome5 name="home" size={24} color='rgba(255,255,255,0.7)' />
                     </View>
                     <Text style={styles.title}>Contact Us</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => auth.signOut()} style={styles.card}>
+                    <View style={styles.icon}>
+                            <MaterialCommunityIcons name="logout" size={24} color='rgba(255,255,255,0.7)' />
+                    </View>
+                    <Text style={styles.title}>SignOut</Text>
                 </TouchableOpacity>
             </View>
         </View>
     )
+    }
 }
 
-const styles = StyleSheet.create({
-    profileSection: {
-        marginVertical: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly'
-    },
-    profileImage: {
-
-    },
-    profileInfo: {
-
-    },
-    profileName: {
-        color: '#fff',
-        fontSize: 28
-    },
-    profileEmail: {
-        color: 'rgba(255,255,255,0.5)',
-        fontSize: 16
-    },
-    card: {
-        width: '100%',
-        height: 70,
-        backgroundColor: '#282828',
-        marginVertical: 10,
-        borderRadius: 15,
-        paddingHorizontal: 15,
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    icon: {
-        marginHorizontal: 20
-    },
-    title: {
-        color: 'rgba(255,255,255,0.9)',
-        fontSize: 19
-    }
-})
 
 export default Profile
