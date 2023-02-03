@@ -111,6 +111,8 @@ const ProfileOrders = ({ navigation }) => {
         }
     }, [itemsSnapshot])
 
+    const [activityUiChange , setActivityUIChanged] = useState(<ActivityIndicator color="#fff" />)
+    const afterAllRendered = (<Text style={{ color: "white", textAlign: 'center' }}>No more items found ! </Text>)
     return (
         <View>
             <Heading navigation={navigation} title="User's Orders" />
@@ -134,15 +136,19 @@ const ProfileOrders = ({ navigation }) => {
             <Button } >All Orders</Button>
             </View > */}
             <View style={styles.tab}>
-                <TouchableOpacity onPress={() => setIsCurrent(true)} style={[styles.tabOption, {
+                <TouchableOpacity onPress={() => {setIsCurrent(true); setActivityUIChanged(<ActivityIndicator color="#fff" />)}} style={[styles.tabOption, {
                     backgroundColor: isCurrent ? 'rgba(0,255,0,0.1)' : 'rgba(0,0,0,0)' 
-                }]}>
-                    <Text style={styles.tabOptionText}>Processing</Text>
+                }]} >
+                    <Text style={[styles.tabOption, {
+                    backgroundColor: isCurrent ? 'rgba(0,255,0,0.1)' : 'rgba(0,0,0,0)' 
+                } , styles.tabOptionText ]}>Processing</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { setIsCurrent(false); allOrders();}} style={[styles.tabOption, {
+                <TouchableOpacity onPress={() => { setIsCurrent(false); allOrders(); setActivityUIChanged(<ActivityIndicator color="#fff" />)}} style={[styles.tabOption, {
                     backgroundColor: isCurrent ?  'rgba(0,0,0,0)' :  'rgba(0,255,0,0.1)'
                 }]}>
-                    <Text style={styles.tabOptionText}>All Orders</Text>
+                    <Text style={[styles.tabOption, {
+                    backgroundColor: !isCurrent ? 'rgba(0,255,0,0.1)' : 'rgba(0,0,0,0)' 
+                } , styles.tabOptionText ]}>All Orders</Text>
                 </TouchableOpacity>
             </View>
 
@@ -150,15 +156,20 @@ const ProfileOrders = ({ navigation }) => {
 
             {
                 (itemsDataForViewCurrentOrder && isCurrent) && (<FlatList
-                    ListFooterComponent={(<ActivityIndicator color="#fff" />)}
-                    style={[GlobalStyle.sidePadding]} data={itemsDataForViewCurrentOrder} renderItem={
+                    onEndReached={() => setActivityUIChanged(afterAllRendered)}
+                    onEndReachedThreshold={1}
+                    ListFooterComponent={itemsDataForViewCurrentOrder.length > 0 ? (activityUiChange) : afterAllRendered }
+                    style={[GlobalStyle.sidePadding]} 
+                    data={itemsDataForViewCurrentOrder} renderItem={
                         ({ item }) => (<OrdersItemsCom item={item} />)
                     } keyExtractor={item => (item.id)} />)
 
             }
             {
                 (itemsDataForView && !isCurrent) && (<FlatList
-                    ListFooterComponent={(<ActivityIndicator color="#fff" />)}
+                    onEndReached={() => setActivityUIChanged(afterAllRendered)}
+                    onEndReachedThreshold={1}
+                    ListFooterComponent={itemsDataForView.length > 0 ? (activityUiChange): afterAllRendered}
                     style={[GlobalStyle.sidePadding]} data={itemsDataForView} renderItem={
                         ({ item }) => (<OrdersItemsCom item={item.data()} />)
                     } keyExtractor={item => (`itemsDataForView${item.id}`)} />)
