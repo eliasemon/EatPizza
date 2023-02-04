@@ -52,7 +52,7 @@ const ContactUs = ({ navigation }) => {
                         color: '#fff',
                         fontSize: 14,
                         textAlign: 'center'
-                    }}>App design & develop by</Text>
+                    }}>Designed & Developed by</Text>
                     <Text style={{
                         color: '#fff',
                         fontSize: 14,

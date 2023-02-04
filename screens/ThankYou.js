@@ -10,7 +10,7 @@ const ThankYou = ({navigation}) => {
             navigation.navigate('Home');
             return true
         });
-       return () => BackHandler.removeEventListener('hardwareBackPress');
+       return () => BackHandler.removeEventListener('hardwareBackPress' , ()=>{});
     },[])
 
 

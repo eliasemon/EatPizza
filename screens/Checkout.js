@@ -165,8 +165,10 @@ const Checkout = ({ navigation }) => {
         if (extraCostFirebaseData.length > 0) {
             setExtraCostUI(extraCostFirebaseData.map((doc) => {
                 const data = doc.data()
+                let tempCost;
                 if (data.costType === "%") {
-                    costInLocalFn += ((subTottal / 100) * Number(data.costValue))
+                    tempCost = ((subTottal / 100) * Number(data.costValue));
+                    costInLocalFn += tempCost
                 } else {
                     costInLocalFn += Number(data.costValue)
                 }
@@ -174,7 +176,7 @@ const Checkout = ({ navigation }) => {
                 return (
                     <View key={doc.id} style={styles.placeOrderLine}>
                         <Text style={styles.text}>{`${data.name}- ${(data.costType === "%") ? `${data.costValue}%` : ""}`}</Text>
-                        <Text style={styles.text}>{(data.costType === "%") ? ((subTottal / 100) * Number(data.costValue)).toFixed(2) : data.costValue.toFixed(2)} ৳</Text>
+                        <Text style={styles.text}>{(data.costType === "%") ? tempCost.toFixed(2) : Number(data.costValue).toFixed(2)} ৳</Text>
                     </View>
                 )
             }))

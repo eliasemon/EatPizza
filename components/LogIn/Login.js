@@ -112,7 +112,7 @@ const Login = () => {
             return false
         }
     });
-   return () => BackHandler.removeEventListener('hardwareBackPress');
+   return () => BackHandler.removeEventListener('hardwareBackPress' , ()=>{});
 },[loading])
 
 
