@@ -1,6 +1,6 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { useState , useEffect } from "react";
-import { StyleSheet, View, TouchableOpacity, Text  } from "react-native";
+import { useState , useEffect , useRef } from "react";
+import { StyleSheet, View, TouchableOpacity, Text , BackHandler  } from "react-native";
 import { useNavigation  } from '@react-navigation/native';
 import { useStoreState } from 'easy-peasy';``
 import { COLORS } from '../constants/theme';
@@ -26,18 +26,29 @@ const uiActiveState = {
 
 
 const NavBar = () => {
-    const {totalItemCount , unexpectedBackHandle } = useStoreState((state) => state)
+    const {totalItemCount  } = useStoreState((state) => state)
     const navigation = useNavigation();
     const [activeButton, setActiveButton] = useState(0)
+    const currentRouetMain = useRef("Home")
 
 
+    useEffect(()=>{
+        const backhandle = BackHandler.addEventListener('hardwareBackPress', () => {
+            if(currentRouetMain.current === "Home"){
+                BackHandler.exitApp()
+            } else{
+                false
+            }
+        })
 
-
+       return () => backhandle.remove();
+    },[currentRouetMain.current])
     useEffect(() => {
         navigation.addListener('state', ({ data }) => {
             const {state} = data;
             if(state){
                 const currentRoute = state.routes[state.index]
+                currentRouetMain.current = currentRoute.name
                 setActiveButton(uiActiveState[`${currentRoute.name}`])
             }
         });

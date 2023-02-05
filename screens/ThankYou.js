@@ -6,11 +6,11 @@ import { ThankYouStyle as styles } from "../styles"
 
 const ThankYou = ({navigation}) => {
     useEffect(()=>{
-        BackHandler.addEventListener('hardwareBackPress',() =>{
+       const backHandle =  BackHandler.addEventListener('hardwareBackPress',() =>{
             navigation.navigate('Home');
             return true
         });
-       return () => BackHandler.removeEventListener('hardwareBackPress' , ()=>{});
+       return () => backHandle.remove();
     },[])
 
 
