@@ -41,7 +41,7 @@ const CheckoutCard = ({ UpdateCardItem, item, cardsType }) => {
                     <Text style={styles.cardTextTitle}>{item?.name}</Text>
 
                     <View style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between" }}>
-                        <Text style={styles.cardText}>{(item?.selectedVariant?.name).slice(0, 22)}</Text>
+                        <Text style={styles.cardText}>{(item?.selectedVariant?.name).slice(0, 14)}...</Text>
                         <Text style={styles.cardTextPrice}>{item?.selectedVariant?.sellingPrice} ৳</Text>
                     </View>
                     <View >

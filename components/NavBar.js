@@ -1,10 +1,10 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { useState , useEffect } from "react";
-import { StyleSheet, View, TouchableOpacity, Text , Alert } from "react-native";
-import { useNavigation , getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { useStoreState } from 'easy-peasy';
+import { useState , useEffect , useRef } from "react";
+import { StyleSheet, View, TouchableOpacity, Text , BackHandler  } from "react-native";
+import { useNavigation  } from '@react-navigation/native';
+import { useStoreState } from 'easy-peasy';``
 import { COLORS } from '../constants/theme';
-import { BackHandler } from 'react-native';
+
 
 const uiActiveState = {
     Checkout : 2,
@@ -26,18 +26,29 @@ const uiActiveState = {
 
 
 const NavBar = () => {
-    const {totalItemCount , unexpectedBackHandle } = useStoreState((state) => state)
+    const {totalItemCount  } = useStoreState((state) => state)
     const navigation = useNavigation();
     const [activeButton, setActiveButton] = useState(0)
+    const currentRouetMain = useRef("Home")
 
 
+    useEffect(()=>{
+        const backhandle = BackHandler.addEventListener('hardwareBackPress', () => {
+            if(currentRouetMain.current === "Home"){
+                BackHandler.exitApp()
+            } else{
+                false
+            }
+        })
 
-
+       return () => backhandle.remove();
+    },[currentRouetMain.current])
     useEffect(() => {
         navigation.addListener('state', ({ data }) => {
             const {state} = data;
             if(state){
                 const currentRoute = state.routes[state.index]
+                currentRouetMain.current = currentRoute.name
                 setActiveButton(uiActiveState[`${currentRoute.name}`])
             }
         });
@@ -48,19 +59,22 @@ const NavBar = () => {
             id: 0,
             icon: 'home',
             link: "Home",
+            name: "Home",
         },
         {
             id: 1,
             icon: 'user',
             link: "Profile",
+            name: "Profile",
         },
         {
             id: 2,
             icon: 'shopping-cart',
             link: "Checkout",
-            children: <View style={{ position: "relative" }}>
+            name: "Shoping",
+            children: <View style={{ zIndex: 100, position: "absolute", top: -5, lef: 0, }}>
                 {totalItemCount > 0 && (
-                    <Text style={{ zIndex: 100, position: "absolute", top: -5, lef: 0, backgroundColor: 'red', paddingVertical: 1.5, paddingHorizontal: 5, borderRadius: 50, color: "white", fontSize: 12 }}>
+                    <Text style={{  backgroundColor: 'red', paddingVertical: 1.5, paddingHorizontal: 5, borderRadius: 50, color: "white", fontSize: 12 }}>
                         {totalItemCount}
                     </Text>
                 )}
@@ -70,14 +84,14 @@ const NavBar = () => {
 
     return (
         <View style={styles.navigation}>
-            {navButtonList.map((item) => <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => { navigation.navigate(item.link); setActiveButton(item.id) }} key={item.id} >
+            {navButtonList.map((item) => <TouchableOpacity style={{ flex: 1, padding : 6, borderRadius : 15, alignItems: 'center', backgroundColor : (activeButton === item.id ? 'rgba(0, 255, 0, 0.1)' : 'rgba(0, 0, 0, 0)') }} onPress={() => { navigation.navigate(item.link); setActiveButton(item.id) }} key={item.id} >
                 {activeButton == item.id ?
                     <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(0, 255, 0, 0.1)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 5 }}>
-                        <View>
+                        <View style={{ position: "relative"}}>
                             {item.children && item.children}
                             < FontAwesome name={item.icon} size={28} color={COLORS.white} />
                         </View>
-                        <Text style={{ marginLeft: '10%', color: '#fff' }}>{item.link}</Text>
+                        <Text style={{ marginLeft: '7%', color: '#fff' }}>{item.name}</Text>
                     </View>
                     :
                     <>
@@ -97,7 +111,7 @@ const styles = StyleSheet.create({
         height: '8%',
         alignSelf: 'center',
         boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
-
+        paddingHorizontal : 10,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center'

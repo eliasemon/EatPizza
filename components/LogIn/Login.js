@@ -1,14 +1,14 @@
-import { useState, useRef, useEffect } from "react";
-import { BackHandler , Alert  ,View, Image, TouchableOpacity, TextInput, Modal, Text, ActivityIndicator, ToastAndroid } from "react-native";
+import { useState, useRef, useEffect , useCallback } from "react";
+import { BackHandler, Alert, View, Image, TouchableOpacity, TextInput, Modal, Text, ActivityIndicator, ToastAndroid } from "react-native";
 import logo from "../../assets/images/logo.png";
 import { Button } from "../Buttons";
 import { FirebaseRecaptchaVerifierModal } from "../../expo-firebase-recaptcha/src/index"
 import Otp from "./Otp";
 import { LoginStyle as styles } from '../../styles'
 import { COLORS } from "../../constants/theme";
-import {  getApp } from 'firebase/app';
-import { getAuth, PhoneAuthProvider, signInWithCredential , updateProfile } from 'firebase/auth';
-import { getFunctions , httpsCallable } from 'firebase/functions';
+import { getApp } from 'firebase/app';
+import { getAuth, PhoneAuthProvider, signInWithCredential, updateProfile } from 'firebase/auth';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 
 
 
@@ -43,7 +43,6 @@ const inputValidate = (state, type) => {
 
 
   if (type === "phoneNumber") {
-    console.log(state)
     const length = state.length
     if (length === 13 && state.startsWith('88')) {
       return `+${state}`
@@ -83,6 +82,7 @@ const Login = () => {
   const { LoadingChanger } = useStoreActions(action => action)
 
   const changeTheScreenHandle = () => {
+    BackHandler.removeEventListener('hardwareBackPress');
     LoadingChanger({ status: false, type: "LoginUI" })
   }
 
@@ -93,27 +93,28 @@ const Login = () => {
   const [verificationId, setVerificationId] = useState(null)
   const recaptchaVerification = useRef(null);
   const [loading, setLoading] = useState(false)
+  const loadingForBackHandel = useRef(false)
 
 
-
+  const backHandleRemove = useCallback(()=>{
+      if(loadingForBackHandel.current){
+              Alert.alert(
+                  "In Data Processing State",
+                  "Please Don't Terminate the app",
+                  [
+                    { text: "OK" }
+                  ]
+                );
+              return true
+          }else{
+              return false
+          }
+  },[loadingForBackHandel.current])
 
   useEffect(()=>{
-    BackHandler.addEventListener('hardwareBackPress',() =>{
-        if(loading){
-            Alert.alert(
-                "In Data Processing State",
-                "Please Don't Terminate the app",
-                [
-                  { text: "OK" }
-                ]
-              );
-            return true
-        }else{
-            return false
-        }
-    });
-   return () => BackHandler.removeEventListener('hardwareBackPress');
-},[loading])
+      BackHandler.addEventListener('hardwareBackPress', backHandleRemove)
+     return () => BackHandler.removeEventListener('hardwareBackPress');
+  },[])
 
 
   useEffect(() => {
@@ -134,26 +135,32 @@ const Login = () => {
 
   const sendVerfication = () => {
     setLoading(true)
+    loadingForBackHandel.current = true;
     const ValidatedPhoneNumber = inputValidate(phoneNumber, "phoneNumber")
     if (!ValidatedPhoneNumber) {
       setPhoneNumber("")
+      loadingForBackHandel.current = false;
       setLoading(false)
       return
     }
     (new PhoneAuthProvider(auth)).verifyPhoneNumber(ValidatedPhoneNumber, recaptchaVerification.current)
       .then(setVerificationId).then(() => {
         setInputView("optUi")
+        loadingForBackHandel.current = false;
         setLoading(false)
         showToastForLogin()
       }).catch(() => {
+        loadingForBackHandel.current = false;
         setLoading(false)
       })
   }
 
   // this functionalies created for dummy screen change
   const nameSubmitions = (fullName) => {
+    loadingForBackHandel.current = true;
     setLoading(true)
     if (!inputValidate(fullName, "name")) {
+      loadingForBackHandel.current = false;
       setLoading(false)
       return;
     }
@@ -177,6 +184,7 @@ const Login = () => {
         displayName: `${fullName}`, photoURL: undefined
       }).then(() => {
         changeTheScreenHandle()
+        loadingForBackHandel.current = false;
         setLoading(false)
       }).catch((error) => {
         Alert.alert(
@@ -186,7 +194,9 @@ const Login = () => {
             { text: "OK" }
           ]
         );
+        loadingForBackHandel.current = false;
         setLoading(false)
+        BackHandler.removeEventListener('hardwareBackPress')
         changeTheScreenHandle()
       });
     })
@@ -198,17 +208,20 @@ const Login = () => {
 
   const confirmCode = async (setStopTimer) => {
     if (!(inputValidate(code, "code"))) return;
+    loadingForBackHandel.current = true;
     setLoading(true)
     const credential = PhoneAuthProvider.credential(verificationId, code);
     await signInWithCredential(auth, credential).then((userInfo) => {
       if (userInfo._tokenResponse.isNewUser || !userInfo.user.displayName) {
         setInputView("placingNameUi")
       } else {
+        BackHandler.removeEventListener('hardwareBackPress');
         changeTheScreenHandle()
       }
       setCode('')
     }).then(() => {
       setStopTimer(true)
+      loadingForBackHandel.current = false;
       setLoading(false)
       showToastForOTP()
     })
@@ -220,6 +233,7 @@ const Login = () => {
             { text: "OK" }
           ]
         );
+        loadingForBackHandel.current = false;
         setLoading(false)
       })
 
@@ -256,7 +270,7 @@ const Login = () => {
 
         <View style={{ height: 20 }} />
         {!loading && (
-          <TouchableOpacity onPress={ () => { navigation.navigate("Home"); changeTheScreenHandle() ; }} style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => { navigation.navigate("Home"); changeTheScreenHandle(); }} style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: '#fff' }}>Skip for now</Text>
           </TouchableOpacity>
         )}
@@ -272,9 +286,13 @@ const Login = () => {
     <Modal
       animationType="fade"
       transparent={true}
-      // onRequestClose={() => {
-      //   navigation.goBack()
-      // }}
+      onRequestClose={() => {
+        loadingForBackHandel.current = false;
+        setLoading(false)
+        changeTheScreenHandle()
+        BackHandler.removeEventListener('hardwareBackPress')
+        navigation.navigate("Home")
+      }}
       visible={true}
     >
       <View style={styles.container}>

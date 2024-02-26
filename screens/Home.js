@@ -25,6 +25,7 @@ const Home = ({ navigation }) => {
     const [bannerData , setBannerData] = useState("")
     const flatListRef = useRef(null)
     const dataLoading = useRef(false)
+    const firstAttemp = useRef(true)
     const [forceRender , setForceRender] = useState("");
 
     const infinityScrollHandle = () => {
@@ -72,8 +73,9 @@ const Home = ({ navigation }) => {
     }, [itemsSnapshot])
 
     useEffect(() => {
-            if(!dataLoading.current){
+            if(!firstAttemp.current){
                 dataLoading.current = true;
+                setItemsDataForView(dataHeadinforUi)
                 getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(() => {
                     Alert.alert(
                         "Connection Failed !",
@@ -82,8 +84,10 @@ const Home = ({ navigation }) => {
                             { text: "OK" }
                         ],
                     );
-                }) 
-            }
+                })
+            }else{
+                firstAttemp.current = false  
+            } 
             
     }, [forceRender])
 

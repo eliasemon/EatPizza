@@ -4,10 +4,10 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList, 
 import { AntDesign } from '@expo/vector-icons';
 
 import ProductCard from '../components/ProductCard';
-import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll , getSingleDataWithRealTimeUpdates } from '../utils';
+import { getDataWithOutRealTimeUpdates, getDataWithInfinityScroll, getSingleDataWithRealTimeUpdates } from '../utils';
 import { FilterProductStyle as styles } from '../styles'
 
-
+import { GlobalStyle } from '../styles';
 
 const FilteredProduct = ({ navigation, route }) => {
     const { activeID } = route.params;
@@ -17,7 +17,8 @@ const FilteredProduct = ({ navigation, route }) => {
     const [itemsSnapshot, setItemsSnapshot] = useState("")
     const [itemsDataForView, setItemsDataForView] = useState("")
     const dataLoading = useRef(false)
-    const [forceRender , setForceRender] = useState("");
+    const [forceRender, setForceRender] = useState("");
+    const firstAttemp = useRef(0)
 
     const infinityScrollHandle = () => {
         if (dataLoading.current) return;
@@ -52,14 +53,12 @@ const FilteredProduct = ({ navigation, route }) => {
 
     useEffect(() => {
         getDataWithOutRealTimeUpdates(setCategories, "catagories");
-        getSingleDataWithRealTimeUpdates(setForceRender , "totalSummery" , "updateByAdmin")
+        getSingleDataWithRealTimeUpdates(setForceRender, "totalSummery", "updateByAdmin")
     }, []);
 
 
     useEffect(() => {
-        
-        if(dataLoading.current) return
-
+        setItemsDataForView([])
         const isActiveCatArr = Object.keys(isActiveCategoriesId)
         if (isActiveCatArr.length > 0) {
             dataLoading.current = true;
@@ -74,7 +73,7 @@ const FilteredProduct = ({ navigation, route }) => {
             })
             return;
         }
-        else { 
+        else {
 
             dataLoading.current = true;
             getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(() => {
@@ -87,7 +86,7 @@ const FilteredProduct = ({ navigation, route }) => {
                 );
             })
         }
-    }, [isActiveCategoriesId , forceRender])
+    }, [isActiveCategoriesId])
 
 
     useEffect(() => {
@@ -103,8 +102,44 @@ const FilteredProduct = ({ navigation, route }) => {
 
     }, [itemsSnapshot])
 
+
+    useEffect(() => {
+        if (firstAttemp.current >= 2) {
+            setItemsDataForView([])
+            const isActiveCatArr = Object.keys(isActiveCategoriesId)
+            if (isActiveCatArr.length > 0) {
+                dataLoading.current = true;
+                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5, false, { queryField: "selectedCatagories", queryArray: isActiveCatArr }).catch(() => {
+                    Alert.alert(
+                        "Connection Failed !",
+                        "Server connection failed after trying",
+                        [
+                            { text: "OK" }
+                        ],
+                    );
+                })
+                return;
+            }
+            else {
+
+                dataLoading.current = true;
+                getDataWithInfinityScroll(setItemsSnapshot, "productlist", 5).catch(() => {
+                    Alert.alert(
+                        "Connection Failed !",
+                        "Server connection failed after trying",
+                        [
+                            { text: "OK" }
+                        ],
+                    );
+                })
+            }
+        } else {
+            firstAttemp.current += 1;
+        }
+
+    }, [forceRender])
+
     const handleChipPress = (id) => {
-        setItemsDataForView("")
         setisActiveCategoriesId((prv) => {
             if (prv[`${id}`]) {
                 delete prv[`${id}`]
@@ -160,34 +195,34 @@ const FilteredProduct = ({ navigation, route }) => {
         <View style={styles.cardContainer}>
             <View style={{ backgroundColor: '#0D0D0D', height: '23%' }}>
                 <ScrollView style={styles.section}>
-                    <View style={styles.categoriesHeader}>
+                    <View style={[styles.categoriesHeader , GlobalStyle.sidePadding]}>
                         <Text style={styles.sectionTitle}>Categories</Text>
-                        <TouchableOpacity onPress={handleCollapseButton} style={styles.collapseButton}>
+                        <TouchableOpacity hidden={categories.length <= 5} onPress={handleCollapseButton} style={styles.collapseButton}>
                             <AntDesign name={isCollapse ? 'down' : 'up'} size={22} color="white" />
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.chipContainer}>
+                    <View style={[styles.chipContainer,  GlobalStyle.sidePadding]}>
                         {
                             categories ? getCategoryArray(categories, isCollapse) : <ActivityIndicator size="large" color="#fff" />
                         }
                     </View>
                 </ScrollView>
-                <View style={styles.section}>
+                <View style={[styles.section,  GlobalStyle.sidePadding]}>
                     <Text style={styles.sectionTitle}>All Items</Text>
                 </View>
             </View>
-            <View style={{ height: '77%' }}>
+            <View style={[{ height: '77%' },  GlobalStyle.sidePadding]}>
 
-            {itemsDataForView && (<FlatList
+                {itemsDataForView && (<FlatList
                     ListFooterComponent={itemsSnapshot[4] ? <ActivityIndicator color="#fff" /> : (<Text style={{ color: "white", textAlign: 'center' }}>No more items found ! </Text>)}
-                onEndReached={infinityScrollHandle}
-                data={itemsDataForView}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => navigation.navigate("ProductDetailsScreen", { item: item })}>
-                        <ProductCard pdUIAddToCardHandle={() => navigation.navigate("ProductDetailsScreen", { item: item })} cardsType="button" item={item} />
-                    </TouchableOpacity>
-                )}
-                keyExtractor={item => item.id}
+                    onEndReached={infinityScrollHandle}
+                    data={itemsDataForView}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => navigation.navigate("ProductDetailsScreen", { item: item })}>
+                            <ProductCard pdUIAddToCardHandle={() => navigation.navigate("ProductDetailsScreen", { item: item })} cardsType="button" item={item} />
+                        </TouchableOpacity>
+                    )}
+                    keyExtractor={item => item.id}
                 />)
                 }
             </View>

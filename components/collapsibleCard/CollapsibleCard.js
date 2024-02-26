@@ -57,9 +57,6 @@ const CollapsibleCard = ({
           <Text style={styles.cardText}> Amount :   {item.TotalOrderAmmount} </Text>
           <Text style={styles.cardText}> Time :   {dateStr(item.creationTime)} </Text>
         </View>
-        <AnimatedView style={{ transform: [{ rotate: animation.rotation }] }}>
-          {/* arrow button by condition  */}
-        </AnimatedView>
         <View style={[styles.chip, {
           backgroundColor: chipColor[item.status]
         }]}>
@@ -73,17 +70,16 @@ const CollapsibleCard = ({
           styles.cardContent,
           {
             height: animation.height,
-            borderTopWidth: animation.progress.interpolate({
-              range: [0, 25, 50, 75, 100],
-              output: [0, 0, 0, 0, 1],
-            }),
-            opacity: animation.progress.interpolate({
-              range: [0, 85, 95, 100],
-              output: [0, 0, 0.5, 1],
-            }),
+            // borderTopWidth: animation.progress.interpolate({
+            //   range: [0, 25, 50, 75, 100],
+            //   output: [0, 0, 0, 0, 1],
+            // }),
+            // opacity: animation.progress.interpolate({
+            //   range: [0, 85, 95, 100],
+            //   output: [0, 0, 0.5, 1],
+            // }),
           },
         ]}>
-        {/* Inner */}
         <AnimatedView
           style={{
             transform: [
@@ -95,7 +91,7 @@ const CollapsibleCard = ({
               },
             ],
           }}>
-          {children}
+          {!isCollapsed && children}
         </AnimatedView>
       </AnimatedView>
     </View>
@@ -121,10 +117,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 8,
     marginVertical: 10
-  },
-  cardContent: {
-    borderTopWidth: 1,
-    borderColor: '#ddd',
   },
   cardText: {
     color: '#fff'
